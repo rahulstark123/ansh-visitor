@@ -8,7 +8,7 @@ import { AppHeader } from "./app-header";
 import { ProTrialBanner } from "./pro-trial-banner";
 import { useVisitorStore } from "@/stores/visitor-store";
 import { createSupabaseClient } from "@/lib/supabase";
-import { AppShellSkeleton } from "@/components/ui/page-skeletons";
+import { AppContentSkeleton } from "@/components/ui/page-skeletons";
 import { Monitor } from "lucide-react";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -82,7 +82,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   void pathname;
 
   if (!appReady) {
-    return <AppShellSkeleton />;
+    return (
+      <div className="flex h-screen overflow-hidden bg-background">
+        <MainSidebar />
+        <SubSidebar />
+        <AppContentSkeleton />
+      </div>
+    );
   }
 
   if (isMobileSize) {

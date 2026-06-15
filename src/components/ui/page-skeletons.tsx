@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2 } from "lucide-react";
 
 export function PageHeaderSkeleton({
   action = false,
@@ -341,6 +342,26 @@ export function HelpPageSkeleton() {
   );
 }
 
+export function AppContentSkeleton() {
+  return (
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+      <div className="flex h-16 items-center justify-between border-b border-border/50 px-6">
+        <Skeleton className="h-9 w-64 max-w-[40vw] rounded-lg" />
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-9 w-24 rounded-full" />
+          <Skeleton className="h-10 w-10 rounded-xl" />
+          <Skeleton className="h-10 w-32 rounded-xl" />
+        </div>
+      </div>
+      <main className="mesh-gradient min-h-0 flex-1 overflow-y-auto">
+        <div className="mx-auto w-full max-w-7xl p-6 md:p-10 lg:p-12">
+          <DashboardPageSkeleton />
+        </div>
+      </main>
+    </div>
+  );
+}
+
 export function AppShellSkeleton() {
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -358,21 +379,7 @@ export function AppShellSkeleton() {
           ))}
         </div>
       </aside>
-      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        <div className="flex h-16 items-center justify-between border-b border-border/50 px-6">
-          <Skeleton className="h-9 w-64 max-w-[40vw] rounded-lg" />
-          <div className="flex items-center gap-3">
-            <Skeleton className="h-9 w-24 rounded-full" />
-            <Skeleton className="h-10 w-10 rounded-xl" />
-            <Skeleton className="h-10 w-32 rounded-xl" />
-          </div>
-        </div>
-        <main className="mesh-gradient min-h-0 flex-1 overflow-y-auto">
-          <div className="mx-auto w-full max-w-7xl p-6 md:p-10 lg:p-12">
-            <DashboardPageSkeleton />
-          </div>
-        </main>
-      </div>
+      <AppContentSkeleton />
     </div>
   );
 }
@@ -386,15 +393,12 @@ export function ProcessingOverlaySkeleton({
 }) {
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="w-full max-w-sm rounded-3xl border border-white/[0.08] bg-slate-950/90 p-8 shadow-2xl backdrop-blur-xl animate-in zoom-in-95 duration-200">
+      <div className="w-full max-w-sm rounded-3xl border border-white/[0.08] bg-slate-950/90 p-8 shadow-2xl backdrop-blur-xl text-center animate-in zoom-in-95 duration-200">
         <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10">
-          <Skeleton className="h-8 w-8 rounded-lg bg-emerald-500/20" />
+          <Loader2 className="h-8 w-8 animate-spin text-emerald-400" aria-hidden />
         </div>
-        <Skeleton className="mx-auto mb-3 h-5 w-40 rounded bg-slate-700/80" />
-        <Skeleton className="mx-auto mb-2 h-3 w-56 rounded bg-slate-800/80" />
-        <Skeleton className="mx-auto h-3 w-44 rounded bg-slate-800/60" />
-        <p className="sr-only">{title}</p>
-        <p className="sr-only">{description}</p>
+        <h3 className="text-base font-bold text-white">{title}</h3>
+        <p className="mt-2 text-sm text-slate-400">{description}</p>
       </div>
     </div>
   );

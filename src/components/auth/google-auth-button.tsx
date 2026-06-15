@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 import { signInWithGoogle } from "@/lib/auth/google";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
-import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
 
 function GoogleIcon({ className }: { className?: string }) {
   return (
@@ -65,7 +65,10 @@ export function GoogleAuthButton({
       )}
     >
       {loading ? (
-        <ButtonLoadingSkeleton className="h-4 w-40 rounded bg-slate-300/50 dark:bg-slate-600/50" />
+        <>
+          <Loader2 className="h-5 w-5 animate-spin text-slate-400" aria-hidden />
+          <span>{label}</span>
+        </>
       ) : (
         <>
           <GoogleIcon className="h-5 w-5" />
