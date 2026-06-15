@@ -302,52 +302,27 @@ export default function OnboardingPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      Your Role
-                    </label>
-                    <div className="relative mt-2">
-                      <select
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                        className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-4 pr-10 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer appearance-none"
-                      >
-                        <option value="Owner">Owner</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Manager">Manager</option>
-                        <option value="HR">HR</option>
-                        <option value="Employee">Employee</option>
-                      </select>
-                      {/* Premium Custom Dropdown Arrow */}
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-                        <ChevronDown className="h-4 w-4 text-slate-500" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      Department
-                    </label>
-                    <div className="relative mt-2">
-                      <select
-                        value={department}
-                        onChange={(e) => setDepartment(e.target.value)}
-                        className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-4 pr-10 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer appearance-none"
-                      >
-                        <option value="HR & Operations">HR &amp; Operations</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Product Management">Product Management</option>
-                        <option value="Enterprise Sales">Enterprise Sales</option>
-                        <option value="Security & Operations">Security &amp; Operations</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Other">Other (Write Custom)</option>
-                      </select>
-                      {/* Premium Custom Dropdown Arrow */}
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-                        <ChevronDown className="h-4 w-4 text-slate-500" />
-                      </div>
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    Department
+                  </label>
+                  <div className="relative mt-2">
+                    <select
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                      className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-4 pr-10 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer appearance-none"
+                    >
+                      <option value="HR & Operations">HR &amp; Operations</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Product Management">Product Management</option>
+                      <option value="Enterprise Sales">Enterprise Sales</option>
+                      <option value="Security & Operations">Security &amp; Operations</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Other">Other (Write Custom)</option>
+                    </select>
+                    {/* Premium Custom Dropdown Arrow */}
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                      <ChevronDown className="h-4 w-4 text-slate-500" />
                     </div>
                   </div>
                 </div>
@@ -424,6 +399,29 @@ export default function OnboardingPage() {
                       placeholder="Corporate Headquarters, Bangalore"
                       className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-10 pr-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    Your Role
+                  </label>
+                  <div className="relative mt-2">
+                    <select
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-4 pr-10 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer appearance-none"
+                    >
+                      <option value="Owner">Owner</option>
+                      <option value="Admin">Admin</option>
+                      <option value="Manager">Manager</option>
+                      <option value="HR">HR</option>
+                      <option value="Employee">Employee</option>
+                    </select>
+                    {/* Premium Custom Dropdown Arrow */}
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                      <ChevronDown className="h-4 w-4 text-slate-500" />
+                    </div>
                   </div>
                 </div>
               </div>
