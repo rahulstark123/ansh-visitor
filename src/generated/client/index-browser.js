@@ -186,6 +186,60 @@ exports.Prisma.VisitorScalarFieldEnum = {
   wid: 'wid'
 };
 
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  id: 'id',
+  wid: 'wid',
+  plan: 'plan',
+  status: 'status',
+  amount: 'amount',
+  currency: 'currency',
+  region: 'region',
+  currentPeriodStart: 'currentPeriodStart',
+  currentPeriodEnd: 'currentPeriodEnd',
+  cancelledAt: 'cancelledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  wid: 'wid',
+  subscriptionId: 'subscriptionId',
+  razorpayOrderId: 'razorpayOrderId',
+  razorpayPaymentId: 'razorpayPaymentId',
+  amount: 'amount',
+  currency: 'currency',
+  region: 'region',
+  status: 'status',
+  failureReason: 'failureReason',
+  createdAt: 'createdAt',
+  verifiedAt: 'verifiedAt'
+};
+
+exports.Prisma.PublicRegistrationLinkScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  wid: 'wid',
+  hostId: 'hostId',
+  officeBranch: 'officeBranch',
+  enabled: 'enabled',
+  designTheme: 'designTheme',
+  pageTitle: 'pageTitle',
+  welcomeMessage: 'welcomeMessage',
+  qrValidityPeriod: 'qrValidityPeriod',
+  fieldNameRequired: 'fieldNameRequired',
+  fieldPhoneRequired: 'fieldPhoneRequired',
+  fieldEmailRequired: 'fieldEmailRequired',
+  fieldPurposeRequired: 'fieldPurposeRequired',
+  fieldIdProofRequired: 'fieldIdProofRequired',
+  fieldCompanyEnabled: 'fieldCompanyEnabled',
+  fieldCompanyRequired: 'fieldCompanyRequired',
+  fieldNotesEnabled: 'fieldNotesEnabled',
+  fieldNotesRequired: 'fieldNotesRequired',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -206,7 +260,10 @@ exports.Prisma.ModelName = {
   Workspace: 'Workspace',
   WorkspaceConfig: 'WorkspaceConfig',
   Profile: 'Profile',
-  Visitor: 'Visitor'
+  Visitor: 'Visitor',
+  Subscription: 'Subscription',
+  Transaction: 'Transaction',
+  PublicRegistrationLink: 'PublicRegistrationLink'
 };
 
 /**

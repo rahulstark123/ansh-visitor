@@ -126,3 +126,89 @@ INSERT INTO "Workspace" ("id", "name", "plan") VALUES (1, 'Ansh Visitor', 'free'
 
 INSERT INTO "WorkspaceConfig" ("wid", "updatedAt") VALUES (1, CURRENT_TIMESTAMP)
   ON CONFLICT ("wid") DO NOTHING;
+
+-- ── Public registration links ────────────────────────────────
+CREATE TABLE "PublicRegistrationLink" (
+    "id" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "wid" INTEGER NOT NULL,
+    "hostId" TEXT NOT NULL,
+    "officeBranch" TEXT NOT NULL,
+    "enabled" BOOLEAN NOT NULL DEFAULT true,
+    "designTheme" TEXT NOT NULL DEFAULT 'classic',
+    "pageTitle" TEXT,
+    "welcomeMessage" TEXT,
+    "qrValidityPeriod" TEXT NOT NULL DEFAULT '24h',
+    "fieldNameRequired" BOOLEAN NOT NULL DEFAULT true,
+    "fieldPhoneRequired" BOOLEAN NOT NULL DEFAULT false,
+    "fieldEmailRequired" BOOLEAN NOT NULL DEFAULT false,
+    "fieldPurposeRequired" BOOLEAN NOT NULL DEFAULT false,
+    "fieldIdProofRequired" BOOLEAN NOT NULL DEFAULT false,
+    "fieldCompanyEnabled" BOOLEAN NOT NULL DEFAULT true,
+    "fieldCompanyRequired" BOOLEAN NOT NULL DEFAULT false,
+    "fieldNotesEnabled" BOOLEAN NOT NULL DEFAULT true,
+    "fieldNotesRequired" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "PublicRegistrationLink_pkey" PRIMARY KEY ("id")
+);
+
+CREATE UNIQUE INDEX "PublicRegistrationLink_slug_key" ON "PublicRegistrationLink"("slug");
+CREATE UNIQUE INDEX "PublicRegistrationLink_wid_hostId_key" ON "PublicRegistrationLink"("wid", "hostId");
+CREATE INDEX "PublicRegistrationLink_wid_idx" ON "PublicRegistrationLink"("wid");
+CREATE INDEX "PublicRegistrationLink_hostId_idx" ON "PublicRegistrationLink"("hostId");
+
+ALTER TABLE "PublicRegistrationLink" ADD CONSTRAINT "PublicRegistrationLink_wid_fkey" FOREIGN KEY ("wid") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "PublicRegistrationLink" ADD CONSTRAINT "PublicRegistrationLink_hostId_fkey" FOREIGN KEY ("hostId") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ── Billing: Subscription & Transaction tables ───────────────
+CREATE TABLE "Subscription" (
+    "id" TEXT NOT NULL,
+    "wid" INTEGER NOT NULL,
+    "plan" TEXT NOT NULL DEFAULT 'pro',
+    "status" TEXT NOT NULL DEFAULT 'pending',
+    "amount" INTEGER NOT NULL,
+    "currency" TEXT NOT NULL,
+    "region" TEXT NOT NULL,
+    "currentPeriodStart" TIMESTAMP(3),
+    "currentPeriodEnd" TIMESTAMP(3),
+    "cancelledAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Subscription_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE "Transaction" (
+    "id" TEXT NOT NULL,
+    "wid" INTEGER NOT NULL,
+    "subscriptionId" TEXT NOT NULL,
+    "razorpayOrderId" TEXT NOT NULL,
+    "razorpayPaymentId" TEXT,
+    "amount" INTEGER NOT NULL,
+    "currency" TEXT NOT NULL,
+    "region" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'pending',
+    "failureReason" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "verifiedAt" TIMESTAMP(3),
+
+    CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
+);
+
+CREATE UNIQUE INDEX "Transaction_razorpayOrderId_key" ON "Transaction"("razorpayOrderId");
+CREATE UNIQUE INDEX "Transaction_razorpayPaymentId_key" ON "Transaction"("razorpayPaymentId");
+
+CREATE INDEX "Subscription_wid_idx" ON "Subscription"("wid");
+CREATE INDEX "Subscription_wid_status_idx" ON "Subscription"("wid", "status");
+CREATE INDEX "Subscription_status_idx" ON "Subscription"("status");
+
+CREATE INDEX "Transaction_wid_idx" ON "Transaction"("wid");
+CREATE INDEX "Transaction_subscriptionId_idx" ON "Transaction"("subscriptionId");
+CREATE INDEX "Transaction_status_idx" ON "Transaction"("status");
+CREATE INDEX "Transaction_wid_status_idx" ON "Transaction"("wid", "status");
+
+ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_wid_fkey" FOREIGN KEY ("wid") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_wid_fkey" FOREIGN KEY ("wid") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "Subscription"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -61,7 +61,7 @@ export function PlansModal({
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground mt-1 leading-relaxed max-w-xl">
                 Compare our plans and upgrade to unlock multi-branch visitor
-                management, unlimited check-ins, custom badges, and audit
+                management, unlimited check-ins, My Link pages, custom badges, and audit
                 exports for your entire workspace.
               </DialogDescription>
             </div>

@@ -1,8 +1,15 @@
 import { createHmac } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import {
+  completeSuccessfulPayment,
+  markPaymentFailed,
+} from "@/lib/billing-records";
 
 export async function POST(req: NextRequest) {
+  let razorpayOrderId: string | undefined;
+  let razorpayPaymentId: string | undefined;
+  let workspaceId = 1;
+
   try {
     const body = await req.json().catch(() => ({}));
     const {
@@ -16,6 +23,10 @@ export async function POST(req: NextRequest) {
       razorpay_signature?: string;
       wid?: number;
     };
+
+    razorpayOrderId = razorpay_order_id;
+    razorpayPaymentId = razorpay_payment_id;
+    workspaceId = Number(wid) || 1;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return NextResponse.json(
@@ -37,32 +48,56 @@ export async function POST(req: NextRequest) {
       .digest("hex");
 
     if (expectedSignature !== razorpay_signature) {
+      await markPaymentFailed({
+        razorpayOrderId: razorpay_order_id,
+        wid: workspaceId,
+        razorpayPaymentId: razorpay_payment_id,
+        failureReason: "Invalid payment signature",
+      });
+
       return NextResponse.json(
         { error: "Invalid payment signature" },
         { status: 400 }
       );
     }
 
-    const workspaceId = Number(wid) || 1;
-    const workspace = await prisma.workspace.update({
-      where: { id: workspaceId },
-      data: { plan: "pro" },
-      select: { id: true, name: true, plan: true, createdAt: true },
+    const result = await completeSuccessfulPayment({
+      wid: workspaceId,
+      razorpayOrderId: razorpay_order_id,
+      razorpayPaymentId: razorpay_payment_id,
     });
 
     return NextResponse.json(
       {
         success: true,
-        workspace,
+        workspace: result.workspace,
         payment: {
           orderId: razorpay_order_id,
           paymentId: razorpay_payment_id,
+          transactionId: result.transaction.id,
+          subscriptionId: result.transaction.subscriptionId,
+          alreadyVerified: result.alreadyVerified,
         },
       },
       { status: 200 }
     );
   } catch (err) {
     console.error("[POST /api/billing/verify-payment]", err);
+
+    if (razorpayOrderId) {
+      try {
+        await markPaymentFailed({
+          razorpayOrderId,
+          wid: workspaceId,
+          razorpayPaymentId,
+          failureReason:
+            err instanceof Error ? err.message : "Payment verification failed",
+        });
+      } catch (recordErr) {
+        console.error("[POST /api/billing/verify-payment] record failure", recordErr);
+      }
+    }
+
     return NextResponse.json(
       { error: "Failed to verify payment" },
       { status: 500 }

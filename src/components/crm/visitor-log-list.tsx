@@ -120,7 +120,11 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
 
   const handleCreateInvitation = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newGuestName || !newGuestEmail || !newGuestPhone) return;
+    const hasIdentity =
+      Boolean(newGuestName.trim()) ||
+      Boolean(newGuestEmail.trim()) ||
+      Boolean(newGuestPhone.trim());
+    if (!hasIdentity) return;
 
     const host = currentUser;
 
@@ -434,10 +438,9 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Guest Full Name
+                    Guest Full Name (Optional)
                   </label>
                   <Input
-                    required
                     value={newGuestName}
                     onChange={(e) => setNewGuestName(e.target.value)}
                     placeholder="Jane Doe"
@@ -460,22 +463,20 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">
-                    Guest Phone Number
+                    Guest Phone Number (Optional)
                   </label>
                   <PhoneInput
                     placeholder="Enter phone number"
                     value={newGuestPhone}
                     onChange={(val) => setNewGuestPhone(val || "")}
                     defaultCountry="IN"
-                    required
                   />
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Guest Email
+                    Guest Email (Optional)
                   </label>
                   <Input
-                    required
                     type="email"
                     value={newGuestEmail}
                     onChange={(e) => setNewGuestEmail(e.target.value)}
@@ -487,7 +488,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
 
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                  Visit Purpose
+                  Visit Purpose (Optional)
                 </label>
                 <Select
                   value={newGuestPurpose}
@@ -676,8 +677,8 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
       <Dialog open={openPass} onOpenChange={setOpenPass}>
         <DialogContent className="sm:max-w-[400px] text-slate-800 dark:text-slate-100">
           {selectedPass && (
-            <div className="printable-pass space-y-6 py-2">
-              <DialogHeader>
+            <div className="space-y-6 py-2">
+              <DialogHeader className="no-print">
                 <DialogTitle className="text-center font-bold tracking-tight">ANSH VISITOR PASS</DialogTitle>
                 <DialogDescription className="text-center text-xs text-slate-400">
                   Present this QR code at the reception desk entryway.
@@ -685,8 +686,14 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
               </DialogHeader>
 
               {/* Pass Visual Card */}
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-6 flex flex-col items-center dark:border-slate-800 dark:bg-slate-900/50">
-                <div className="h-44 w-44 rounded-xl border border-slate-200 bg-white flex flex-col items-center justify-center dark:border-slate-800 select-none shadow-sm gap-2">
+              <div className="printable-pass rounded-2xl border border-slate-200 bg-slate-50/50 p-6 flex flex-col items-center dark:border-slate-800 dark:bg-slate-900/50">
+                <div className="text-center w-full mb-2">
+                  <h3 className="text-lg font-black tracking-tight">ANSH VISITOR PASS</h3>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Present this QR code at the reception desk entryway.
+                  </p>
+                </div>
+                <div className="visitor-pass-qr-box h-44 w-44 rounded-xl border border-slate-200 bg-white flex flex-col items-center justify-center dark:border-slate-800 select-none shadow-sm gap-2">
                   <QRCodeSVG
                     value={selectedPass.qrCode || ""}
                     size={112}
@@ -703,7 +710,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
                   <h4 className="text-lg font-black text-slate-900 dark:text-white leading-tight">
                     {selectedPass.name}
                   </h4>
-                  <span className="inline-flex rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-600">
+                  <span className="visitor-pass-purpose inline-flex rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-600">
                     {selectedPass.purpose}
                   </span>
                   <p className="text-xs text-slate-400">

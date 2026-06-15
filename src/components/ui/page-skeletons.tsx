@@ -220,6 +220,103 @@ export function BillingPageSkeleton() {
   );
 }
 
+export function MyLinkPageSkeleton() {
+  return (
+    <div className="space-y-8 animate-in fade-in duration-300">
+      <PageHeaderSkeleton />
+      <div className="grid gap-8 xl:grid-cols-2">
+        <Card className="crm-card overflow-hidden">
+          <div className="border-b border-border/40 px-6 py-4">
+            <Skeleton className="h-4 w-36 rounded" />
+          </div>
+          <CardContent className="space-y-6 pt-6">
+            <div className="rounded-2xl border border-sky-200/40 bg-sky-50/40 p-4 dark:border-sky-900/30 dark:bg-sky-950/10">
+              <div className="flex gap-3">
+                <Skeleton className="h-4 w-4 shrink-0 rounded" />
+                <div className="flex-1 space-y-3">
+                  <Skeleton className="h-3 w-28 rounded" />
+                  <Skeleton className="h-10 w-full rounded-lg" />
+                  <Skeleton className="h-3 w-full max-w-xs rounded" />
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Skeleton className="h-8 w-24 rounded-lg" />
+                    <Skeleton className="h-8 w-32 rounded-lg" />
+                    <Skeleton className="h-8 w-20 rounded-lg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-4 w-4 rounded" />
+              <Skeleton className="h-4 w-56 rounded" />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[0, 1].map((i) => (
+                <div key={i} className="space-y-2">
+                  <Skeleton className="h-3 w-20 rounded" />
+                  <Skeleton className="h-10 w-full rounded-lg" />
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-28 rounded" />
+              <Skeleton className="h-20 w-full rounded-lg" />
+            </div>
+
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-24 rounded" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+
+            <div className="space-y-3">
+              <Skeleton className="h-3 w-32 rounded" />
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="h-20 w-full rounded-2xl" />
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-border/60 p-4">
+              <Skeleton className="h-3 w-32 rounded" />
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div key={i} className="flex items-center justify-between gap-3">
+                  <Skeleton className="h-4 w-28 rounded" />
+                  <Skeleton className="h-4 w-4 rounded" />
+                </div>
+              ))}
+            </div>
+
+            <Skeleton className="h-11 w-full rounded-xl" />
+          </CardContent>
+        </Card>
+
+        <div className="overflow-hidden rounded-3xl border border-border/60">
+          <div className="border-b border-border/50 bg-slate-50/80 px-4 py-3 dark:bg-slate-900/50">
+            <Skeleton className="h-3 w-24 rounded" />
+          </div>
+          <div className="space-y-4 bg-slate-100 p-6 dark:bg-slate-900/30">
+            <Skeleton className="mx-auto h-3 w-20 rounded" />
+            <Skeleton className="mx-auto h-7 w-48 rounded-lg" />
+            <Skeleton className="mx-auto h-4 w-64 max-w-full rounded" />
+            <div className="mx-auto mt-4 max-w-sm space-y-4 rounded-2xl border border-border/40 bg-white p-6 dark:bg-card">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div key={i} className="space-y-2">
+                  <Skeleton className="h-3 w-24 rounded" />
+                  <Skeleton className="h-10 w-full rounded-lg" />
+                </div>
+              ))}
+              <Skeleton className="h-11 w-full rounded-xl" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function HelpPageSkeleton() {
   return (
     <div className="space-y-8">

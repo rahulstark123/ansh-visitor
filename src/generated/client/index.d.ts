@@ -33,6 +33,21 @@ export type Profile = $Result.DefaultSelection<Prisma.$ProfilePayload>
  * 
  */
 export type Visitor = $Result.DefaultSelection<Prisma.$VisitorPayload>
+/**
+ * Model Subscription
+ * 
+ */
+export type Subscription = $Result.DefaultSelection<Prisma.$SubscriptionPayload>
+/**
+ * Model Transaction
+ * 
+ */
+export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
+/**
+ * Model PublicRegistrationLink
+ * 
+ */
+export type PublicRegistrationLink = $Result.DefaultSelection<Prisma.$PublicRegistrationLinkPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -191,6 +206,36 @@ export class PrismaClient<
     * ```
     */
   get visitor(): Prisma.VisitorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.subscription`: Exposes CRUD operations for the **Subscription** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Subscriptions
+    * const subscriptions = await prisma.subscription.findMany()
+    * ```
+    */
+  get subscription(): Prisma.SubscriptionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.transaction`: Exposes CRUD operations for the **Transaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Transactions
+    * const transactions = await prisma.transaction.findMany()
+    * ```
+    */
+  get transaction(): Prisma.TransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.publicRegistrationLink`: Exposes CRUD operations for the **PublicRegistrationLink** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PublicRegistrationLinks
+    * const publicRegistrationLinks = await prisma.publicRegistrationLink.findMany()
+    * ```
+    */
+  get publicRegistrationLink(): Prisma.PublicRegistrationLinkDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -635,7 +680,10 @@ export namespace Prisma {
     Workspace: 'Workspace',
     WorkspaceConfig: 'WorkspaceConfig',
     Profile: 'Profile',
-    Visitor: 'Visitor'
+    Visitor: 'Visitor',
+    Subscription: 'Subscription',
+    Transaction: 'Transaction',
+    PublicRegistrationLink: 'PublicRegistrationLink'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -654,7 +702,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "workspace" | "workspaceConfig" | "profile" | "visitor"
+      modelProps: "workspace" | "workspaceConfig" | "profile" | "visitor" | "subscription" | "transaction" | "publicRegistrationLink"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -954,6 +1002,228 @@ export namespace Prisma {
           }
         }
       }
+      Subscription: {
+        payload: Prisma.$SubscriptionPayload<ExtArgs>
+        fields: Prisma.SubscriptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubscriptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubscriptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          findFirst: {
+            args: Prisma.SubscriptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubscriptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          findMany: {
+            args: Prisma.SubscriptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>[]
+          }
+          create: {
+            args: Prisma.SubscriptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          createMany: {
+            args: Prisma.SubscriptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SubscriptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>[]
+          }
+          delete: {
+            args: Prisma.SubscriptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          update: {
+            args: Prisma.SubscriptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SubscriptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubscriptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SubscriptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SubscriptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionPayload>
+          }
+          aggregate: {
+            args: Prisma.SubscriptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubscription>
+          }
+          groupBy: {
+            args: Prisma.SubscriptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubscriptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SubscriptionCountArgs<ExtArgs>
+            result: $Utils.Optional<SubscriptionCountAggregateOutputType> | number
+          }
+        }
+      }
+      Transaction: {
+        payload: Prisma.$TransactionPayload<ExtArgs>
+        fields: Prisma.TransactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TransactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TransactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          findFirst: {
+            args: Prisma.TransactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TransactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          findMany: {
+            args: Prisma.TransactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>[]
+          }
+          create: {
+            args: Prisma.TransactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          createMany: {
+            args: Prisma.TransactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TransactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>[]
+          }
+          delete: {
+            args: Prisma.TransactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          update: {
+            args: Prisma.TransactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.TransactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TransactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TransactionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>[]
+          }
+          upsert: {
+            args: Prisma.TransactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          aggregate: {
+            args: Prisma.TransactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTransaction>
+          }
+          groupBy: {
+            args: Prisma.TransactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TransactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TransactionCountArgs<ExtArgs>
+            result: $Utils.Optional<TransactionCountAggregateOutputType> | number
+          }
+        }
+      }
+      PublicRegistrationLink: {
+        payload: Prisma.$PublicRegistrationLinkPayload<ExtArgs>
+        fields: Prisma.PublicRegistrationLinkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PublicRegistrationLinkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PublicRegistrationLinkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>
+          }
+          findFirst: {
+            args: Prisma.PublicRegistrationLinkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PublicRegistrationLinkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>
+          }
+          findMany: {
+            args: Prisma.PublicRegistrationLinkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>[]
+          }
+          create: {
+            args: Prisma.PublicRegistrationLinkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>
+          }
+          createMany: {
+            args: Prisma.PublicRegistrationLinkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PublicRegistrationLinkCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>[]
+          }
+          delete: {
+            args: Prisma.PublicRegistrationLinkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>
+          }
+          update: {
+            args: Prisma.PublicRegistrationLinkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>
+          }
+          deleteMany: {
+            args: Prisma.PublicRegistrationLinkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PublicRegistrationLinkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PublicRegistrationLinkUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>[]
+          }
+          upsert: {
+            args: Prisma.PublicRegistrationLinkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicRegistrationLinkPayload>
+          }
+          aggregate: {
+            args: Prisma.PublicRegistrationLinkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePublicRegistrationLink>
+          }
+          groupBy: {
+            args: Prisma.PublicRegistrationLinkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PublicRegistrationLinkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PublicRegistrationLinkCountArgs<ExtArgs>
+            result: $Utils.Optional<PublicRegistrationLinkCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1054,6 +1324,9 @@ export namespace Prisma {
     workspaceConfig?: WorkspaceConfigOmit
     profile?: ProfileOmit
     visitor?: VisitorOmit
+    subscription?: SubscriptionOmit
+    transaction?: TransactionOmit
+    publicRegistrationLink?: PublicRegistrationLinkOmit
   }
 
   /* Types for Logging */
@@ -1136,11 +1409,17 @@ export namespace Prisma {
   export type WorkspaceCountOutputType = {
     profiles: number
     visitors: number
+    subscriptions: number
+    transactions: number
+    registrationLinks: number
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profiles?: boolean | WorkspaceCountOutputTypeCountProfilesArgs
     visitors?: boolean | WorkspaceCountOutputTypeCountVisitorsArgs
+    subscriptions?: boolean | WorkspaceCountOutputTypeCountSubscriptionsArgs
+    transactions?: boolean | WorkspaceCountOutputTypeCountTransactionsArgs
+    registrationLinks?: boolean | WorkspaceCountOutputTypeCountRegistrationLinksArgs
   }
 
   // Custom InputTypes
@@ -1168,6 +1447,27 @@ export namespace Prisma {
     where?: VisitorWhereInput
   }
 
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountRegistrationLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PublicRegistrationLinkWhereInput
+  }
+
 
   /**
    * Count Type ProfileCountOutputType
@@ -1175,10 +1475,12 @@ export namespace Prisma {
 
   export type ProfileCountOutputType = {
     visitors: number
+    registrationLinks: number
   }
 
   export type ProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     visitors?: boolean | ProfileCountOutputTypeCountVisitorsArgs
+    registrationLinks?: boolean | ProfileCountOutputTypeCountRegistrationLinksArgs
   }
 
   // Custom InputTypes
@@ -1197,6 +1499,44 @@ export namespace Prisma {
    */
   export type ProfileCountOutputTypeCountVisitorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VisitorWhereInput
+  }
+
+  /**
+   * ProfileCountOutputType without action
+   */
+  export type ProfileCountOutputTypeCountRegistrationLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PublicRegistrationLinkWhereInput
+  }
+
+
+  /**
+   * Count Type SubscriptionCountOutputType
+   */
+
+  export type SubscriptionCountOutputType = {
+    transactions: number
+  }
+
+  export type SubscriptionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    transactions?: boolean | SubscriptionCountOutputTypeCountTransactionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SubscriptionCountOutputType without action
+   */
+  export type SubscriptionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCountOutputType
+     */
+    select?: SubscriptionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SubscriptionCountOutputType without action
+   */
+  export type SubscriptionCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
   }
 
 
@@ -1397,6 +1737,9 @@ export namespace Prisma {
     profiles?: boolean | Workspace$profilesArgs<ExtArgs>
     visitors?: boolean | Workspace$visitorsArgs<ExtArgs>
     config?: boolean | Workspace$configArgs<ExtArgs>
+    subscriptions?: boolean | Workspace$subscriptionsArgs<ExtArgs>
+    transactions?: boolean | Workspace$transactionsArgs<ExtArgs>
+    registrationLinks?: boolean | Workspace$registrationLinksArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
@@ -1426,6 +1769,9 @@ export namespace Prisma {
     profiles?: boolean | Workspace$profilesArgs<ExtArgs>
     visitors?: boolean | Workspace$visitorsArgs<ExtArgs>
     config?: boolean | Workspace$configArgs<ExtArgs>
+    subscriptions?: boolean | Workspace$subscriptionsArgs<ExtArgs>
+    transactions?: boolean | Workspace$transactionsArgs<ExtArgs>
+    registrationLinks?: boolean | Workspace$registrationLinksArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1437,6 +1783,9 @@ export namespace Prisma {
       profiles: Prisma.$ProfilePayload<ExtArgs>[]
       visitors: Prisma.$VisitorPayload<ExtArgs>[]
       config: Prisma.$WorkspaceConfigPayload<ExtArgs> | null
+      subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+      transactions: Prisma.$TransactionPayload<ExtArgs>[]
+      registrationLinks: Prisma.$PublicRegistrationLinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1840,6 +2189,9 @@ export namespace Prisma {
     profiles<T extends Workspace$profilesArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     visitors<T extends Workspace$visitorsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$visitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     config<T extends Workspace$configArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$configArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    subscriptions<T extends Workspace$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactions<T extends Workspace$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    registrationLinks<T extends Workspace$registrationLinksArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$registrationLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2325,6 +2677,78 @@ export namespace Prisma {
      */
     include?: WorkspaceConfigInclude<ExtArgs> | null
     where?: WorkspaceConfigWhereInput
+  }
+
+  /**
+   * Workspace.subscriptions
+   */
+  export type Workspace$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    where?: SubscriptionWhereInput
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    cursor?: SubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.transactions
+   */
+  export type Workspace$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.registrationLinks
+   */
+  export type Workspace$registrationLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    where?: PublicRegistrationLinkWhereInput
+    orderBy?: PublicRegistrationLinkOrderByWithRelationInput | PublicRegistrationLinkOrderByWithRelationInput[]
+    cursor?: PublicRegistrationLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PublicRegistrationLinkScalarFieldEnum | PublicRegistrationLinkScalarFieldEnum[]
   }
 
   /**
@@ -3788,6 +4212,7 @@ export namespace Prisma {
     wid?: boolean
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
     visitors?: boolean | Profile$visitorsArgs<ExtArgs>
+    registrationLinks?: boolean | Profile$registrationLinksArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["profile"]>
 
@@ -3872,6 +4297,7 @@ export namespace Prisma {
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
     visitors?: boolean | Profile$visitorsArgs<ExtArgs>
+    registrationLinks?: boolean | Profile$registrationLinksArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3886,6 +4312,7 @@ export namespace Prisma {
     objects: {
       workspace: Prisma.$WorkspacePayload<ExtArgs> | null
       visitors: Prisma.$VisitorPayload<ExtArgs>[]
+      registrationLinks: Prisma.$PublicRegistrationLinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4306,6 +4733,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     workspace<T extends Profile$workspaceArgs<ExtArgs> = {}>(args?: Subset<T, Profile$workspaceArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     visitors<T extends Profile$visitorsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$visitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    registrationLinks<T extends Profile$registrationLinksArgs<ExtArgs> = {}>(args?: Subset<T, Profile$registrationLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4793,6 +5221,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VisitorScalarFieldEnum | VisitorScalarFieldEnum[]
+  }
+
+  /**
+   * Profile.registrationLinks
+   */
+  export type Profile$registrationLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    where?: PublicRegistrationLinkWhereInput
+    orderBy?: PublicRegistrationLinkOrderByWithRelationInput | PublicRegistrationLinkOrderByWithRelationInput[]
+    cursor?: PublicRegistrationLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PublicRegistrationLinkScalarFieldEnum | PublicRegistrationLinkScalarFieldEnum[]
   }
 
   /**
@@ -6110,6 +6562,3726 @@ export namespace Prisma {
 
 
   /**
+   * Model Subscription
+   */
+
+  export type AggregateSubscription = {
+    _count: SubscriptionCountAggregateOutputType | null
+    _avg: SubscriptionAvgAggregateOutputType | null
+    _sum: SubscriptionSumAggregateOutputType | null
+    _min: SubscriptionMinAggregateOutputType | null
+    _max: SubscriptionMaxAggregateOutputType | null
+  }
+
+  export type SubscriptionAvgAggregateOutputType = {
+    wid: number | null
+    amount: number | null
+  }
+
+  export type SubscriptionSumAggregateOutputType = {
+    wid: number | null
+    amount: number | null
+  }
+
+  export type SubscriptionMinAggregateOutputType = {
+    id: string | null
+    wid: number | null
+    plan: string | null
+    status: string | null
+    amount: number | null
+    currency: string | null
+    region: string | null
+    currentPeriodStart: Date | null
+    currentPeriodEnd: Date | null
+    cancelledAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubscriptionMaxAggregateOutputType = {
+    id: string | null
+    wid: number | null
+    plan: string | null
+    status: string | null
+    amount: number | null
+    currency: string | null
+    region: string | null
+    currentPeriodStart: Date | null
+    currentPeriodEnd: Date | null
+    cancelledAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubscriptionCountAggregateOutputType = {
+    id: number
+    wid: number
+    plan: number
+    status: number
+    amount: number
+    currency: number
+    region: number
+    currentPeriodStart: number
+    currentPeriodEnd: number
+    cancelledAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SubscriptionAvgAggregateInputType = {
+    wid?: true
+    amount?: true
+  }
+
+  export type SubscriptionSumAggregateInputType = {
+    wid?: true
+    amount?: true
+  }
+
+  export type SubscriptionMinAggregateInputType = {
+    id?: true
+    wid?: true
+    plan?: true
+    status?: true
+    amount?: true
+    currency?: true
+    region?: true
+    currentPeriodStart?: true
+    currentPeriodEnd?: true
+    cancelledAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubscriptionMaxAggregateInputType = {
+    id?: true
+    wid?: true
+    plan?: true
+    status?: true
+    amount?: true
+    currency?: true
+    region?: true
+    currentPeriodStart?: true
+    currentPeriodEnd?: true
+    cancelledAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubscriptionCountAggregateInputType = {
+    id?: true
+    wid?: true
+    plan?: true
+    status?: true
+    amount?: true
+    currency?: true
+    region?: true
+    currentPeriodStart?: true
+    currentPeriodEnd?: true
+    cancelledAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SubscriptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Subscription to aggregate.
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Subscriptions
+    **/
+    _count?: true | SubscriptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SubscriptionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SubscriptionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubscriptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubscriptionMaxAggregateInputType
+  }
+
+  export type GetSubscriptionAggregateType<T extends SubscriptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubscription]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubscription[P]>
+      : GetScalarType<T[P], AggregateSubscription[P]>
+  }
+
+
+
+
+  export type SubscriptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionWhereInput
+    orderBy?: SubscriptionOrderByWithAggregationInput | SubscriptionOrderByWithAggregationInput[]
+    by: SubscriptionScalarFieldEnum[] | SubscriptionScalarFieldEnum
+    having?: SubscriptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubscriptionCountAggregateInputType | true
+    _avg?: SubscriptionAvgAggregateInputType
+    _sum?: SubscriptionSumAggregateInputType
+    _min?: SubscriptionMinAggregateInputType
+    _max?: SubscriptionMaxAggregateInputType
+  }
+
+  export type SubscriptionGroupByOutputType = {
+    id: string
+    wid: number
+    plan: string
+    status: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart: Date | null
+    currentPeriodEnd: Date | null
+    cancelledAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SubscriptionCountAggregateOutputType | null
+    _avg: SubscriptionAvgAggregateOutputType | null
+    _sum: SubscriptionSumAggregateOutputType | null
+    _min: SubscriptionMinAggregateOutputType | null
+    _max: SubscriptionMaxAggregateOutputType | null
+  }
+
+  type GetSubscriptionGroupByPayload<T extends SubscriptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubscriptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubscriptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubscriptionGroupByOutputType[P]>
+            : GetScalarType<T[P], SubscriptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubscriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    plan?: boolean
+    status?: boolean
+    amount?: boolean
+    currency?: boolean
+    region?: boolean
+    currentPeriodStart?: boolean
+    currentPeriodEnd?: boolean
+    cancelledAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    transactions?: boolean | Subscription$transactionsArgs<ExtArgs>
+    _count?: boolean | SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subscription"]>
+
+  export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    plan?: boolean
+    status?: boolean
+    amount?: boolean
+    currency?: boolean
+    region?: boolean
+    currentPeriodStart?: boolean
+    currentPeriodEnd?: boolean
+    cancelledAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subscription"]>
+
+  export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    plan?: boolean
+    status?: boolean
+    amount?: boolean
+    currency?: boolean
+    region?: boolean
+    currentPeriodStart?: boolean
+    currentPeriodEnd?: boolean
+    cancelledAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subscription"]>
+
+  export type SubscriptionSelectScalar = {
+    id?: boolean
+    wid?: boolean
+    plan?: boolean
+    status?: boolean
+    amount?: boolean
+    currency?: boolean
+    region?: boolean
+    currentPeriodStart?: boolean
+    currentPeriodEnd?: boolean
+    cancelledAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "wid" | "plan" | "status" | "amount" | "currency" | "region" | "currentPeriodStart" | "currentPeriodEnd" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+  export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    transactions?: boolean | Subscription$transactionsArgs<ExtArgs>
+    _count?: boolean | SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+  export type SubscriptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+
+  export type $SubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Subscription"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      transactions: Prisma.$TransactionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      wid: number
+      plan: string
+      status: string
+      amount: number
+      currency: string
+      region: string
+      currentPeriodStart: Date | null
+      currentPeriodEnd: Date | null
+      cancelledAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["subscription"]>
+    composites: {}
+  }
+
+  type SubscriptionGetPayload<S extends boolean | null | undefined | SubscriptionDefaultArgs> = $Result.GetResult<Prisma.$SubscriptionPayload, S>
+
+  type SubscriptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubscriptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubscriptionCountAggregateInputType | true
+    }
+
+  export interface SubscriptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Subscription'], meta: { name: 'Subscription' } }
+    /**
+     * Find zero or one Subscription that matches the filter.
+     * @param {SubscriptionFindUniqueArgs} args - Arguments to find a Subscription
+     * @example
+     * // Get one Subscription
+     * const subscription = await prisma.subscription.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubscriptionFindUniqueArgs>(args: SelectSubset<T, SubscriptionFindUniqueArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Subscription that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubscriptionFindUniqueOrThrowArgs} args - Arguments to find a Subscription
+     * @example
+     * // Get one Subscription
+     * const subscription = await prisma.subscription.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubscriptionFindUniqueOrThrowArgs>(args: SelectSubset<T, SubscriptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Subscription that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionFindFirstArgs} args - Arguments to find a Subscription
+     * @example
+     * // Get one Subscription
+     * const subscription = await prisma.subscription.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubscriptionFindFirstArgs>(args?: SelectSubset<T, SubscriptionFindFirstArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Subscription that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionFindFirstOrThrowArgs} args - Arguments to find a Subscription
+     * @example
+     * // Get one Subscription
+     * const subscription = await prisma.subscription.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubscriptionFindFirstOrThrowArgs>(args?: SelectSubset<T, SubscriptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Subscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Subscriptions
+     * const subscriptions = await prisma.subscription.findMany()
+     * 
+     * // Get first 10 Subscriptions
+     * const subscriptions = await prisma.subscription.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const subscriptionWithIdOnly = await prisma.subscription.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SubscriptionFindManyArgs>(args?: SelectSubset<T, SubscriptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Subscription.
+     * @param {SubscriptionCreateArgs} args - Arguments to create a Subscription.
+     * @example
+     * // Create one Subscription
+     * const Subscription = await prisma.subscription.create({
+     *   data: {
+     *     // ... data to create a Subscription
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubscriptionCreateArgs>(args: SelectSubset<T, SubscriptionCreateArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Subscriptions.
+     * @param {SubscriptionCreateManyArgs} args - Arguments to create many Subscriptions.
+     * @example
+     * // Create many Subscriptions
+     * const subscription = await prisma.subscription.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubscriptionCreateManyArgs>(args?: SelectSubset<T, SubscriptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Subscriptions and returns the data saved in the database.
+     * @param {SubscriptionCreateManyAndReturnArgs} args - Arguments to create many Subscriptions.
+     * @example
+     * // Create many Subscriptions
+     * const subscription = await prisma.subscription.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Subscriptions and only return the `id`
+     * const subscriptionWithIdOnly = await prisma.subscription.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SubscriptionCreateManyAndReturnArgs>(args?: SelectSubset<T, SubscriptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Subscription.
+     * @param {SubscriptionDeleteArgs} args - Arguments to delete one Subscription.
+     * @example
+     * // Delete one Subscription
+     * const Subscription = await prisma.subscription.delete({
+     *   where: {
+     *     // ... filter to delete one Subscription
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubscriptionDeleteArgs>(args: SelectSubset<T, SubscriptionDeleteArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Subscription.
+     * @param {SubscriptionUpdateArgs} args - Arguments to update one Subscription.
+     * @example
+     * // Update one Subscription
+     * const subscription = await prisma.subscription.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubscriptionUpdateArgs>(args: SelectSubset<T, SubscriptionUpdateArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Subscriptions.
+     * @param {SubscriptionDeleteManyArgs} args - Arguments to filter Subscriptions to delete.
+     * @example
+     * // Delete a few Subscriptions
+     * const { count } = await prisma.subscription.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubscriptionDeleteManyArgs>(args?: SelectSubset<T, SubscriptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Subscriptions
+     * const subscription = await prisma.subscription.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubscriptionUpdateManyArgs>(args: SelectSubset<T, SubscriptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Subscriptions and returns the data updated in the database.
+     * @param {SubscriptionUpdateManyAndReturnArgs} args - Arguments to update many Subscriptions.
+     * @example
+     * // Update many Subscriptions
+     * const subscription = await prisma.subscription.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Subscriptions and only return the `id`
+     * const subscriptionWithIdOnly = await prisma.subscription.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SubscriptionUpdateManyAndReturnArgs>(args: SelectSubset<T, SubscriptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Subscription.
+     * @param {SubscriptionUpsertArgs} args - Arguments to update or create a Subscription.
+     * @example
+     * // Update or create a Subscription
+     * const subscription = await prisma.subscription.upsert({
+     *   create: {
+     *     // ... data to create a Subscription
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Subscription we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubscriptionUpsertArgs>(args: SelectSubset<T, SubscriptionUpsertArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Subscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCountArgs} args - Arguments to filter Subscriptions to count.
+     * @example
+     * // Count the number of Subscriptions
+     * const count = await prisma.subscription.count({
+     *   where: {
+     *     // ... the filter for the Subscriptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubscriptionCountArgs>(
+      args?: Subset<T, SubscriptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubscriptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Subscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubscriptionAggregateArgs>(args: Subset<T, SubscriptionAggregateArgs>): Prisma.PrismaPromise<GetSubscriptionAggregateType<T>>
+
+    /**
+     * Group by Subscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubscriptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubscriptionGroupByArgs['orderBy'] }
+        : { orderBy?: SubscriptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubscriptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubscriptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Subscription model
+   */
+  readonly fields: SubscriptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Subscription.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    transactions<T extends Subscription$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Subscription$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Subscription model
+   */
+  interface SubscriptionFieldRefs {
+    readonly id: FieldRef<"Subscription", 'String'>
+    readonly wid: FieldRef<"Subscription", 'Int'>
+    readonly plan: FieldRef<"Subscription", 'String'>
+    readonly status: FieldRef<"Subscription", 'String'>
+    readonly amount: FieldRef<"Subscription", 'Int'>
+    readonly currency: FieldRef<"Subscription", 'String'>
+    readonly region: FieldRef<"Subscription", 'String'>
+    readonly currentPeriodStart: FieldRef<"Subscription", 'DateTime'>
+    readonly currentPeriodEnd: FieldRef<"Subscription", 'DateTime'>
+    readonly cancelledAt: FieldRef<"Subscription", 'DateTime'>
+    readonly createdAt: FieldRef<"Subscription", 'DateTime'>
+    readonly updatedAt: FieldRef<"Subscription", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Subscription findUnique
+   */
+  export type SubscriptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Subscription to fetch.
+     */
+    where: SubscriptionWhereUniqueInput
+  }
+
+  /**
+   * Subscription findUniqueOrThrow
+   */
+  export type SubscriptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Subscription to fetch.
+     */
+    where: SubscriptionWhereUniqueInput
+  }
+
+  /**
+   * Subscription findFirst
+   */
+  export type SubscriptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Subscription to fetch.
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Subscriptions.
+     */
+    cursor?: SubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Subscriptions.
+     */
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Subscription findFirstOrThrow
+   */
+  export type SubscriptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Subscription to fetch.
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Subscriptions.
+     */
+    cursor?: SubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Subscriptions.
+     */
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Subscription findMany
+   */
+  export type SubscriptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter, which Subscriptions to fetch.
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Subscriptions to fetch.
+     */
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Subscriptions.
+     */
+    cursor?: SubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Subscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Subscriptions.
+     */
+    skip?: number
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Subscription create
+   */
+  export type SubscriptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Subscription.
+     */
+    data: XOR<SubscriptionCreateInput, SubscriptionUncheckedCreateInput>
+  }
+
+  /**
+   * Subscription createMany
+   */
+  export type SubscriptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Subscriptions.
+     */
+    data: SubscriptionCreateManyInput | SubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Subscription createManyAndReturn
+   */
+  export type SubscriptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Subscriptions.
+     */
+    data: SubscriptionCreateManyInput | SubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Subscription update
+   */
+  export type SubscriptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Subscription.
+     */
+    data: XOR<SubscriptionUpdateInput, SubscriptionUncheckedUpdateInput>
+    /**
+     * Choose, which Subscription to update.
+     */
+    where: SubscriptionWhereUniqueInput
+  }
+
+  /**
+   * Subscription updateMany
+   */
+  export type SubscriptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Subscriptions.
+     */
+    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which Subscriptions to update
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * Limit how many Subscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Subscription updateManyAndReturn
+   */
+  export type SubscriptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to update Subscriptions.
+     */
+    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which Subscriptions to update
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * Limit how many Subscriptions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Subscription upsert
+   */
+  export type SubscriptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Subscription to update in case it exists.
+     */
+    where: SubscriptionWhereUniqueInput
+    /**
+     * In case the Subscription found by the `where` argument doesn't exist, create a new Subscription with this data.
+     */
+    create: XOR<SubscriptionCreateInput, SubscriptionUncheckedCreateInput>
+    /**
+     * In case the Subscription was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubscriptionUpdateInput, SubscriptionUncheckedUpdateInput>
+  }
+
+  /**
+   * Subscription delete
+   */
+  export type SubscriptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    /**
+     * Filter which Subscription to delete.
+     */
+    where: SubscriptionWhereUniqueInput
+  }
+
+  /**
+   * Subscription deleteMany
+   */
+  export type SubscriptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Subscriptions to delete
+     */
+    where?: SubscriptionWhereInput
+    /**
+     * Limit how many Subscriptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Subscription.transactions
+   */
+  export type Subscription$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Subscription without action
+   */
+  export type SubscriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Transaction
+   */
+
+  export type AggregateTransaction = {
+    _count: TransactionCountAggregateOutputType | null
+    _avg: TransactionAvgAggregateOutputType | null
+    _sum: TransactionSumAggregateOutputType | null
+    _min: TransactionMinAggregateOutputType | null
+    _max: TransactionMaxAggregateOutputType | null
+  }
+
+  export type TransactionAvgAggregateOutputType = {
+    wid: number | null
+    amount: number | null
+  }
+
+  export type TransactionSumAggregateOutputType = {
+    wid: number | null
+    amount: number | null
+  }
+
+  export type TransactionMinAggregateOutputType = {
+    id: string | null
+    wid: number | null
+    subscriptionId: string | null
+    razorpayOrderId: string | null
+    razorpayPaymentId: string | null
+    amount: number | null
+    currency: string | null
+    region: string | null
+    status: string | null
+    failureReason: string | null
+    createdAt: Date | null
+    verifiedAt: Date | null
+  }
+
+  export type TransactionMaxAggregateOutputType = {
+    id: string | null
+    wid: number | null
+    subscriptionId: string | null
+    razorpayOrderId: string | null
+    razorpayPaymentId: string | null
+    amount: number | null
+    currency: string | null
+    region: string | null
+    status: string | null
+    failureReason: string | null
+    createdAt: Date | null
+    verifiedAt: Date | null
+  }
+
+  export type TransactionCountAggregateOutputType = {
+    id: number
+    wid: number
+    subscriptionId: number
+    razorpayOrderId: number
+    razorpayPaymentId: number
+    amount: number
+    currency: number
+    region: number
+    status: number
+    failureReason: number
+    createdAt: number
+    verifiedAt: number
+    _all: number
+  }
+
+
+  export type TransactionAvgAggregateInputType = {
+    wid?: true
+    amount?: true
+  }
+
+  export type TransactionSumAggregateInputType = {
+    wid?: true
+    amount?: true
+  }
+
+  export type TransactionMinAggregateInputType = {
+    id?: true
+    wid?: true
+    subscriptionId?: true
+    razorpayOrderId?: true
+    razorpayPaymentId?: true
+    amount?: true
+    currency?: true
+    region?: true
+    status?: true
+    failureReason?: true
+    createdAt?: true
+    verifiedAt?: true
+  }
+
+  export type TransactionMaxAggregateInputType = {
+    id?: true
+    wid?: true
+    subscriptionId?: true
+    razorpayOrderId?: true
+    razorpayPaymentId?: true
+    amount?: true
+    currency?: true
+    region?: true
+    status?: true
+    failureReason?: true
+    createdAt?: true
+    verifiedAt?: true
+  }
+
+  export type TransactionCountAggregateInputType = {
+    id?: true
+    wid?: true
+    subscriptionId?: true
+    razorpayOrderId?: true
+    razorpayPaymentId?: true
+    amount?: true
+    currency?: true
+    region?: true
+    status?: true
+    failureReason?: true
+    createdAt?: true
+    verifiedAt?: true
+    _all?: true
+  }
+
+  export type TransactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Transaction to aggregate.
+     */
+    where?: TransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Transactions
+    **/
+    _count?: true | TransactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TransactionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TransactionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TransactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TransactionMaxAggregateInputType
+  }
+
+  export type GetTransactionAggregateType<T extends TransactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateTransaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTransaction[P]>
+      : GetScalarType<T[P], AggregateTransaction[P]>
+  }
+
+
+
+
+  export type TransactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithAggregationInput | TransactionOrderByWithAggregationInput[]
+    by: TransactionScalarFieldEnum[] | TransactionScalarFieldEnum
+    having?: TransactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TransactionCountAggregateInputType | true
+    _avg?: TransactionAvgAggregateInputType
+    _sum?: TransactionSumAggregateInputType
+    _min?: TransactionMinAggregateInputType
+    _max?: TransactionMaxAggregateInputType
+  }
+
+  export type TransactionGroupByOutputType = {
+    id: string
+    wid: number
+    subscriptionId: string
+    razorpayOrderId: string
+    razorpayPaymentId: string | null
+    amount: number
+    currency: string
+    region: string
+    status: string
+    failureReason: string | null
+    createdAt: Date
+    verifiedAt: Date | null
+    _count: TransactionCountAggregateOutputType | null
+    _avg: TransactionAvgAggregateOutputType | null
+    _sum: TransactionSumAggregateOutputType | null
+    _min: TransactionMinAggregateOutputType | null
+    _max: TransactionMaxAggregateOutputType | null
+  }
+
+  type GetTransactionGroupByPayload<T extends TransactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TransactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TransactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TransactionGroupByOutputType[P]>
+            : GetScalarType<T[P], TransactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    subscriptionId?: boolean
+    razorpayOrderId?: boolean
+    razorpayPaymentId?: boolean
+    amount?: boolean
+    currency?: boolean
+    region?: boolean
+    status?: boolean
+    failureReason?: boolean
+    createdAt?: boolean
+    verifiedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transaction"]>
+
+  export type TransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    subscriptionId?: boolean
+    razorpayOrderId?: boolean
+    razorpayPaymentId?: boolean
+    amount?: boolean
+    currency?: boolean
+    region?: boolean
+    status?: boolean
+    failureReason?: boolean
+    createdAt?: boolean
+    verifiedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transaction"]>
+
+  export type TransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    subscriptionId?: boolean
+    razorpayOrderId?: boolean
+    razorpayPaymentId?: boolean
+    amount?: boolean
+    currency?: boolean
+    region?: boolean
+    status?: boolean
+    failureReason?: boolean
+    createdAt?: boolean
+    verifiedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transaction"]>
+
+  export type TransactionSelectScalar = {
+    id?: boolean
+    wid?: boolean
+    subscriptionId?: boolean
+    razorpayOrderId?: boolean
+    razorpayPaymentId?: boolean
+    amount?: boolean
+    currency?: boolean
+    region?: boolean
+    status?: boolean
+    failureReason?: boolean
+    createdAt?: boolean
+    verifiedAt?: boolean
+  }
+
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "wid" | "subscriptionId" | "razorpayOrderId" | "razorpayPaymentId" | "amount" | "currency" | "region" | "status" | "failureReason" | "createdAt" | "verifiedAt", ExtArgs["result"]["transaction"]>
+  export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+  }
+  export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+  }
+  export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+  }
+
+  export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Transaction"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      subscription: Prisma.$SubscriptionPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      wid: number
+      subscriptionId: string
+      razorpayOrderId: string
+      razorpayPaymentId: string | null
+      amount: number
+      currency: string
+      region: string
+      status: string
+      failureReason: string | null
+      createdAt: Date
+      verifiedAt: Date | null
+    }, ExtArgs["result"]["transaction"]>
+    composites: {}
+  }
+
+  type TransactionGetPayload<S extends boolean | null | undefined | TransactionDefaultArgs> = $Result.GetResult<Prisma.$TransactionPayload, S>
+
+  type TransactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TransactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TransactionCountAggregateInputType | true
+    }
+
+  export interface TransactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Transaction'], meta: { name: 'Transaction' } }
+    /**
+     * Find zero or one Transaction that matches the filter.
+     * @param {TransactionFindUniqueArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TransactionFindUniqueArgs>(args: SelectSubset<T, TransactionFindUniqueArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Transaction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TransactionFindUniqueOrThrowArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TransactionFindUniqueOrThrowArgs>(args: SelectSubset<T, TransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Transaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindFirstArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TransactionFindFirstArgs>(args?: SelectSubset<T, TransactionFindFirstArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Transaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindFirstOrThrowArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TransactionFindFirstOrThrowArgs>(args?: SelectSubset<T, TransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Transactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Transactions
+     * const transactions = await prisma.transaction.findMany()
+     * 
+     * // Get first 10 Transactions
+     * const transactions = await prisma.transaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const transactionWithIdOnly = await prisma.transaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TransactionFindManyArgs>(args?: SelectSubset<T, TransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Transaction.
+     * @param {TransactionCreateArgs} args - Arguments to create a Transaction.
+     * @example
+     * // Create one Transaction
+     * const Transaction = await prisma.transaction.create({
+     *   data: {
+     *     // ... data to create a Transaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends TransactionCreateArgs>(args: SelectSubset<T, TransactionCreateArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Transactions.
+     * @param {TransactionCreateManyArgs} args - Arguments to create many Transactions.
+     * @example
+     * // Create many Transactions
+     * const transaction = await prisma.transaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TransactionCreateManyArgs>(args?: SelectSubset<T, TransactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Transactions and returns the data saved in the database.
+     * @param {TransactionCreateManyAndReturnArgs} args - Arguments to create many Transactions.
+     * @example
+     * // Create many Transactions
+     * const transaction = await prisma.transaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Transactions and only return the `id`
+     * const transactionWithIdOnly = await prisma.transaction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TransactionCreateManyAndReturnArgs>(args?: SelectSubset<T, TransactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Transaction.
+     * @param {TransactionDeleteArgs} args - Arguments to delete one Transaction.
+     * @example
+     * // Delete one Transaction
+     * const Transaction = await prisma.transaction.delete({
+     *   where: {
+     *     // ... filter to delete one Transaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TransactionDeleteArgs>(args: SelectSubset<T, TransactionDeleteArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Transaction.
+     * @param {TransactionUpdateArgs} args - Arguments to update one Transaction.
+     * @example
+     * // Update one Transaction
+     * const transaction = await prisma.transaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TransactionUpdateArgs>(args: SelectSubset<T, TransactionUpdateArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Transactions.
+     * @param {TransactionDeleteManyArgs} args - Arguments to filter Transactions to delete.
+     * @example
+     * // Delete a few Transactions
+     * const { count } = await prisma.transaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TransactionDeleteManyArgs>(args?: SelectSubset<T, TransactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Transactions
+     * const transaction = await prisma.transaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TransactionUpdateManyArgs>(args: SelectSubset<T, TransactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Transactions and returns the data updated in the database.
+     * @param {TransactionUpdateManyAndReturnArgs} args - Arguments to update many Transactions.
+     * @example
+     * // Update many Transactions
+     * const transaction = await prisma.transaction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Transactions and only return the `id`
+     * const transactionWithIdOnly = await prisma.transaction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TransactionUpdateManyAndReturnArgs>(args: SelectSubset<T, TransactionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Transaction.
+     * @param {TransactionUpsertArgs} args - Arguments to update or create a Transaction.
+     * @example
+     * // Update or create a Transaction
+     * const transaction = await prisma.transaction.upsert({
+     *   create: {
+     *     // ... data to create a Transaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Transaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TransactionUpsertArgs>(args: SelectSubset<T, TransactionUpsertArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionCountArgs} args - Arguments to filter Transactions to count.
+     * @example
+     * // Count the number of Transactions
+     * const count = await prisma.transaction.count({
+     *   where: {
+     *     // ... the filter for the Transactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends TransactionCountArgs>(
+      args?: Subset<T, TransactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TransactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Transaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TransactionAggregateArgs>(args: Subset<T, TransactionAggregateArgs>): Prisma.PrismaPromise<GetTransactionAggregateType<T>>
+
+    /**
+     * Group by Transaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TransactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TransactionGroupByArgs['orderBy'] }
+        : { orderBy?: TransactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TransactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTransactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Transaction model
+   */
+  readonly fields: TransactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Transaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    subscription<T extends SubscriptionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubscriptionDefaultArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Transaction model
+   */
+  interface TransactionFieldRefs {
+    readonly id: FieldRef<"Transaction", 'String'>
+    readonly wid: FieldRef<"Transaction", 'Int'>
+    readonly subscriptionId: FieldRef<"Transaction", 'String'>
+    readonly razorpayOrderId: FieldRef<"Transaction", 'String'>
+    readonly razorpayPaymentId: FieldRef<"Transaction", 'String'>
+    readonly amount: FieldRef<"Transaction", 'Int'>
+    readonly currency: FieldRef<"Transaction", 'String'>
+    readonly region: FieldRef<"Transaction", 'String'>
+    readonly status: FieldRef<"Transaction", 'String'>
+    readonly failureReason: FieldRef<"Transaction", 'String'>
+    readonly createdAt: FieldRef<"Transaction", 'DateTime'>
+    readonly verifiedAt: FieldRef<"Transaction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Transaction findUnique
+   */
+  export type TransactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where: TransactionWhereUniqueInput
+  }
+
+  /**
+   * Transaction findUniqueOrThrow
+   */
+  export type TransactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where: TransactionWhereUniqueInput
+  }
+
+  /**
+   * Transaction findFirst
+   */
+  export type TransactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where?: TransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Transactions.
+     */
+    cursor?: TransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Transactions.
+     */
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Transaction findFirstOrThrow
+   */
+  export type TransactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where?: TransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Transactions.
+     */
+    cursor?: TransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Transactions.
+     */
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Transaction findMany
+   */
+  export type TransactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transactions to fetch.
+     */
+    where?: TransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Transactions.
+     */
+    cursor?: TransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Transactions.
+     */
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Transaction create
+   */
+  export type TransactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Transaction.
+     */
+    data: XOR<TransactionCreateInput, TransactionUncheckedCreateInput>
+  }
+
+  /**
+   * Transaction createMany
+   */
+  export type TransactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Transactions.
+     */
+    data: TransactionCreateManyInput | TransactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Transaction createManyAndReturn
+   */
+  export type TransactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Transactions.
+     */
+    data: TransactionCreateManyInput | TransactionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Transaction update
+   */
+  export type TransactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Transaction.
+     */
+    data: XOR<TransactionUpdateInput, TransactionUncheckedUpdateInput>
+    /**
+     * Choose, which Transaction to update.
+     */
+    where: TransactionWhereUniqueInput
+  }
+
+  /**
+   * Transaction updateMany
+   */
+  export type TransactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Transactions.
+     */
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which Transactions to update
+     */
+    where?: TransactionWhereInput
+    /**
+     * Limit how many Transactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Transaction updateManyAndReturn
+   */
+  export type TransactionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * The data used to update Transactions.
+     */
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which Transactions to update
+     */
+    where?: TransactionWhereInput
+    /**
+     * Limit how many Transactions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Transaction upsert
+   */
+  export type TransactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Transaction to update in case it exists.
+     */
+    where: TransactionWhereUniqueInput
+    /**
+     * In case the Transaction found by the `where` argument doesn't exist, create a new Transaction with this data.
+     */
+    create: XOR<TransactionCreateInput, TransactionUncheckedCreateInput>
+    /**
+     * In case the Transaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TransactionUpdateInput, TransactionUncheckedUpdateInput>
+  }
+
+  /**
+   * Transaction delete
+   */
+  export type TransactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter which Transaction to delete.
+     */
+    where: TransactionWhereUniqueInput
+  }
+
+  /**
+   * Transaction deleteMany
+   */
+  export type TransactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Transactions to delete
+     */
+    where?: TransactionWhereInput
+    /**
+     * Limit how many Transactions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Transaction without action
+   */
+  export type TransactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PublicRegistrationLink
+   */
+
+  export type AggregatePublicRegistrationLink = {
+    _count: PublicRegistrationLinkCountAggregateOutputType | null
+    _avg: PublicRegistrationLinkAvgAggregateOutputType | null
+    _sum: PublicRegistrationLinkSumAggregateOutputType | null
+    _min: PublicRegistrationLinkMinAggregateOutputType | null
+    _max: PublicRegistrationLinkMaxAggregateOutputType | null
+  }
+
+  export type PublicRegistrationLinkAvgAggregateOutputType = {
+    wid: number | null
+  }
+
+  export type PublicRegistrationLinkSumAggregateOutputType = {
+    wid: number | null
+  }
+
+  export type PublicRegistrationLinkMinAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    wid: number | null
+    hostId: string | null
+    officeBranch: string | null
+    enabled: boolean | null
+    designTheme: string | null
+    pageTitle: string | null
+    welcomeMessage: string | null
+    qrValidityPeriod: string | null
+    fieldNameRequired: boolean | null
+    fieldPhoneRequired: boolean | null
+    fieldEmailRequired: boolean | null
+    fieldPurposeRequired: boolean | null
+    fieldIdProofRequired: boolean | null
+    fieldCompanyEnabled: boolean | null
+    fieldCompanyRequired: boolean | null
+    fieldNotesEnabled: boolean | null
+    fieldNotesRequired: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PublicRegistrationLinkMaxAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    wid: number | null
+    hostId: string | null
+    officeBranch: string | null
+    enabled: boolean | null
+    designTheme: string | null
+    pageTitle: string | null
+    welcomeMessage: string | null
+    qrValidityPeriod: string | null
+    fieldNameRequired: boolean | null
+    fieldPhoneRequired: boolean | null
+    fieldEmailRequired: boolean | null
+    fieldPurposeRequired: boolean | null
+    fieldIdProofRequired: boolean | null
+    fieldCompanyEnabled: boolean | null
+    fieldCompanyRequired: boolean | null
+    fieldNotesEnabled: boolean | null
+    fieldNotesRequired: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PublicRegistrationLinkCountAggregateOutputType = {
+    id: number
+    slug: number
+    wid: number
+    hostId: number
+    officeBranch: number
+    enabled: number
+    designTheme: number
+    pageTitle: number
+    welcomeMessage: number
+    qrValidityPeriod: number
+    fieldNameRequired: number
+    fieldPhoneRequired: number
+    fieldEmailRequired: number
+    fieldPurposeRequired: number
+    fieldIdProofRequired: number
+    fieldCompanyEnabled: number
+    fieldCompanyRequired: number
+    fieldNotesEnabled: number
+    fieldNotesRequired: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PublicRegistrationLinkAvgAggregateInputType = {
+    wid?: true
+  }
+
+  export type PublicRegistrationLinkSumAggregateInputType = {
+    wid?: true
+  }
+
+  export type PublicRegistrationLinkMinAggregateInputType = {
+    id?: true
+    slug?: true
+    wid?: true
+    hostId?: true
+    officeBranch?: true
+    enabled?: true
+    designTheme?: true
+    pageTitle?: true
+    welcomeMessage?: true
+    qrValidityPeriod?: true
+    fieldNameRequired?: true
+    fieldPhoneRequired?: true
+    fieldEmailRequired?: true
+    fieldPurposeRequired?: true
+    fieldIdProofRequired?: true
+    fieldCompanyEnabled?: true
+    fieldCompanyRequired?: true
+    fieldNotesEnabled?: true
+    fieldNotesRequired?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PublicRegistrationLinkMaxAggregateInputType = {
+    id?: true
+    slug?: true
+    wid?: true
+    hostId?: true
+    officeBranch?: true
+    enabled?: true
+    designTheme?: true
+    pageTitle?: true
+    welcomeMessage?: true
+    qrValidityPeriod?: true
+    fieldNameRequired?: true
+    fieldPhoneRequired?: true
+    fieldEmailRequired?: true
+    fieldPurposeRequired?: true
+    fieldIdProofRequired?: true
+    fieldCompanyEnabled?: true
+    fieldCompanyRequired?: true
+    fieldNotesEnabled?: true
+    fieldNotesRequired?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PublicRegistrationLinkCountAggregateInputType = {
+    id?: true
+    slug?: true
+    wid?: true
+    hostId?: true
+    officeBranch?: true
+    enabled?: true
+    designTheme?: true
+    pageTitle?: true
+    welcomeMessage?: true
+    qrValidityPeriod?: true
+    fieldNameRequired?: true
+    fieldPhoneRequired?: true
+    fieldEmailRequired?: true
+    fieldPurposeRequired?: true
+    fieldIdProofRequired?: true
+    fieldCompanyEnabled?: true
+    fieldCompanyRequired?: true
+    fieldNotesEnabled?: true
+    fieldNotesRequired?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PublicRegistrationLinkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PublicRegistrationLink to aggregate.
+     */
+    where?: PublicRegistrationLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicRegistrationLinks to fetch.
+     */
+    orderBy?: PublicRegistrationLinkOrderByWithRelationInput | PublicRegistrationLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PublicRegistrationLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicRegistrationLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicRegistrationLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PublicRegistrationLinks
+    **/
+    _count?: true | PublicRegistrationLinkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PublicRegistrationLinkAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PublicRegistrationLinkSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PublicRegistrationLinkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PublicRegistrationLinkMaxAggregateInputType
+  }
+
+  export type GetPublicRegistrationLinkAggregateType<T extends PublicRegistrationLinkAggregateArgs> = {
+        [P in keyof T & keyof AggregatePublicRegistrationLink]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePublicRegistrationLink[P]>
+      : GetScalarType<T[P], AggregatePublicRegistrationLink[P]>
+  }
+
+
+
+
+  export type PublicRegistrationLinkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PublicRegistrationLinkWhereInput
+    orderBy?: PublicRegistrationLinkOrderByWithAggregationInput | PublicRegistrationLinkOrderByWithAggregationInput[]
+    by: PublicRegistrationLinkScalarFieldEnum[] | PublicRegistrationLinkScalarFieldEnum
+    having?: PublicRegistrationLinkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PublicRegistrationLinkCountAggregateInputType | true
+    _avg?: PublicRegistrationLinkAvgAggregateInputType
+    _sum?: PublicRegistrationLinkSumAggregateInputType
+    _min?: PublicRegistrationLinkMinAggregateInputType
+    _max?: PublicRegistrationLinkMaxAggregateInputType
+  }
+
+  export type PublicRegistrationLinkGroupByOutputType = {
+    id: string
+    slug: string
+    wid: number
+    hostId: string
+    officeBranch: string
+    enabled: boolean
+    designTheme: string
+    pageTitle: string | null
+    welcomeMessage: string | null
+    qrValidityPeriod: string
+    fieldNameRequired: boolean
+    fieldPhoneRequired: boolean
+    fieldEmailRequired: boolean
+    fieldPurposeRequired: boolean
+    fieldIdProofRequired: boolean
+    fieldCompanyEnabled: boolean
+    fieldCompanyRequired: boolean
+    fieldNotesEnabled: boolean
+    fieldNotesRequired: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: PublicRegistrationLinkCountAggregateOutputType | null
+    _avg: PublicRegistrationLinkAvgAggregateOutputType | null
+    _sum: PublicRegistrationLinkSumAggregateOutputType | null
+    _min: PublicRegistrationLinkMinAggregateOutputType | null
+    _max: PublicRegistrationLinkMaxAggregateOutputType | null
+  }
+
+  type GetPublicRegistrationLinkGroupByPayload<T extends PublicRegistrationLinkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PublicRegistrationLinkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PublicRegistrationLinkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PublicRegistrationLinkGroupByOutputType[P]>
+            : GetScalarType<T[P], PublicRegistrationLinkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PublicRegistrationLinkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    wid?: boolean
+    hostId?: boolean
+    officeBranch?: boolean
+    enabled?: boolean
+    designTheme?: boolean
+    pageTitle?: boolean
+    welcomeMessage?: boolean
+    qrValidityPeriod?: boolean
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    host?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["publicRegistrationLink"]>
+
+  export type PublicRegistrationLinkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    wid?: boolean
+    hostId?: boolean
+    officeBranch?: boolean
+    enabled?: boolean
+    designTheme?: boolean
+    pageTitle?: boolean
+    welcomeMessage?: boolean
+    qrValidityPeriod?: boolean
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    host?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["publicRegistrationLink"]>
+
+  export type PublicRegistrationLinkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    wid?: boolean
+    hostId?: boolean
+    officeBranch?: boolean
+    enabled?: boolean
+    designTheme?: boolean
+    pageTitle?: boolean
+    welcomeMessage?: boolean
+    qrValidityPeriod?: boolean
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    host?: boolean | ProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["publicRegistrationLink"]>
+
+  export type PublicRegistrationLinkSelectScalar = {
+    id?: boolean
+    slug?: boolean
+    wid?: boolean
+    hostId?: boolean
+    officeBranch?: boolean
+    enabled?: boolean
+    designTheme?: boolean
+    pageTitle?: boolean
+    welcomeMessage?: boolean
+    qrValidityPeriod?: boolean
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PublicRegistrationLinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "wid" | "hostId" | "officeBranch" | "enabled" | "designTheme" | "pageTitle" | "welcomeMessage" | "qrValidityPeriod" | "fieldNameRequired" | "fieldPhoneRequired" | "fieldEmailRequired" | "fieldPurposeRequired" | "fieldIdProofRequired" | "fieldCompanyEnabled" | "fieldCompanyRequired" | "fieldNotesEnabled" | "fieldNotesRequired" | "createdAt" | "updatedAt", ExtArgs["result"]["publicRegistrationLink"]>
+  export type PublicRegistrationLinkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    host?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+  export type PublicRegistrationLinkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    host?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+  export type PublicRegistrationLinkIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    host?: boolean | ProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $PublicRegistrationLinkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PublicRegistrationLink"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      host: Prisma.$ProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      slug: string
+      wid: number
+      hostId: string
+      officeBranch: string
+      enabled: boolean
+      designTheme: string
+      pageTitle: string | null
+      welcomeMessage: string | null
+      qrValidityPeriod: string
+      fieldNameRequired: boolean
+      fieldPhoneRequired: boolean
+      fieldEmailRequired: boolean
+      fieldPurposeRequired: boolean
+      fieldIdProofRequired: boolean
+      fieldCompanyEnabled: boolean
+      fieldCompanyRequired: boolean
+      fieldNotesEnabled: boolean
+      fieldNotesRequired: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["publicRegistrationLink"]>
+    composites: {}
+  }
+
+  type PublicRegistrationLinkGetPayload<S extends boolean | null | undefined | PublicRegistrationLinkDefaultArgs> = $Result.GetResult<Prisma.$PublicRegistrationLinkPayload, S>
+
+  type PublicRegistrationLinkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PublicRegistrationLinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PublicRegistrationLinkCountAggregateInputType | true
+    }
+
+  export interface PublicRegistrationLinkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PublicRegistrationLink'], meta: { name: 'PublicRegistrationLink' } }
+    /**
+     * Find zero or one PublicRegistrationLink that matches the filter.
+     * @param {PublicRegistrationLinkFindUniqueArgs} args - Arguments to find a PublicRegistrationLink
+     * @example
+     * // Get one PublicRegistrationLink
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PublicRegistrationLinkFindUniqueArgs>(args: SelectSubset<T, PublicRegistrationLinkFindUniqueArgs<ExtArgs>>): Prisma__PublicRegistrationLinkClient<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PublicRegistrationLink that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PublicRegistrationLinkFindUniqueOrThrowArgs} args - Arguments to find a PublicRegistrationLink
+     * @example
+     * // Get one PublicRegistrationLink
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PublicRegistrationLinkFindUniqueOrThrowArgs>(args: SelectSubset<T, PublicRegistrationLinkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PublicRegistrationLinkClient<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PublicRegistrationLink that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicRegistrationLinkFindFirstArgs} args - Arguments to find a PublicRegistrationLink
+     * @example
+     * // Get one PublicRegistrationLink
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PublicRegistrationLinkFindFirstArgs>(args?: SelectSubset<T, PublicRegistrationLinkFindFirstArgs<ExtArgs>>): Prisma__PublicRegistrationLinkClient<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PublicRegistrationLink that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicRegistrationLinkFindFirstOrThrowArgs} args - Arguments to find a PublicRegistrationLink
+     * @example
+     * // Get one PublicRegistrationLink
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PublicRegistrationLinkFindFirstOrThrowArgs>(args?: SelectSubset<T, PublicRegistrationLinkFindFirstOrThrowArgs<ExtArgs>>): Prisma__PublicRegistrationLinkClient<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PublicRegistrationLinks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicRegistrationLinkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PublicRegistrationLinks
+     * const publicRegistrationLinks = await prisma.publicRegistrationLink.findMany()
+     * 
+     * // Get first 10 PublicRegistrationLinks
+     * const publicRegistrationLinks = await prisma.publicRegistrationLink.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const publicRegistrationLinkWithIdOnly = await prisma.publicRegistrationLink.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PublicRegistrationLinkFindManyArgs>(args?: SelectSubset<T, PublicRegistrationLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PublicRegistrationLink.
+     * @param {PublicRegistrationLinkCreateArgs} args - Arguments to create a PublicRegistrationLink.
+     * @example
+     * // Create one PublicRegistrationLink
+     * const PublicRegistrationLink = await prisma.publicRegistrationLink.create({
+     *   data: {
+     *     // ... data to create a PublicRegistrationLink
+     *   }
+     * })
+     * 
+     */
+    create<T extends PublicRegistrationLinkCreateArgs>(args: SelectSubset<T, PublicRegistrationLinkCreateArgs<ExtArgs>>): Prisma__PublicRegistrationLinkClient<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PublicRegistrationLinks.
+     * @param {PublicRegistrationLinkCreateManyArgs} args - Arguments to create many PublicRegistrationLinks.
+     * @example
+     * // Create many PublicRegistrationLinks
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PublicRegistrationLinkCreateManyArgs>(args?: SelectSubset<T, PublicRegistrationLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PublicRegistrationLinks and returns the data saved in the database.
+     * @param {PublicRegistrationLinkCreateManyAndReturnArgs} args - Arguments to create many PublicRegistrationLinks.
+     * @example
+     * // Create many PublicRegistrationLinks
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PublicRegistrationLinks and only return the `id`
+     * const publicRegistrationLinkWithIdOnly = await prisma.publicRegistrationLink.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PublicRegistrationLinkCreateManyAndReturnArgs>(args?: SelectSubset<T, PublicRegistrationLinkCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PublicRegistrationLink.
+     * @param {PublicRegistrationLinkDeleteArgs} args - Arguments to delete one PublicRegistrationLink.
+     * @example
+     * // Delete one PublicRegistrationLink
+     * const PublicRegistrationLink = await prisma.publicRegistrationLink.delete({
+     *   where: {
+     *     // ... filter to delete one PublicRegistrationLink
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PublicRegistrationLinkDeleteArgs>(args: SelectSubset<T, PublicRegistrationLinkDeleteArgs<ExtArgs>>): Prisma__PublicRegistrationLinkClient<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PublicRegistrationLink.
+     * @param {PublicRegistrationLinkUpdateArgs} args - Arguments to update one PublicRegistrationLink.
+     * @example
+     * // Update one PublicRegistrationLink
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PublicRegistrationLinkUpdateArgs>(args: SelectSubset<T, PublicRegistrationLinkUpdateArgs<ExtArgs>>): Prisma__PublicRegistrationLinkClient<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PublicRegistrationLinks.
+     * @param {PublicRegistrationLinkDeleteManyArgs} args - Arguments to filter PublicRegistrationLinks to delete.
+     * @example
+     * // Delete a few PublicRegistrationLinks
+     * const { count } = await prisma.publicRegistrationLink.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PublicRegistrationLinkDeleteManyArgs>(args?: SelectSubset<T, PublicRegistrationLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PublicRegistrationLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicRegistrationLinkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PublicRegistrationLinks
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PublicRegistrationLinkUpdateManyArgs>(args: SelectSubset<T, PublicRegistrationLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PublicRegistrationLinks and returns the data updated in the database.
+     * @param {PublicRegistrationLinkUpdateManyAndReturnArgs} args - Arguments to update many PublicRegistrationLinks.
+     * @example
+     * // Update many PublicRegistrationLinks
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PublicRegistrationLinks and only return the `id`
+     * const publicRegistrationLinkWithIdOnly = await prisma.publicRegistrationLink.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PublicRegistrationLinkUpdateManyAndReturnArgs>(args: SelectSubset<T, PublicRegistrationLinkUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PublicRegistrationLink.
+     * @param {PublicRegistrationLinkUpsertArgs} args - Arguments to update or create a PublicRegistrationLink.
+     * @example
+     * // Update or create a PublicRegistrationLink
+     * const publicRegistrationLink = await prisma.publicRegistrationLink.upsert({
+     *   create: {
+     *     // ... data to create a PublicRegistrationLink
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PublicRegistrationLink we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PublicRegistrationLinkUpsertArgs>(args: SelectSubset<T, PublicRegistrationLinkUpsertArgs<ExtArgs>>): Prisma__PublicRegistrationLinkClient<$Result.GetResult<Prisma.$PublicRegistrationLinkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PublicRegistrationLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicRegistrationLinkCountArgs} args - Arguments to filter PublicRegistrationLinks to count.
+     * @example
+     * // Count the number of PublicRegistrationLinks
+     * const count = await prisma.publicRegistrationLink.count({
+     *   where: {
+     *     // ... the filter for the PublicRegistrationLinks we want to count
+     *   }
+     * })
+    **/
+    count<T extends PublicRegistrationLinkCountArgs>(
+      args?: Subset<T, PublicRegistrationLinkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PublicRegistrationLinkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PublicRegistrationLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicRegistrationLinkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PublicRegistrationLinkAggregateArgs>(args: Subset<T, PublicRegistrationLinkAggregateArgs>): Prisma.PrismaPromise<GetPublicRegistrationLinkAggregateType<T>>
+
+    /**
+     * Group by PublicRegistrationLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicRegistrationLinkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PublicRegistrationLinkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PublicRegistrationLinkGroupByArgs['orderBy'] }
+        : { orderBy?: PublicRegistrationLinkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PublicRegistrationLinkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPublicRegistrationLinkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PublicRegistrationLink model
+   */
+  readonly fields: PublicRegistrationLinkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PublicRegistrationLink.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PublicRegistrationLinkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    host<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PublicRegistrationLink model
+   */
+  interface PublicRegistrationLinkFieldRefs {
+    readonly id: FieldRef<"PublicRegistrationLink", 'String'>
+    readonly slug: FieldRef<"PublicRegistrationLink", 'String'>
+    readonly wid: FieldRef<"PublicRegistrationLink", 'Int'>
+    readonly hostId: FieldRef<"PublicRegistrationLink", 'String'>
+    readonly officeBranch: FieldRef<"PublicRegistrationLink", 'String'>
+    readonly enabled: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly designTheme: FieldRef<"PublicRegistrationLink", 'String'>
+    readonly pageTitle: FieldRef<"PublicRegistrationLink", 'String'>
+    readonly welcomeMessage: FieldRef<"PublicRegistrationLink", 'String'>
+    readonly qrValidityPeriod: FieldRef<"PublicRegistrationLink", 'String'>
+    readonly fieldNameRequired: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly fieldPhoneRequired: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly fieldEmailRequired: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly fieldPurposeRequired: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly fieldIdProofRequired: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly fieldCompanyEnabled: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly fieldCompanyRequired: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly fieldNotesEnabled: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly fieldNotesRequired: FieldRef<"PublicRegistrationLink", 'Boolean'>
+    readonly createdAt: FieldRef<"PublicRegistrationLink", 'DateTime'>
+    readonly updatedAt: FieldRef<"PublicRegistrationLink", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PublicRegistrationLink findUnique
+   */
+  export type PublicRegistrationLinkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which PublicRegistrationLink to fetch.
+     */
+    where: PublicRegistrationLinkWhereUniqueInput
+  }
+
+  /**
+   * PublicRegistrationLink findUniqueOrThrow
+   */
+  export type PublicRegistrationLinkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which PublicRegistrationLink to fetch.
+     */
+    where: PublicRegistrationLinkWhereUniqueInput
+  }
+
+  /**
+   * PublicRegistrationLink findFirst
+   */
+  export type PublicRegistrationLinkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which PublicRegistrationLink to fetch.
+     */
+    where?: PublicRegistrationLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicRegistrationLinks to fetch.
+     */
+    orderBy?: PublicRegistrationLinkOrderByWithRelationInput | PublicRegistrationLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PublicRegistrationLinks.
+     */
+    cursor?: PublicRegistrationLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicRegistrationLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicRegistrationLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PublicRegistrationLinks.
+     */
+    distinct?: PublicRegistrationLinkScalarFieldEnum | PublicRegistrationLinkScalarFieldEnum[]
+  }
+
+  /**
+   * PublicRegistrationLink findFirstOrThrow
+   */
+  export type PublicRegistrationLinkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which PublicRegistrationLink to fetch.
+     */
+    where?: PublicRegistrationLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicRegistrationLinks to fetch.
+     */
+    orderBy?: PublicRegistrationLinkOrderByWithRelationInput | PublicRegistrationLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PublicRegistrationLinks.
+     */
+    cursor?: PublicRegistrationLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicRegistrationLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicRegistrationLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PublicRegistrationLinks.
+     */
+    distinct?: PublicRegistrationLinkScalarFieldEnum | PublicRegistrationLinkScalarFieldEnum[]
+  }
+
+  /**
+   * PublicRegistrationLink findMany
+   */
+  export type PublicRegistrationLinkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which PublicRegistrationLinks to fetch.
+     */
+    where?: PublicRegistrationLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicRegistrationLinks to fetch.
+     */
+    orderBy?: PublicRegistrationLinkOrderByWithRelationInput | PublicRegistrationLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PublicRegistrationLinks.
+     */
+    cursor?: PublicRegistrationLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicRegistrationLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicRegistrationLinks.
+     */
+    skip?: number
+    distinct?: PublicRegistrationLinkScalarFieldEnum | PublicRegistrationLinkScalarFieldEnum[]
+  }
+
+  /**
+   * PublicRegistrationLink create
+   */
+  export type PublicRegistrationLinkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PublicRegistrationLink.
+     */
+    data: XOR<PublicRegistrationLinkCreateInput, PublicRegistrationLinkUncheckedCreateInput>
+  }
+
+  /**
+   * PublicRegistrationLink createMany
+   */
+  export type PublicRegistrationLinkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PublicRegistrationLinks.
+     */
+    data: PublicRegistrationLinkCreateManyInput | PublicRegistrationLinkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PublicRegistrationLink createManyAndReturn
+   */
+  export type PublicRegistrationLinkCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * The data used to create many PublicRegistrationLinks.
+     */
+    data: PublicRegistrationLinkCreateManyInput | PublicRegistrationLinkCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PublicRegistrationLink update
+   */
+  export type PublicRegistrationLinkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PublicRegistrationLink.
+     */
+    data: XOR<PublicRegistrationLinkUpdateInput, PublicRegistrationLinkUncheckedUpdateInput>
+    /**
+     * Choose, which PublicRegistrationLink to update.
+     */
+    where: PublicRegistrationLinkWhereUniqueInput
+  }
+
+  /**
+   * PublicRegistrationLink updateMany
+   */
+  export type PublicRegistrationLinkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PublicRegistrationLinks.
+     */
+    data: XOR<PublicRegistrationLinkUpdateManyMutationInput, PublicRegistrationLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which PublicRegistrationLinks to update
+     */
+    where?: PublicRegistrationLinkWhereInput
+    /**
+     * Limit how many PublicRegistrationLinks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PublicRegistrationLink updateManyAndReturn
+   */
+  export type PublicRegistrationLinkUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * The data used to update PublicRegistrationLinks.
+     */
+    data: XOR<PublicRegistrationLinkUpdateManyMutationInput, PublicRegistrationLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which PublicRegistrationLinks to update
+     */
+    where?: PublicRegistrationLinkWhereInput
+    /**
+     * Limit how many PublicRegistrationLinks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PublicRegistrationLink upsert
+   */
+  export type PublicRegistrationLinkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PublicRegistrationLink to update in case it exists.
+     */
+    where: PublicRegistrationLinkWhereUniqueInput
+    /**
+     * In case the PublicRegistrationLink found by the `where` argument doesn't exist, create a new PublicRegistrationLink with this data.
+     */
+    create: XOR<PublicRegistrationLinkCreateInput, PublicRegistrationLinkUncheckedCreateInput>
+    /**
+     * In case the PublicRegistrationLink was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PublicRegistrationLinkUpdateInput, PublicRegistrationLinkUncheckedUpdateInput>
+  }
+
+  /**
+   * PublicRegistrationLink delete
+   */
+  export type PublicRegistrationLinkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+    /**
+     * Filter which PublicRegistrationLink to delete.
+     */
+    where: PublicRegistrationLinkWhereUniqueInput
+  }
+
+  /**
+   * PublicRegistrationLink deleteMany
+   */
+  export type PublicRegistrationLinkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PublicRegistrationLinks to delete
+     */
+    where?: PublicRegistrationLinkWhereInput
+    /**
+     * Limit how many PublicRegistrationLinks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PublicRegistrationLink without action
+   */
+  export type PublicRegistrationLinkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicRegistrationLink
+     */
+    select?: PublicRegistrationLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicRegistrationLink
+     */
+    omit?: PublicRegistrationLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PublicRegistrationLinkInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6198,6 +10370,69 @@ export namespace Prisma {
   };
 
   export type VisitorScalarFieldEnum = (typeof VisitorScalarFieldEnum)[keyof typeof VisitorScalarFieldEnum]
+
+
+  export const SubscriptionScalarFieldEnum: {
+    id: 'id',
+    wid: 'wid',
+    plan: 'plan',
+    status: 'status',
+    amount: 'amount',
+    currency: 'currency',
+    region: 'region',
+    currentPeriodStart: 'currentPeriodStart',
+    currentPeriodEnd: 'currentPeriodEnd',
+    cancelledAt: 'cancelledAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+  export const TransactionScalarFieldEnum: {
+    id: 'id',
+    wid: 'wid',
+    subscriptionId: 'subscriptionId',
+    razorpayOrderId: 'razorpayOrderId',
+    razorpayPaymentId: 'razorpayPaymentId',
+    amount: 'amount',
+    currency: 'currency',
+    region: 'region',
+    status: 'status',
+    failureReason: 'failureReason',
+    createdAt: 'createdAt',
+    verifiedAt: 'verifiedAt'
+  };
+
+  export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+  export const PublicRegistrationLinkScalarFieldEnum: {
+    id: 'id',
+    slug: 'slug',
+    wid: 'wid',
+    hostId: 'hostId',
+    officeBranch: 'officeBranch',
+    enabled: 'enabled',
+    designTheme: 'designTheme',
+    pageTitle: 'pageTitle',
+    welcomeMessage: 'welcomeMessage',
+    qrValidityPeriod: 'qrValidityPeriod',
+    fieldNameRequired: 'fieldNameRequired',
+    fieldPhoneRequired: 'fieldPhoneRequired',
+    fieldEmailRequired: 'fieldEmailRequired',
+    fieldPurposeRequired: 'fieldPurposeRequired',
+    fieldIdProofRequired: 'fieldIdProofRequired',
+    fieldCompanyEnabled: 'fieldCompanyEnabled',
+    fieldCompanyRequired: 'fieldCompanyRequired',
+    fieldNotesEnabled: 'fieldNotesEnabled',
+    fieldNotesRequired: 'fieldNotesRequired',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PublicRegistrationLinkScalarFieldEnum = (typeof PublicRegistrationLinkScalarFieldEnum)[keyof typeof PublicRegistrationLinkScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6306,6 +10541,9 @@ export namespace Prisma {
     profiles?: ProfileListRelationFilter
     visitors?: VisitorListRelationFilter
     config?: XOR<WorkspaceConfigNullableScalarRelationFilter, WorkspaceConfigWhereInput> | null
+    subscriptions?: SubscriptionListRelationFilter
+    transactions?: TransactionListRelationFilter
+    registrationLinks?: PublicRegistrationLinkListRelationFilter
   }
 
   export type WorkspaceOrderByWithRelationInput = {
@@ -6316,6 +10554,9 @@ export namespace Prisma {
     profiles?: ProfileOrderByRelationAggregateInput
     visitors?: VisitorOrderByRelationAggregateInput
     config?: WorkspaceConfigOrderByWithRelationInput
+    subscriptions?: SubscriptionOrderByRelationAggregateInput
+    transactions?: TransactionOrderByRelationAggregateInput
+    registrationLinks?: PublicRegistrationLinkOrderByRelationAggregateInput
   }
 
   export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -6329,6 +10570,9 @@ export namespace Prisma {
     profiles?: ProfileListRelationFilter
     visitors?: VisitorListRelationFilter
     config?: XOR<WorkspaceConfigNullableScalarRelationFilter, WorkspaceConfigWhereInput> | null
+    subscriptions?: SubscriptionListRelationFilter
+    transactions?: TransactionListRelationFilter
+    registrationLinks?: PublicRegistrationLinkListRelationFilter
   }, "id">
 
   export type WorkspaceOrderByWithAggregationInput = {
@@ -6448,6 +10692,7 @@ export namespace Prisma {
     wid?: IntNullableFilter<"Profile"> | number | null
     workspace?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
     visitors?: VisitorListRelationFilter
+    registrationLinks?: PublicRegistrationLinkListRelationFilter
   }
 
   export type ProfileOrderByWithRelationInput = {
@@ -6475,6 +10720,7 @@ export namespace Prisma {
     wid?: SortOrderInput | SortOrder
     workspace?: WorkspaceOrderByWithRelationInput
     visitors?: VisitorOrderByRelationAggregateInput
+    registrationLinks?: PublicRegistrationLinkOrderByRelationAggregateInput
   }
 
   export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -6505,6 +10751,7 @@ export namespace Prisma {
     wid?: IntNullableFilter<"Profile"> | number | null
     workspace?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
     visitors?: VisitorListRelationFilter
+    registrationLinks?: PublicRegistrationLinkListRelationFilter
   }, "id" | "email">
 
   export type ProfileOrderByWithAggregationInput = {
@@ -6700,6 +10947,337 @@ export namespace Prisma {
     wid?: IntWithAggregatesFilter<"Visitor"> | number
   }
 
+  export type SubscriptionWhereInput = {
+    AND?: SubscriptionWhereInput | SubscriptionWhereInput[]
+    OR?: SubscriptionWhereInput[]
+    NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
+    id?: StringFilter<"Subscription"> | string
+    wid?: IntFilter<"Subscription"> | number
+    plan?: StringFilter<"Subscription"> | string
+    status?: StringFilter<"Subscription"> | string
+    amount?: IntFilter<"Subscription"> | number
+    currency?: StringFilter<"Subscription"> | string
+    region?: StringFilter<"Subscription"> | string
+    currentPeriodStart?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    createdAt?: DateTimeFilter<"Subscription"> | Date | string
+    updatedAt?: DateTimeFilter<"Subscription"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    transactions?: TransactionListRelationFilter
+  }
+
+  export type SubscriptionOrderByWithRelationInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    plan?: SortOrder
+    status?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    currentPeriodStart?: SortOrderInput | SortOrder
+    currentPeriodEnd?: SortOrderInput | SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    transactions?: TransactionOrderByRelationAggregateInput
+  }
+
+  export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SubscriptionWhereInput | SubscriptionWhereInput[]
+    OR?: SubscriptionWhereInput[]
+    NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
+    wid?: IntFilter<"Subscription"> | number
+    plan?: StringFilter<"Subscription"> | string
+    status?: StringFilter<"Subscription"> | string
+    amount?: IntFilter<"Subscription"> | number
+    currency?: StringFilter<"Subscription"> | string
+    region?: StringFilter<"Subscription"> | string
+    currentPeriodStart?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    createdAt?: DateTimeFilter<"Subscription"> | Date | string
+    updatedAt?: DateTimeFilter<"Subscription"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    transactions?: TransactionListRelationFilter
+  }, "id">
+
+  export type SubscriptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    plan?: SortOrder
+    status?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    currentPeriodStart?: SortOrderInput | SortOrder
+    currentPeriodEnd?: SortOrderInput | SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SubscriptionCountOrderByAggregateInput
+    _avg?: SubscriptionAvgOrderByAggregateInput
+    _max?: SubscriptionMaxOrderByAggregateInput
+    _min?: SubscriptionMinOrderByAggregateInput
+    _sum?: SubscriptionSumOrderByAggregateInput
+  }
+
+  export type SubscriptionScalarWhereWithAggregatesInput = {
+    AND?: SubscriptionScalarWhereWithAggregatesInput | SubscriptionScalarWhereWithAggregatesInput[]
+    OR?: SubscriptionScalarWhereWithAggregatesInput[]
+    NOT?: SubscriptionScalarWhereWithAggregatesInput | SubscriptionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Subscription"> | string
+    wid?: IntWithAggregatesFilter<"Subscription"> | number
+    plan?: StringWithAggregatesFilter<"Subscription"> | string
+    status?: StringWithAggregatesFilter<"Subscription"> | string
+    amount?: IntWithAggregatesFilter<"Subscription"> | number
+    currency?: StringWithAggregatesFilter<"Subscription"> | string
+    region?: StringWithAggregatesFilter<"Subscription"> | string
+    currentPeriodStart?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+    currentPeriodEnd?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+    cancelledAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
+  }
+
+  export type TransactionWhereInput = {
+    AND?: TransactionWhereInput | TransactionWhereInput[]
+    OR?: TransactionWhereInput[]
+    NOT?: TransactionWhereInput | TransactionWhereInput[]
+    id?: StringFilter<"Transaction"> | string
+    wid?: IntFilter<"Transaction"> | number
+    subscriptionId?: StringFilter<"Transaction"> | string
+    razorpayOrderId?: StringFilter<"Transaction"> | string
+    razorpayPaymentId?: StringNullableFilter<"Transaction"> | string | null
+    amount?: IntFilter<"Transaction"> | number
+    currency?: StringFilter<"Transaction"> | string
+    region?: StringFilter<"Transaction"> | string
+    status?: StringFilter<"Transaction"> | string
+    failureReason?: StringNullableFilter<"Transaction"> | string | null
+    createdAt?: DateTimeFilter<"Transaction"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    subscription?: XOR<SubscriptionScalarRelationFilter, SubscriptionWhereInput>
+  }
+
+  export type TransactionOrderByWithRelationInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    subscriptionId?: SortOrder
+    razorpayOrderId?: SortOrder
+    razorpayPaymentId?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    status?: SortOrder
+    failureReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    subscription?: SubscriptionOrderByWithRelationInput
+  }
+
+  export type TransactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    razorpayOrderId?: string
+    razorpayPaymentId?: string
+    AND?: TransactionWhereInput | TransactionWhereInput[]
+    OR?: TransactionWhereInput[]
+    NOT?: TransactionWhereInput | TransactionWhereInput[]
+    wid?: IntFilter<"Transaction"> | number
+    subscriptionId?: StringFilter<"Transaction"> | string
+    amount?: IntFilter<"Transaction"> | number
+    currency?: StringFilter<"Transaction"> | string
+    region?: StringFilter<"Transaction"> | string
+    status?: StringFilter<"Transaction"> | string
+    failureReason?: StringNullableFilter<"Transaction"> | string | null
+    createdAt?: DateTimeFilter<"Transaction"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    subscription?: XOR<SubscriptionScalarRelationFilter, SubscriptionWhereInput>
+  }, "id" | "razorpayOrderId" | "razorpayPaymentId">
+
+  export type TransactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    subscriptionId?: SortOrder
+    razorpayOrderId?: SortOrder
+    razorpayPaymentId?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    status?: SortOrder
+    failureReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    _count?: TransactionCountOrderByAggregateInput
+    _avg?: TransactionAvgOrderByAggregateInput
+    _max?: TransactionMaxOrderByAggregateInput
+    _min?: TransactionMinOrderByAggregateInput
+    _sum?: TransactionSumOrderByAggregateInput
+  }
+
+  export type TransactionScalarWhereWithAggregatesInput = {
+    AND?: TransactionScalarWhereWithAggregatesInput | TransactionScalarWhereWithAggregatesInput[]
+    OR?: TransactionScalarWhereWithAggregatesInput[]
+    NOT?: TransactionScalarWhereWithAggregatesInput | TransactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Transaction"> | string
+    wid?: IntWithAggregatesFilter<"Transaction"> | number
+    subscriptionId?: StringWithAggregatesFilter<"Transaction"> | string
+    razorpayOrderId?: StringWithAggregatesFilter<"Transaction"> | string
+    razorpayPaymentId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    amount?: IntWithAggregatesFilter<"Transaction"> | number
+    currency?: StringWithAggregatesFilter<"Transaction"> | string
+    region?: StringWithAggregatesFilter<"Transaction"> | string
+    status?: StringWithAggregatesFilter<"Transaction"> | string
+    failureReason?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
+    verifiedAt?: DateTimeNullableWithAggregatesFilter<"Transaction"> | Date | string | null
+  }
+
+  export type PublicRegistrationLinkWhereInput = {
+    AND?: PublicRegistrationLinkWhereInput | PublicRegistrationLinkWhereInput[]
+    OR?: PublicRegistrationLinkWhereInput[]
+    NOT?: PublicRegistrationLinkWhereInput | PublicRegistrationLinkWhereInput[]
+    id?: StringFilter<"PublicRegistrationLink"> | string
+    slug?: StringFilter<"PublicRegistrationLink"> | string
+    wid?: IntFilter<"PublicRegistrationLink"> | number
+    hostId?: StringFilter<"PublicRegistrationLink"> | string
+    officeBranch?: StringFilter<"PublicRegistrationLink"> | string
+    enabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    designTheme?: StringFilter<"PublicRegistrationLink"> | string
+    pageTitle?: StringNullableFilter<"PublicRegistrationLink"> | string | null
+    welcomeMessage?: StringNullableFilter<"PublicRegistrationLink"> | string | null
+    qrValidityPeriod?: StringFilter<"PublicRegistrationLink"> | string
+    fieldNameRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldPhoneRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldEmailRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldPurposeRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldIdProofRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldCompanyEnabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldCompanyRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldNotesEnabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldNotesRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    createdAt?: DateTimeFilter<"PublicRegistrationLink"> | Date | string
+    updatedAt?: DateTimeFilter<"PublicRegistrationLink"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    host?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
+  }
+
+  export type PublicRegistrationLinkOrderByWithRelationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    wid?: SortOrder
+    hostId?: SortOrder
+    officeBranch?: SortOrder
+    enabled?: SortOrder
+    designTheme?: SortOrder
+    pageTitle?: SortOrderInput | SortOrder
+    welcomeMessage?: SortOrderInput | SortOrder
+    qrValidityPeriod?: SortOrder
+    fieldNameRequired?: SortOrder
+    fieldPhoneRequired?: SortOrder
+    fieldEmailRequired?: SortOrder
+    fieldPurposeRequired?: SortOrder
+    fieldIdProofRequired?: SortOrder
+    fieldCompanyEnabled?: SortOrder
+    fieldCompanyRequired?: SortOrder
+    fieldNotesEnabled?: SortOrder
+    fieldNotesRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    host?: ProfileOrderByWithRelationInput
+  }
+
+  export type PublicRegistrationLinkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    wid_hostId?: PublicRegistrationLinkWidHostIdCompoundUniqueInput
+    AND?: PublicRegistrationLinkWhereInput | PublicRegistrationLinkWhereInput[]
+    OR?: PublicRegistrationLinkWhereInput[]
+    NOT?: PublicRegistrationLinkWhereInput | PublicRegistrationLinkWhereInput[]
+    wid?: IntFilter<"PublicRegistrationLink"> | number
+    hostId?: StringFilter<"PublicRegistrationLink"> | string
+    officeBranch?: StringFilter<"PublicRegistrationLink"> | string
+    enabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    designTheme?: StringFilter<"PublicRegistrationLink"> | string
+    pageTitle?: StringNullableFilter<"PublicRegistrationLink"> | string | null
+    welcomeMessage?: StringNullableFilter<"PublicRegistrationLink"> | string | null
+    qrValidityPeriod?: StringFilter<"PublicRegistrationLink"> | string
+    fieldNameRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldPhoneRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldEmailRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldPurposeRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldIdProofRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldCompanyEnabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldCompanyRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldNotesEnabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldNotesRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    createdAt?: DateTimeFilter<"PublicRegistrationLink"> | Date | string
+    updatedAt?: DateTimeFilter<"PublicRegistrationLink"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    host?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
+  }, "id" | "slug" | "wid_hostId">
+
+  export type PublicRegistrationLinkOrderByWithAggregationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    wid?: SortOrder
+    hostId?: SortOrder
+    officeBranch?: SortOrder
+    enabled?: SortOrder
+    designTheme?: SortOrder
+    pageTitle?: SortOrderInput | SortOrder
+    welcomeMessage?: SortOrderInput | SortOrder
+    qrValidityPeriod?: SortOrder
+    fieldNameRequired?: SortOrder
+    fieldPhoneRequired?: SortOrder
+    fieldEmailRequired?: SortOrder
+    fieldPurposeRequired?: SortOrder
+    fieldIdProofRequired?: SortOrder
+    fieldCompanyEnabled?: SortOrder
+    fieldCompanyRequired?: SortOrder
+    fieldNotesEnabled?: SortOrder
+    fieldNotesRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PublicRegistrationLinkCountOrderByAggregateInput
+    _avg?: PublicRegistrationLinkAvgOrderByAggregateInput
+    _max?: PublicRegistrationLinkMaxOrderByAggregateInput
+    _min?: PublicRegistrationLinkMinOrderByAggregateInput
+    _sum?: PublicRegistrationLinkSumOrderByAggregateInput
+  }
+
+  export type PublicRegistrationLinkScalarWhereWithAggregatesInput = {
+    AND?: PublicRegistrationLinkScalarWhereWithAggregatesInput | PublicRegistrationLinkScalarWhereWithAggregatesInput[]
+    OR?: PublicRegistrationLinkScalarWhereWithAggregatesInput[]
+    NOT?: PublicRegistrationLinkScalarWhereWithAggregatesInput | PublicRegistrationLinkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PublicRegistrationLink"> | string
+    slug?: StringWithAggregatesFilter<"PublicRegistrationLink"> | string
+    wid?: IntWithAggregatesFilter<"PublicRegistrationLink"> | number
+    hostId?: StringWithAggregatesFilter<"PublicRegistrationLink"> | string
+    officeBranch?: StringWithAggregatesFilter<"PublicRegistrationLink"> | string
+    enabled?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    designTheme?: StringWithAggregatesFilter<"PublicRegistrationLink"> | string
+    pageTitle?: StringNullableWithAggregatesFilter<"PublicRegistrationLink"> | string | null
+    welcomeMessage?: StringNullableWithAggregatesFilter<"PublicRegistrationLink"> | string | null
+    qrValidityPeriod?: StringWithAggregatesFilter<"PublicRegistrationLink"> | string
+    fieldNameRequired?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    fieldPhoneRequired?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    fieldEmailRequired?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    fieldPurposeRequired?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    fieldIdProofRequired?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    fieldCompanyEnabled?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    fieldCompanyRequired?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    fieldNotesEnabled?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    fieldNotesRequired?: BoolWithAggregatesFilter<"PublicRegistrationLink"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PublicRegistrationLink"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PublicRegistrationLink"> | Date | string
+  }
+
   export type WorkspaceCreateInput = {
     name?: string | null
     plan?: string
@@ -6707,6 +11285,9 @@ export namespace Prisma {
     profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
     visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
     config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateInput = {
@@ -6717,6 +11298,9 @@ export namespace Prisma {
     profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
     visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
     config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUpdateInput = {
@@ -6726,6 +11310,9 @@ export namespace Prisma {
     profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
     visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
     config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateInput = {
@@ -6736,6 +11323,9 @@ export namespace Prisma {
     profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
     visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
     config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateManyInput = {
@@ -6848,6 +11438,7 @@ export namespace Prisma {
     createdAt?: Date | string
     workspace?: WorkspaceCreateNestedOneWithoutProfilesInput
     visitors?: VisitorCreateNestedManyWithoutHostInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutHostInput
   }
 
   export type ProfileUncheckedCreateInput = {
@@ -6874,6 +11465,7 @@ export namespace Prisma {
     createdAt?: Date | string
     wid?: number | null
     visitors?: VisitorUncheckedCreateNestedManyWithoutHostInput
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutHostInput
   }
 
   export type ProfileUpdateInput = {
@@ -6900,6 +11492,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneWithoutProfilesNestedInput
     visitors?: VisitorUpdateManyWithoutHostNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutHostNestedInput
   }
 
   export type ProfileUncheckedUpdateInput = {
@@ -6926,6 +11519,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
     visitors?: VisitorUncheckedUpdateManyWithoutHostNestedInput
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutHostNestedInput
   }
 
   export type ProfileCreateManyInput = {
@@ -7161,6 +11755,383 @@ export namespace Prisma {
     wid?: IntFieldUpdateOperationsInput | number
   }
 
+  export type SubscriptionCreateInput = {
+    id?: string
+    plan?: string
+    status?: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart?: Date | string | null
+    currentPeriodEnd?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutSubscriptionsInput
+    transactions?: TransactionCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionUncheckedCreateInput = {
+    id?: string
+    wid: number
+    plan?: string
+    status?: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart?: Date | string | null
+    currentPeriodEnd?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: TransactionUncheckedCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutSubscriptionsNestedInput
+    transactions?: TransactionUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: TransactionUncheckedUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionCreateManyInput = {
+    id?: string
+    wid: number
+    plan?: string
+    status?: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart?: Date | string | null
+    currentPeriodEnd?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionCreateInput = {
+    id?: string
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+    workspace: WorkspaceCreateNestedOneWithoutTransactionsInput
+    subscription: SubscriptionCreateNestedOneWithoutTransactionsInput
+  }
+
+  export type TransactionUncheckedCreateInput = {
+    id?: string
+    wid: number
+    subscriptionId: string
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type TransactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspace?: WorkspaceUpdateOneRequiredWithoutTransactionsNestedInput
+    subscription?: SubscriptionUpdateOneRequiredWithoutTransactionsNestedInput
+  }
+
+  export type TransactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionCreateManyInput = {
+    id?: string
+    wid: number
+    subscriptionId: string
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type TransactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PublicRegistrationLinkCreateInput = {
+    id?: string
+    slug: string
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutRegistrationLinksInput
+    host: ProfileCreateNestedOneWithoutRegistrationLinksInput
+  }
+
+  export type PublicRegistrationLinkUncheckedCreateInput = {
+    id?: string
+    slug: string
+    wid: number
+    hostId: string
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PublicRegistrationLinkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutRegistrationLinksNestedInput
+    host?: ProfileUpdateOneRequiredWithoutRegistrationLinksNestedInput
+  }
+
+  export type PublicRegistrationLinkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    hostId?: StringFieldUpdateOperationsInput | string
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicRegistrationLinkCreateManyInput = {
+    id?: string
+    slug: string
+    wid: number
+    hostId: string
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PublicRegistrationLinkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicRegistrationLinkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    hostId?: StringFieldUpdateOperationsInput | string
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -7230,6 +12201,24 @@ export namespace Prisma {
     isNot?: WorkspaceConfigWhereInput | null
   }
 
+  export type SubscriptionListRelationFilter = {
+    every?: SubscriptionWhereInput
+    some?: SubscriptionWhereInput
+    none?: SubscriptionWhereInput
+  }
+
+  export type TransactionListRelationFilter = {
+    every?: TransactionWhereInput
+    some?: TransactionWhereInput
+    none?: TransactionWhereInput
+  }
+
+  export type PublicRegistrationLinkListRelationFilter = {
+    every?: PublicRegistrationLinkWhereInput
+    some?: PublicRegistrationLinkWhereInput
+    none?: PublicRegistrationLinkWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -7240,6 +12229,18 @@ export namespace Prisma {
   }
 
   export type VisitorOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SubscriptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PublicRegistrationLinkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -7618,6 +12619,206 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type SubscriptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    plan?: SortOrder
+    status?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    currentPeriodStart?: SortOrder
+    currentPeriodEnd?: SortOrder
+    cancelledAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubscriptionAvgOrderByAggregateInput = {
+    wid?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type SubscriptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    plan?: SortOrder
+    status?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    currentPeriodStart?: SortOrder
+    currentPeriodEnd?: SortOrder
+    cancelledAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubscriptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    plan?: SortOrder
+    status?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    currentPeriodStart?: SortOrder
+    currentPeriodEnd?: SortOrder
+    cancelledAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubscriptionSumOrderByAggregateInput = {
+    wid?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type SubscriptionScalarRelationFilter = {
+    is?: SubscriptionWhereInput
+    isNot?: SubscriptionWhereInput
+  }
+
+  export type TransactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    subscriptionId?: SortOrder
+    razorpayOrderId?: SortOrder
+    razorpayPaymentId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    status?: SortOrder
+    failureReason?: SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrder
+  }
+
+  export type TransactionAvgOrderByAggregateInput = {
+    wid?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type TransactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    subscriptionId?: SortOrder
+    razorpayOrderId?: SortOrder
+    razorpayPaymentId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    status?: SortOrder
+    failureReason?: SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrder
+  }
+
+  export type TransactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    subscriptionId?: SortOrder
+    razorpayOrderId?: SortOrder
+    razorpayPaymentId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    region?: SortOrder
+    status?: SortOrder
+    failureReason?: SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrder
+  }
+
+  export type TransactionSumOrderByAggregateInput = {
+    wid?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type PublicRegistrationLinkWidHostIdCompoundUniqueInput = {
+    wid: number
+    hostId: string
+  }
+
+  export type PublicRegistrationLinkCountOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    wid?: SortOrder
+    hostId?: SortOrder
+    officeBranch?: SortOrder
+    enabled?: SortOrder
+    designTheme?: SortOrder
+    pageTitle?: SortOrder
+    welcomeMessage?: SortOrder
+    qrValidityPeriod?: SortOrder
+    fieldNameRequired?: SortOrder
+    fieldPhoneRequired?: SortOrder
+    fieldEmailRequired?: SortOrder
+    fieldPurposeRequired?: SortOrder
+    fieldIdProofRequired?: SortOrder
+    fieldCompanyEnabled?: SortOrder
+    fieldCompanyRequired?: SortOrder
+    fieldNotesEnabled?: SortOrder
+    fieldNotesRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicRegistrationLinkAvgOrderByAggregateInput = {
+    wid?: SortOrder
+  }
+
+  export type PublicRegistrationLinkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    wid?: SortOrder
+    hostId?: SortOrder
+    officeBranch?: SortOrder
+    enabled?: SortOrder
+    designTheme?: SortOrder
+    pageTitle?: SortOrder
+    welcomeMessage?: SortOrder
+    qrValidityPeriod?: SortOrder
+    fieldNameRequired?: SortOrder
+    fieldPhoneRequired?: SortOrder
+    fieldEmailRequired?: SortOrder
+    fieldPurposeRequired?: SortOrder
+    fieldIdProofRequired?: SortOrder
+    fieldCompanyEnabled?: SortOrder
+    fieldCompanyRequired?: SortOrder
+    fieldNotesEnabled?: SortOrder
+    fieldNotesRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicRegistrationLinkMinOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    wid?: SortOrder
+    hostId?: SortOrder
+    officeBranch?: SortOrder
+    enabled?: SortOrder
+    designTheme?: SortOrder
+    pageTitle?: SortOrder
+    welcomeMessage?: SortOrder
+    qrValidityPeriod?: SortOrder
+    fieldNameRequired?: SortOrder
+    fieldPhoneRequired?: SortOrder
+    fieldEmailRequired?: SortOrder
+    fieldPurposeRequired?: SortOrder
+    fieldIdProofRequired?: SortOrder
+    fieldCompanyEnabled?: SortOrder
+    fieldCompanyRequired?: SortOrder
+    fieldNotesEnabled?: SortOrder
+    fieldNotesRequired?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicRegistrationLinkSumOrderByAggregateInput = {
+    wid?: SortOrder
+  }
+
   export type ProfileCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<ProfileCreateWithoutWorkspaceInput, ProfileUncheckedCreateWithoutWorkspaceInput> | ProfileCreateWithoutWorkspaceInput[] | ProfileUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: ProfileCreateOrConnectWithoutWorkspaceInput | ProfileCreateOrConnectWithoutWorkspaceInput[]
@@ -7638,6 +12839,27 @@ export namespace Prisma {
     connect?: WorkspaceConfigWhereUniqueInput
   }
 
+  export type SubscriptionCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<SubscriptionCreateWithoutWorkspaceInput, SubscriptionUncheckedCreateWithoutWorkspaceInput> | SubscriptionCreateWithoutWorkspaceInput[] | SubscriptionUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutWorkspaceInput | SubscriptionCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: SubscriptionCreateManyWorkspaceInputEnvelope
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type TransactionCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<TransactionCreateWithoutWorkspaceInput, TransactionUncheckedCreateWithoutWorkspaceInput> | TransactionCreateWithoutWorkspaceInput[] | TransactionUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutWorkspaceInput | TransactionCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: TransactionCreateManyWorkspaceInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type PublicRegistrationLinkCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<PublicRegistrationLinkCreateWithoutWorkspaceInput, PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput> | PublicRegistrationLinkCreateWithoutWorkspaceInput[] | PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput | PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: PublicRegistrationLinkCreateManyWorkspaceInputEnvelope
+    connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+  }
+
   export type ProfileUncheckedCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<ProfileCreateWithoutWorkspaceInput, ProfileUncheckedCreateWithoutWorkspaceInput> | ProfileCreateWithoutWorkspaceInput[] | ProfileUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: ProfileCreateOrConnectWithoutWorkspaceInput | ProfileCreateOrConnectWithoutWorkspaceInput[]
@@ -7656,6 +12878,27 @@ export namespace Prisma {
     create?: XOR<WorkspaceConfigCreateWithoutWorkspaceInput, WorkspaceConfigUncheckedCreateWithoutWorkspaceInput>
     connectOrCreate?: WorkspaceConfigCreateOrConnectWithoutWorkspaceInput
     connect?: WorkspaceConfigWhereUniqueInput
+  }
+
+  export type SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<SubscriptionCreateWithoutWorkspaceInput, SubscriptionUncheckedCreateWithoutWorkspaceInput> | SubscriptionCreateWithoutWorkspaceInput[] | SubscriptionUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutWorkspaceInput | SubscriptionCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: SubscriptionCreateManyWorkspaceInputEnvelope
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<TransactionCreateWithoutWorkspaceInput, TransactionUncheckedCreateWithoutWorkspaceInput> | TransactionCreateWithoutWorkspaceInput[] | TransactionUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutWorkspaceInput | TransactionCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: TransactionCreateManyWorkspaceInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type PublicRegistrationLinkUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<PublicRegistrationLinkCreateWithoutWorkspaceInput, PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput> | PublicRegistrationLinkCreateWithoutWorkspaceInput[] | PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput | PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: PublicRegistrationLinkCreateManyWorkspaceInputEnvelope
+    connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -7708,6 +12951,48 @@ export namespace Prisma {
     update?: XOR<XOR<WorkspaceConfigUpdateToOneWithWhereWithoutWorkspaceInput, WorkspaceConfigUpdateWithoutWorkspaceInput>, WorkspaceConfigUncheckedUpdateWithoutWorkspaceInput>
   }
 
+  export type SubscriptionUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutWorkspaceInput, SubscriptionUncheckedCreateWithoutWorkspaceInput> | SubscriptionCreateWithoutWorkspaceInput[] | SubscriptionUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutWorkspaceInput | SubscriptionCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: SubscriptionUpsertWithWhereUniqueWithoutWorkspaceInput | SubscriptionUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: SubscriptionCreateManyWorkspaceInputEnvelope
+    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    update?: SubscriptionUpdateWithWhereUniqueWithoutWorkspaceInput | SubscriptionUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: SubscriptionUpdateManyWithWhereWithoutWorkspaceInput | SubscriptionUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type TransactionUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<TransactionCreateWithoutWorkspaceInput, TransactionUncheckedCreateWithoutWorkspaceInput> | TransactionCreateWithoutWorkspaceInput[] | TransactionUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutWorkspaceInput | TransactionCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutWorkspaceInput | TransactionUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: TransactionCreateManyWorkspaceInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutWorkspaceInput | TransactionUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutWorkspaceInput | TransactionUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type PublicRegistrationLinkUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<PublicRegistrationLinkCreateWithoutWorkspaceInput, PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput> | PublicRegistrationLinkCreateWithoutWorkspaceInput[] | PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput | PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: PublicRegistrationLinkUpsertWithWhereUniqueWithoutWorkspaceInput | PublicRegistrationLinkUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: PublicRegistrationLinkCreateManyWorkspaceInputEnvelope
+    set?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    disconnect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    delete?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    update?: PublicRegistrationLinkUpdateWithWhereUniqueWithoutWorkspaceInput | PublicRegistrationLinkUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: PublicRegistrationLinkUpdateManyWithWhereWithoutWorkspaceInput | PublicRegistrationLinkUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: PublicRegistrationLinkScalarWhereInput | PublicRegistrationLinkScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -7752,6 +13037,48 @@ export namespace Prisma {
     delete?: WorkspaceConfigWhereInput | boolean
     connect?: WorkspaceConfigWhereUniqueInput
     update?: XOR<XOR<WorkspaceConfigUpdateToOneWithWhereWithoutWorkspaceInput, WorkspaceConfigUpdateWithoutWorkspaceInput>, WorkspaceConfigUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutWorkspaceInput, SubscriptionUncheckedCreateWithoutWorkspaceInput> | SubscriptionCreateWithoutWorkspaceInput[] | SubscriptionUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutWorkspaceInput | SubscriptionCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: SubscriptionUpsertWithWhereUniqueWithoutWorkspaceInput | SubscriptionUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: SubscriptionCreateManyWorkspaceInputEnvelope
+    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    update?: SubscriptionUpdateWithWhereUniqueWithoutWorkspaceInput | SubscriptionUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: SubscriptionUpdateManyWithWhereWithoutWorkspaceInput | SubscriptionUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<TransactionCreateWithoutWorkspaceInput, TransactionUncheckedCreateWithoutWorkspaceInput> | TransactionCreateWithoutWorkspaceInput[] | TransactionUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutWorkspaceInput | TransactionCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutWorkspaceInput | TransactionUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: TransactionCreateManyWorkspaceInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutWorkspaceInput | TransactionUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutWorkspaceInput | TransactionUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<PublicRegistrationLinkCreateWithoutWorkspaceInput, PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput> | PublicRegistrationLinkCreateWithoutWorkspaceInput[] | PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput | PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: PublicRegistrationLinkUpsertWithWhereUniqueWithoutWorkspaceInput | PublicRegistrationLinkUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: PublicRegistrationLinkCreateManyWorkspaceInputEnvelope
+    set?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    disconnect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    delete?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    update?: PublicRegistrationLinkUpdateWithWhereUniqueWithoutWorkspaceInput | PublicRegistrationLinkUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: PublicRegistrationLinkUpdateManyWithWhereWithoutWorkspaceInput | PublicRegistrationLinkUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: PublicRegistrationLinkScalarWhereInput | PublicRegistrationLinkScalarWhereInput[]
   }
 
   export type WorkspaceConfigCreatedepartmentsInput = {
@@ -7817,11 +13144,25 @@ export namespace Prisma {
     connect?: VisitorWhereUniqueInput | VisitorWhereUniqueInput[]
   }
 
+  export type PublicRegistrationLinkCreateNestedManyWithoutHostInput = {
+    create?: XOR<PublicRegistrationLinkCreateWithoutHostInput, PublicRegistrationLinkUncheckedCreateWithoutHostInput> | PublicRegistrationLinkCreateWithoutHostInput[] | PublicRegistrationLinkUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: PublicRegistrationLinkCreateOrConnectWithoutHostInput | PublicRegistrationLinkCreateOrConnectWithoutHostInput[]
+    createMany?: PublicRegistrationLinkCreateManyHostInputEnvelope
+    connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+  }
+
   export type VisitorUncheckedCreateNestedManyWithoutHostInput = {
     create?: XOR<VisitorCreateWithoutHostInput, VisitorUncheckedCreateWithoutHostInput> | VisitorCreateWithoutHostInput[] | VisitorUncheckedCreateWithoutHostInput[]
     connectOrCreate?: VisitorCreateOrConnectWithoutHostInput | VisitorCreateOrConnectWithoutHostInput[]
     createMany?: VisitorCreateManyHostInputEnvelope
     connect?: VisitorWhereUniqueInput | VisitorWhereUniqueInput[]
+  }
+
+  export type PublicRegistrationLinkUncheckedCreateNestedManyWithoutHostInput = {
+    create?: XOR<PublicRegistrationLinkCreateWithoutHostInput, PublicRegistrationLinkUncheckedCreateWithoutHostInput> | PublicRegistrationLinkCreateWithoutHostInput[] | PublicRegistrationLinkUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: PublicRegistrationLinkCreateOrConnectWithoutHostInput | PublicRegistrationLinkCreateOrConnectWithoutHostInput[]
+    createMany?: PublicRegistrationLinkCreateManyHostInputEnvelope
+    connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
   }
 
   export type WorkspaceUpdateOneWithoutProfilesNestedInput = {
@@ -7848,6 +13189,20 @@ export namespace Prisma {
     deleteMany?: VisitorScalarWhereInput | VisitorScalarWhereInput[]
   }
 
+  export type PublicRegistrationLinkUpdateManyWithoutHostNestedInput = {
+    create?: XOR<PublicRegistrationLinkCreateWithoutHostInput, PublicRegistrationLinkUncheckedCreateWithoutHostInput> | PublicRegistrationLinkCreateWithoutHostInput[] | PublicRegistrationLinkUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: PublicRegistrationLinkCreateOrConnectWithoutHostInput | PublicRegistrationLinkCreateOrConnectWithoutHostInput[]
+    upsert?: PublicRegistrationLinkUpsertWithWhereUniqueWithoutHostInput | PublicRegistrationLinkUpsertWithWhereUniqueWithoutHostInput[]
+    createMany?: PublicRegistrationLinkCreateManyHostInputEnvelope
+    set?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    disconnect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    delete?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    update?: PublicRegistrationLinkUpdateWithWhereUniqueWithoutHostInput | PublicRegistrationLinkUpdateWithWhereUniqueWithoutHostInput[]
+    updateMany?: PublicRegistrationLinkUpdateManyWithWhereWithoutHostInput | PublicRegistrationLinkUpdateManyWithWhereWithoutHostInput[]
+    deleteMany?: PublicRegistrationLinkScalarWhereInput | PublicRegistrationLinkScalarWhereInput[]
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -7868,6 +13223,20 @@ export namespace Prisma {
     update?: VisitorUpdateWithWhereUniqueWithoutHostInput | VisitorUpdateWithWhereUniqueWithoutHostInput[]
     updateMany?: VisitorUpdateManyWithWhereWithoutHostInput | VisitorUpdateManyWithWhereWithoutHostInput[]
     deleteMany?: VisitorScalarWhereInput | VisitorScalarWhereInput[]
+  }
+
+  export type PublicRegistrationLinkUncheckedUpdateManyWithoutHostNestedInput = {
+    create?: XOR<PublicRegistrationLinkCreateWithoutHostInput, PublicRegistrationLinkUncheckedCreateWithoutHostInput> | PublicRegistrationLinkCreateWithoutHostInput[] | PublicRegistrationLinkUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: PublicRegistrationLinkCreateOrConnectWithoutHostInput | PublicRegistrationLinkCreateOrConnectWithoutHostInput[]
+    upsert?: PublicRegistrationLinkUpsertWithWhereUniqueWithoutHostInput | PublicRegistrationLinkUpsertWithWhereUniqueWithoutHostInput[]
+    createMany?: PublicRegistrationLinkCreateManyHostInputEnvelope
+    set?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    disconnect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    delete?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
+    update?: PublicRegistrationLinkUpdateWithWhereUniqueWithoutHostInput | PublicRegistrationLinkUpdateWithWhereUniqueWithoutHostInput[]
+    updateMany?: PublicRegistrationLinkUpdateManyWithWhereWithoutHostInput | PublicRegistrationLinkUpdateManyWithWhereWithoutHostInput[]
+    deleteMany?: PublicRegistrationLinkScalarWhereInput | PublicRegistrationLinkScalarWhereInput[]
   }
 
   export type ProfileCreateNestedOneWithoutVisitorsInput = {
@@ -7904,6 +13273,118 @@ export namespace Prisma {
     upsert?: WorkspaceUpsertWithoutVisitorsInput
     connect?: WorkspaceWhereUniqueInput
     update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutVisitorsInput, WorkspaceUpdateWithoutVisitorsInput>, WorkspaceUncheckedUpdateWithoutVisitorsInput>
+  }
+
+  export type WorkspaceCreateNestedOneWithoutSubscriptionsInput = {
+    create?: XOR<WorkspaceCreateWithoutSubscriptionsInput, WorkspaceUncheckedCreateWithoutSubscriptionsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutSubscriptionsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type TransactionCreateNestedManyWithoutSubscriptionInput = {
+    create?: XOR<TransactionCreateWithoutSubscriptionInput, TransactionUncheckedCreateWithoutSubscriptionInput> | TransactionCreateWithoutSubscriptionInput[] | TransactionUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutSubscriptionInput | TransactionCreateOrConnectWithoutSubscriptionInput[]
+    createMany?: TransactionCreateManySubscriptionInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutSubscriptionInput = {
+    create?: XOR<TransactionCreateWithoutSubscriptionInput, TransactionUncheckedCreateWithoutSubscriptionInput> | TransactionCreateWithoutSubscriptionInput[] | TransactionUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutSubscriptionInput | TransactionCreateOrConnectWithoutSubscriptionInput[]
+    createMany?: TransactionCreateManySubscriptionInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutSubscriptionsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutSubscriptionsInput, WorkspaceUncheckedCreateWithoutSubscriptionsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutSubscriptionsInput
+    upsert?: WorkspaceUpsertWithoutSubscriptionsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutSubscriptionsInput, WorkspaceUpdateWithoutSubscriptionsInput>, WorkspaceUncheckedUpdateWithoutSubscriptionsInput>
+  }
+
+  export type TransactionUpdateManyWithoutSubscriptionNestedInput = {
+    create?: XOR<TransactionCreateWithoutSubscriptionInput, TransactionUncheckedCreateWithoutSubscriptionInput> | TransactionCreateWithoutSubscriptionInput[] | TransactionUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutSubscriptionInput | TransactionCreateOrConnectWithoutSubscriptionInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutSubscriptionInput | TransactionUpsertWithWhereUniqueWithoutSubscriptionInput[]
+    createMany?: TransactionCreateManySubscriptionInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutSubscriptionInput | TransactionUpdateWithWhereUniqueWithoutSubscriptionInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutSubscriptionInput | TransactionUpdateManyWithWhereWithoutSubscriptionInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutSubscriptionNestedInput = {
+    create?: XOR<TransactionCreateWithoutSubscriptionInput, TransactionUncheckedCreateWithoutSubscriptionInput> | TransactionCreateWithoutSubscriptionInput[] | TransactionUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutSubscriptionInput | TransactionCreateOrConnectWithoutSubscriptionInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutSubscriptionInput | TransactionUpsertWithWhereUniqueWithoutSubscriptionInput[]
+    createMany?: TransactionCreateManySubscriptionInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutSubscriptionInput | TransactionUpdateWithWhereUniqueWithoutSubscriptionInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutSubscriptionInput | TransactionUpdateManyWithWhereWithoutSubscriptionInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type WorkspaceCreateNestedOneWithoutTransactionsInput = {
+    create?: XOR<WorkspaceCreateWithoutTransactionsInput, WorkspaceUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutTransactionsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type SubscriptionCreateNestedOneWithoutTransactionsInput = {
+    create?: XOR<SubscriptionCreateWithoutTransactionsInput, SubscriptionUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutTransactionsInput
+    connect?: SubscriptionWhereUniqueInput
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutTransactionsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutTransactionsInput, WorkspaceUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutTransactionsInput
+    upsert?: WorkspaceUpsertWithoutTransactionsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutTransactionsInput, WorkspaceUpdateWithoutTransactionsInput>, WorkspaceUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type SubscriptionUpdateOneRequiredWithoutTransactionsNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutTransactionsInput, SubscriptionUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutTransactionsInput
+    upsert?: SubscriptionUpsertWithoutTransactionsInput
+    connect?: SubscriptionWhereUniqueInput
+    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutTransactionsInput, SubscriptionUpdateWithoutTransactionsInput>, SubscriptionUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type WorkspaceCreateNestedOneWithoutRegistrationLinksInput = {
+    create?: XOR<WorkspaceCreateWithoutRegistrationLinksInput, WorkspaceUncheckedCreateWithoutRegistrationLinksInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutRegistrationLinksInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type ProfileCreateNestedOneWithoutRegistrationLinksInput = {
+    create?: XOR<ProfileCreateWithoutRegistrationLinksInput, ProfileUncheckedCreateWithoutRegistrationLinksInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutRegistrationLinksInput
+    connect?: ProfileWhereUniqueInput
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutRegistrationLinksNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutRegistrationLinksInput, WorkspaceUncheckedCreateWithoutRegistrationLinksInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutRegistrationLinksInput
+    upsert?: WorkspaceUpsertWithoutRegistrationLinksInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutRegistrationLinksInput, WorkspaceUpdateWithoutRegistrationLinksInput>, WorkspaceUncheckedUpdateWithoutRegistrationLinksInput>
+  }
+
+  export type ProfileUpdateOneRequiredWithoutRegistrationLinksNestedInput = {
+    create?: XOR<ProfileCreateWithoutRegistrationLinksInput, ProfileUncheckedCreateWithoutRegistrationLinksInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutRegistrationLinksInput
+    upsert?: ProfileUpsertWithoutRegistrationLinksInput
+    connect?: ProfileWhereUniqueInput
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutRegistrationLinksInput, ProfileUpdateWithoutRegistrationLinksInput>, ProfileUncheckedUpdateWithoutRegistrationLinksInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -8130,6 +13611,7 @@ export namespace Prisma {
     emergencyPhone?: string | null
     createdAt?: Date | string
     visitors?: VisitorCreateNestedManyWithoutHostInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutHostInput
   }
 
   export type ProfileUncheckedCreateWithoutWorkspaceInput = {
@@ -8155,6 +13637,7 @@ export namespace Prisma {
     emergencyPhone?: string | null
     createdAt?: Date | string
     visitors?: VisitorUncheckedCreateNestedManyWithoutHostInput
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutHostInput
   }
 
   export type ProfileCreateOrConnectWithoutWorkspaceInput = {
@@ -8241,6 +13724,140 @@ export namespace Prisma {
   export type WorkspaceConfigCreateOrConnectWithoutWorkspaceInput = {
     where: WorkspaceConfigWhereUniqueInput
     create: XOR<WorkspaceConfigCreateWithoutWorkspaceInput, WorkspaceConfigUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type SubscriptionCreateWithoutWorkspaceInput = {
+    id?: string
+    plan?: string
+    status?: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart?: Date | string | null
+    currentPeriodEnd?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: TransactionCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    plan?: string
+    status?: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart?: Date | string | null
+    currentPeriodEnd?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: TransactionUncheckedCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionCreateOrConnectWithoutWorkspaceInput = {
+    where: SubscriptionWhereUniqueInput
+    create: XOR<SubscriptionCreateWithoutWorkspaceInput, SubscriptionUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type SubscriptionCreateManyWorkspaceInputEnvelope = {
+    data: SubscriptionCreateManyWorkspaceInput | SubscriptionCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionCreateWithoutWorkspaceInput = {
+    id?: string
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+    subscription: SubscriptionCreateNestedOneWithoutTransactionsInput
+  }
+
+  export type TransactionUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    subscriptionId: string
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type TransactionCreateOrConnectWithoutWorkspaceInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutWorkspaceInput, TransactionUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type TransactionCreateManyWorkspaceInputEnvelope = {
+    data: TransactionCreateManyWorkspaceInput | TransactionCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PublicRegistrationLinkCreateWithoutWorkspaceInput = {
+    id?: string
+    slug: string
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    host: ProfileCreateNestedOneWithoutRegistrationLinksInput
+  }
+
+  export type PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    slug: string
+    hostId: string
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PublicRegistrationLinkCreateOrConnectWithoutWorkspaceInput = {
+    where: PublicRegistrationLinkWhereUniqueInput
+    create: XOR<PublicRegistrationLinkCreateWithoutWorkspaceInput, PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type PublicRegistrationLinkCreateManyWorkspaceInputEnvelope = {
+    data: PublicRegistrationLinkCreateManyWorkspaceInput | PublicRegistrationLinkCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
   }
 
   export type ProfileUpsertWithWhereUniqueWithoutWorkspaceInput = {
@@ -8357,12 +13974,126 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SubscriptionUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: SubscriptionWhereUniqueInput
+    update: XOR<SubscriptionUpdateWithoutWorkspaceInput, SubscriptionUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<SubscriptionCreateWithoutWorkspaceInput, SubscriptionUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type SubscriptionUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: SubscriptionWhereUniqueInput
+    data: XOR<SubscriptionUpdateWithoutWorkspaceInput, SubscriptionUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type SubscriptionUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: SubscriptionScalarWhereInput
+    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type SubscriptionScalarWhereInput = {
+    AND?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+    OR?: SubscriptionScalarWhereInput[]
+    NOT?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+    id?: StringFilter<"Subscription"> | string
+    wid?: IntFilter<"Subscription"> | number
+    plan?: StringFilter<"Subscription"> | string
+    status?: StringFilter<"Subscription"> | string
+    amount?: IntFilter<"Subscription"> | number
+    currency?: StringFilter<"Subscription"> | string
+    region?: StringFilter<"Subscription"> | string
+    currentPeriodStart?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    currentPeriodEnd?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    cancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    createdAt?: DateTimeFilter<"Subscription"> | Date | string
+    updatedAt?: DateTimeFilter<"Subscription"> | Date | string
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutWorkspaceInput, TransactionUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<TransactionCreateWithoutWorkspaceInput, TransactionUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutWorkspaceInput, TransactionUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type TransactionScalarWhereInput = {
+    AND?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    OR?: TransactionScalarWhereInput[]
+    NOT?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    id?: StringFilter<"Transaction"> | string
+    wid?: IntFilter<"Transaction"> | number
+    subscriptionId?: StringFilter<"Transaction"> | string
+    razorpayOrderId?: StringFilter<"Transaction"> | string
+    razorpayPaymentId?: StringNullableFilter<"Transaction"> | string | null
+    amount?: IntFilter<"Transaction"> | number
+    currency?: StringFilter<"Transaction"> | string
+    region?: StringFilter<"Transaction"> | string
+    status?: StringFilter<"Transaction"> | string
+    failureReason?: StringNullableFilter<"Transaction"> | string | null
+    createdAt?: DateTimeFilter<"Transaction"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
+  }
+
+  export type PublicRegistrationLinkUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: PublicRegistrationLinkWhereUniqueInput
+    update: XOR<PublicRegistrationLinkUpdateWithoutWorkspaceInput, PublicRegistrationLinkUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<PublicRegistrationLinkCreateWithoutWorkspaceInput, PublicRegistrationLinkUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type PublicRegistrationLinkUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: PublicRegistrationLinkWhereUniqueInput
+    data: XOR<PublicRegistrationLinkUpdateWithoutWorkspaceInput, PublicRegistrationLinkUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type PublicRegistrationLinkUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: PublicRegistrationLinkScalarWhereInput
+    data: XOR<PublicRegistrationLinkUpdateManyMutationInput, PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type PublicRegistrationLinkScalarWhereInput = {
+    AND?: PublicRegistrationLinkScalarWhereInput | PublicRegistrationLinkScalarWhereInput[]
+    OR?: PublicRegistrationLinkScalarWhereInput[]
+    NOT?: PublicRegistrationLinkScalarWhereInput | PublicRegistrationLinkScalarWhereInput[]
+    id?: StringFilter<"PublicRegistrationLink"> | string
+    slug?: StringFilter<"PublicRegistrationLink"> | string
+    wid?: IntFilter<"PublicRegistrationLink"> | number
+    hostId?: StringFilter<"PublicRegistrationLink"> | string
+    officeBranch?: StringFilter<"PublicRegistrationLink"> | string
+    enabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    designTheme?: StringFilter<"PublicRegistrationLink"> | string
+    pageTitle?: StringNullableFilter<"PublicRegistrationLink"> | string | null
+    welcomeMessage?: StringNullableFilter<"PublicRegistrationLink"> | string | null
+    qrValidityPeriod?: StringFilter<"PublicRegistrationLink"> | string
+    fieldNameRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldPhoneRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldEmailRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldPurposeRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldIdProofRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldCompanyEnabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldCompanyRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldNotesEnabled?: BoolFilter<"PublicRegistrationLink"> | boolean
+    fieldNotesRequired?: BoolFilter<"PublicRegistrationLink"> | boolean
+    createdAt?: DateTimeFilter<"PublicRegistrationLink"> | Date | string
+    updatedAt?: DateTimeFilter<"PublicRegistrationLink"> | Date | string
+  }
+
   export type WorkspaceCreateWithoutConfigInput = {
     name?: string | null
     plan?: string
     createdAt?: Date | string
     profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
     visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutConfigInput = {
@@ -8372,6 +14103,9 @@ export namespace Prisma {
     createdAt?: Date | string
     profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
     visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutConfigInput = {
@@ -8396,6 +14130,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
     visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutConfigInput = {
@@ -8405,6 +14142,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
     visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutProfilesInput = {
@@ -8413,6 +14153,9 @@ export namespace Prisma {
     createdAt?: Date | string
     visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
     config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutProfilesInput = {
@@ -8422,6 +14165,9 @@ export namespace Prisma {
     createdAt?: Date | string
     visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
     config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutProfilesInput = {
@@ -8483,6 +14229,62 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PublicRegistrationLinkCreateWithoutHostInput = {
+    id?: string
+    slug: string
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutRegistrationLinksInput
+  }
+
+  export type PublicRegistrationLinkUncheckedCreateWithoutHostInput = {
+    id?: string
+    slug: string
+    wid: number
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PublicRegistrationLinkCreateOrConnectWithoutHostInput = {
+    where: PublicRegistrationLinkWhereUniqueInput
+    create: XOR<PublicRegistrationLinkCreateWithoutHostInput, PublicRegistrationLinkUncheckedCreateWithoutHostInput>
+  }
+
+  export type PublicRegistrationLinkCreateManyHostInputEnvelope = {
+    data: PublicRegistrationLinkCreateManyHostInput | PublicRegistrationLinkCreateManyHostInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutProfilesInput = {
     update: XOR<WorkspaceUpdateWithoutProfilesInput, WorkspaceUncheckedUpdateWithoutProfilesInput>
     create: XOR<WorkspaceCreateWithoutProfilesInput, WorkspaceUncheckedCreateWithoutProfilesInput>
@@ -8500,6 +14302,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
     config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutProfilesInput = {
@@ -8509,6 +14314,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
     config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type VisitorUpsertWithWhereUniqueWithoutHostInput = {
@@ -8525,6 +14333,22 @@ export namespace Prisma {
   export type VisitorUpdateManyWithWhereWithoutHostInput = {
     where: VisitorScalarWhereInput
     data: XOR<VisitorUpdateManyMutationInput, VisitorUncheckedUpdateManyWithoutHostInput>
+  }
+
+  export type PublicRegistrationLinkUpsertWithWhereUniqueWithoutHostInput = {
+    where: PublicRegistrationLinkWhereUniqueInput
+    update: XOR<PublicRegistrationLinkUpdateWithoutHostInput, PublicRegistrationLinkUncheckedUpdateWithoutHostInput>
+    create: XOR<PublicRegistrationLinkCreateWithoutHostInput, PublicRegistrationLinkUncheckedCreateWithoutHostInput>
+  }
+
+  export type PublicRegistrationLinkUpdateWithWhereUniqueWithoutHostInput = {
+    where: PublicRegistrationLinkWhereUniqueInput
+    data: XOR<PublicRegistrationLinkUpdateWithoutHostInput, PublicRegistrationLinkUncheckedUpdateWithoutHostInput>
+  }
+
+  export type PublicRegistrationLinkUpdateManyWithWhereWithoutHostInput = {
+    where: PublicRegistrationLinkScalarWhereInput
+    data: XOR<PublicRegistrationLinkUpdateManyMutationInput, PublicRegistrationLinkUncheckedUpdateManyWithoutHostInput>
   }
 
   export type ProfileCreateWithoutVisitorsInput = {
@@ -8550,6 +14374,7 @@ export namespace Prisma {
     emergencyPhone?: string | null
     createdAt?: Date | string
     workspace?: WorkspaceCreateNestedOneWithoutProfilesInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutHostInput
   }
 
   export type ProfileUncheckedCreateWithoutVisitorsInput = {
@@ -8575,6 +14400,7 @@ export namespace Prisma {
     emergencyPhone?: string | null
     createdAt?: Date | string
     wid?: number | null
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutHostInput
   }
 
   export type ProfileCreateOrConnectWithoutVisitorsInput = {
@@ -8588,6 +14414,9 @@ export namespace Prisma {
     createdAt?: Date | string
     profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
     config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutVisitorsInput = {
@@ -8597,6 +14426,9 @@ export namespace Prisma {
     createdAt?: Date | string
     profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
     config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutVisitorsInput = {
@@ -8638,6 +14470,7 @@ export namespace Prisma {
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneWithoutProfilesNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutHostNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutVisitorsInput = {
@@ -8663,6 +14496,7 @@ export namespace Prisma {
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutHostNestedInput
   }
 
   export type WorkspaceUpsertWithoutVisitorsInput = {
@@ -8682,6 +14516,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
     config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutVisitorsInput = {
@@ -8691,6 +14528,445 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
     config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceCreateWithoutSubscriptionsInput = {
+    name?: string | null
+    plan?: string
+    createdAt?: Date | string
+    profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
+    visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
+    transactions?: TransactionCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutSubscriptionsInput = {
+    id?: number
+    name?: string | null
+    plan?: string
+    createdAt?: Date | string
+    profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
+    visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutSubscriptionsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutSubscriptionsInput, WorkspaceUncheckedCreateWithoutSubscriptionsInput>
+  }
+
+  export type TransactionCreateWithoutSubscriptionInput = {
+    id?: string
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+    workspace: WorkspaceCreateNestedOneWithoutTransactionsInput
+  }
+
+  export type TransactionUncheckedCreateWithoutSubscriptionInput = {
+    id?: string
+    wid: number
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type TransactionCreateOrConnectWithoutSubscriptionInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutSubscriptionInput, TransactionUncheckedCreateWithoutSubscriptionInput>
+  }
+
+  export type TransactionCreateManySubscriptionInputEnvelope = {
+    data: TransactionCreateManySubscriptionInput | TransactionCreateManySubscriptionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WorkspaceUpsertWithoutSubscriptionsInput = {
+    update: XOR<WorkspaceUpdateWithoutSubscriptionsInput, WorkspaceUncheckedUpdateWithoutSubscriptionsInput>
+    create: XOR<WorkspaceCreateWithoutSubscriptionsInput, WorkspaceUncheckedCreateWithoutSubscriptionsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutSubscriptionsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutSubscriptionsInput, WorkspaceUncheckedUpdateWithoutSubscriptionsInput>
+  }
+
+  export type WorkspaceUpdateWithoutSubscriptionsInput = {
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
+    visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
+    transactions?: TransactionUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutSubscriptionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
+    visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutSubscriptionInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutSubscriptionInput, TransactionUncheckedUpdateWithoutSubscriptionInput>
+    create: XOR<TransactionCreateWithoutSubscriptionInput, TransactionUncheckedCreateWithoutSubscriptionInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutSubscriptionInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutSubscriptionInput, TransactionUncheckedUpdateWithoutSubscriptionInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutSubscriptionInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutSubscriptionInput>
+  }
+
+  export type WorkspaceCreateWithoutTransactionsInput = {
+    name?: string | null
+    plan?: string
+    createdAt?: Date | string
+    profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
+    visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutTransactionsInput = {
+    id?: number
+    name?: string | null
+    plan?: string
+    createdAt?: Date | string
+    profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
+    visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutTransactionsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutTransactionsInput, WorkspaceUncheckedCreateWithoutTransactionsInput>
+  }
+
+  export type SubscriptionCreateWithoutTransactionsInput = {
+    id?: string
+    plan?: string
+    status?: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart?: Date | string | null
+    currentPeriodEnd?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutSubscriptionsInput
+  }
+
+  export type SubscriptionUncheckedCreateWithoutTransactionsInput = {
+    id?: string
+    wid: number
+    plan?: string
+    status?: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart?: Date | string | null
+    currentPeriodEnd?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionCreateOrConnectWithoutTransactionsInput = {
+    where: SubscriptionWhereUniqueInput
+    create: XOR<SubscriptionCreateWithoutTransactionsInput, SubscriptionUncheckedCreateWithoutTransactionsInput>
+  }
+
+  export type WorkspaceUpsertWithoutTransactionsInput = {
+    update: XOR<WorkspaceUpdateWithoutTransactionsInput, WorkspaceUncheckedUpdateWithoutTransactionsInput>
+    create: XOR<WorkspaceCreateWithoutTransactionsInput, WorkspaceUncheckedCreateWithoutTransactionsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutTransactionsInput, WorkspaceUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type WorkspaceUpdateWithoutTransactionsInput = {
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
+    visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutTransactionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
+    visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type SubscriptionUpsertWithoutTransactionsInput = {
+    update: XOR<SubscriptionUpdateWithoutTransactionsInput, SubscriptionUncheckedUpdateWithoutTransactionsInput>
+    create: XOR<SubscriptionCreateWithoutTransactionsInput, SubscriptionUncheckedCreateWithoutTransactionsInput>
+    where?: SubscriptionWhereInput
+  }
+
+  export type SubscriptionUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: SubscriptionWhereInput
+    data: XOR<SubscriptionUpdateWithoutTransactionsInput, SubscriptionUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type SubscriptionUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutSubscriptionsNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkspaceCreateWithoutRegistrationLinksInput = {
+    name?: string | null
+    plan?: string
+    createdAt?: Date | string
+    profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
+    visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutRegistrationLinksInput = {
+    id?: number
+    name?: string | null
+    plan?: string
+    createdAt?: Date | string
+    profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
+    visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutRegistrationLinksInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutRegistrationLinksInput, WorkspaceUncheckedCreateWithoutRegistrationLinksInput>
+  }
+
+  export type ProfileCreateWithoutRegistrationLinksInput = {
+    id: string
+    name: string
+    email: string
+    role?: string
+    department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
+    avatarInitials?: string
+    status?: string
+    phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
+    createdAt?: Date | string
+    workspace?: WorkspaceCreateNestedOneWithoutProfilesInput
+    visitors?: VisitorCreateNestedManyWithoutHostInput
+  }
+
+  export type ProfileUncheckedCreateWithoutRegistrationLinksInput = {
+    id: string
+    name: string
+    email: string
+    role?: string
+    department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
+    avatarInitials?: string
+    status?: string
+    phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
+    createdAt?: Date | string
+    wid?: number | null
+    visitors?: VisitorUncheckedCreateNestedManyWithoutHostInput
+  }
+
+  export type ProfileCreateOrConnectWithoutRegistrationLinksInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutRegistrationLinksInput, ProfileUncheckedCreateWithoutRegistrationLinksInput>
+  }
+
+  export type WorkspaceUpsertWithoutRegistrationLinksInput = {
+    update: XOR<WorkspaceUpdateWithoutRegistrationLinksInput, WorkspaceUncheckedUpdateWithoutRegistrationLinksInput>
+    create: XOR<WorkspaceCreateWithoutRegistrationLinksInput, WorkspaceUncheckedCreateWithoutRegistrationLinksInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutRegistrationLinksInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutRegistrationLinksInput, WorkspaceUncheckedUpdateWithoutRegistrationLinksInput>
+  }
+
+  export type WorkspaceUpdateWithoutRegistrationLinksInput = {
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
+    visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutRegistrationLinksInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
+    visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type ProfileUpsertWithoutRegistrationLinksInput = {
+    update: XOR<ProfileUpdateWithoutRegistrationLinksInput, ProfileUncheckedUpdateWithoutRegistrationLinksInput>
+    create: XOR<ProfileCreateWithoutRegistrationLinksInput, ProfileUncheckedCreateWithoutRegistrationLinksInput>
+    where?: ProfileWhereInput
+  }
+
+  export type ProfileUpdateToOneWithWhereWithoutRegistrationLinksInput = {
+    where?: ProfileWhereInput
+    data: XOR<ProfileUpdateWithoutRegistrationLinksInput, ProfileUncheckedUpdateWithoutRegistrationLinksInput>
+  }
+
+  export type ProfileUpdateWithoutRegistrationLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarInitials?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneWithoutProfilesNestedInput
+    visitors?: VisitorUpdateManyWithoutHostNestedInput
+  }
+
+  export type ProfileUncheckedUpdateWithoutRegistrationLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarInitials?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wid?: NullableIntFieldUpdateOperationsInput | number | null
+    visitors?: VisitorUncheckedUpdateManyWithoutHostNestedInput
   }
 
   export type ProfileCreateManyWorkspaceInput = {
@@ -8739,6 +15015,57 @@ export namespace Prisma {
     notes?: string | null
   }
 
+  export type SubscriptionCreateManyWorkspaceInput = {
+    id?: string
+    plan?: string
+    status?: string
+    amount: number
+    currency: string
+    region: string
+    currentPeriodStart?: Date | string | null
+    currentPeriodEnd?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TransactionCreateManyWorkspaceInput = {
+    id?: string
+    subscriptionId: string
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type PublicRegistrationLinkCreateManyWorkspaceInput = {
+    id?: string
+    slug: string
+    hostId: string
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ProfileUpdateWithoutWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -8762,6 +15089,7 @@ export namespace Prisma {
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUpdateManyWithoutHostNestedInput
+    registrationLinks?: PublicRegistrationLinkUpdateManyWithoutHostNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutWorkspaceInput = {
@@ -8787,6 +15115,7 @@ export namespace Prisma {
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUncheckedUpdateManyWithoutHostNestedInput
+    registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutHostNestedInput
   }
 
   export type ProfileUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -8879,6 +15208,161 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type SubscriptionUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: TransactionUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: TransactionUncheckedUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    currentPeriodStart?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentPeriodEnd?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    subscription?: SubscriptionUpdateOneRequiredWithoutTransactionsNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PublicRegistrationLinkUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    host?: ProfileUpdateOneRequiredWithoutRegistrationLinksNestedInput
+  }
+
+  export type PublicRegistrationLinkUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    hostId?: StringFieldUpdateOperationsInput | string
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicRegistrationLinkUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    hostId?: StringFieldUpdateOperationsInput | string
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type VisitorCreateManyHostInput = {
     id?: string
     name: string
@@ -8899,6 +15383,29 @@ export namespace Prisma {
     walkIn?: boolean
     notes?: string | null
     wid: number
+  }
+
+  export type PublicRegistrationLinkCreateManyHostInput = {
+    id?: string
+    slug: string
+    wid: number
+    officeBranch: string
+    enabled?: boolean
+    designTheme?: string
+    pageTitle?: string | null
+    welcomeMessage?: string | null
+    qrValidityPeriod?: string
+    fieldNameRequired?: boolean
+    fieldPhoneRequired?: boolean
+    fieldEmailRequired?: boolean
+    fieldPurposeRequired?: boolean
+    fieldIdProofRequired?: boolean
+    fieldCompanyEnabled?: boolean
+    fieldCompanyRequired?: boolean
+    fieldNotesEnabled?: boolean
+    fieldNotesRequired?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type VisitorUpdateWithoutHostInput = {
@@ -8965,6 +15472,131 @@ export namespace Prisma {
     walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     wid?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PublicRegistrationLinkUpdateWithoutHostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutRegistrationLinksNestedInput
+  }
+
+  export type PublicRegistrationLinkUncheckedUpdateWithoutHostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicRegistrationLinkUncheckedUpdateManyWithoutHostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    officeBranch?: StringFieldUpdateOperationsInput | string
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    designTheme?: StringFieldUpdateOperationsInput | string
+    pageTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    welcomeMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidityPeriod?: StringFieldUpdateOperationsInput | string
+    fieldNameRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPhoneRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldEmailRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldPurposeRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldIdProofRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldCompanyRequired?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesEnabled?: BoolFieldUpdateOperationsInput | boolean
+    fieldNotesRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionCreateManySubscriptionInput = {
+    id?: string
+    wid: number
+    razorpayOrderId: string
+    razorpayPaymentId?: string | null
+    amount: number
+    currency: string
+    region: string
+    status?: string
+    failureReason?: string | null
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type TransactionUpdateWithoutSubscriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspace?: WorkspaceUpdateOneRequiredWithoutTransactionsNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutSubscriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutSubscriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    wid?: IntFieldUpdateOperationsInput | number
+    razorpayOrderId?: StringFieldUpdateOperationsInput | string
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

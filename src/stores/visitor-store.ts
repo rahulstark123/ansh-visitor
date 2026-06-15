@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { queuedLocalStorage } from "@/lib/safe-storage";
 import { createSupabaseClient } from "@/lib/supabase";
 import type { WorkspacePlanTier } from "@/config/billing";
+import { getTrialDaysLeft, getTrialEndDate } from "@/config/billing";
 import { toast } from "@/components/ui/toast";
 import { QR_VALIDITY_OPTIONS, type QrValidityPeriod } from "@/lib/qr-validity";
 
@@ -279,8 +280,11 @@ export const useVisitorStore = create<VisitorState>()(
             workspaceCreatedAt = workspace.createdAt;
             if (workspace.plan === "pro") {
               workspacePlan = "pro";
-            } else {
+            } else if (workspace.plan === "pro_trial") {
               workspacePlan = "pro_trial";
+            } else {
+              const trialEnd = getTrialEndDate(workspace.createdAt);
+              workspacePlan = getTrialDaysLeft(trialEnd) > 0 ? "pro_trial" : "free";
             }
           }
 

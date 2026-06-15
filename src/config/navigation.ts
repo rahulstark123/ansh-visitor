@@ -8,9 +8,9 @@ import {
   Building,
   ClipboardList,
   Contact,
-  BadgeCent,
   Users,
   CreditCard,
+  Link2,
 } from "lucide-react";
 
 export type NavSectionId =
@@ -52,6 +52,7 @@ export const mainNav: MainNavItem[] = [
       { id: "today-visitors", label: "Today's Guests", href: "/visitors", icon: Contact },
       { id: "pre-registered", label: "Registered Users", href: "/visitors/pre-registered", icon: ClipboardList },
       { id: "all-visitors", label: "All Visitors Log", href: "/visitors/all", icon: UsersRound },
+      { id: "my-link", label: "My Link", href: "/visitors/my-link", icon: Link2 },
     ],
   },
   {
@@ -76,7 +77,6 @@ export const mainNav: MainNavItem[] = [
       { id: "company", label: "Company Settings", href: "/settings/company", icon: Building },
       { id: "billing", label: "Billing", href: "/settings/billing", icon: CreditCard },
       { id: "workspace", label: "Workspace Settings", href: "/settings/workspace", icon: Settings },
-      { id: "badge", label: "Badge Customizer", href: "/settings/badge", icon: BadgeCent },
     ],
   },
 ];

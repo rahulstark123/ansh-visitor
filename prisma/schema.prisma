@@ -13,13 +13,16 @@ generator client {
 // Workspace — top-level tenant container
 // ─────────────────────────────────────────────────────────────
 model Workspace {
-  id        Int              @id @default(autoincrement())
-  name      String?
-  plan      String           @default("free") // "free" | "pro"
-  createdAt DateTime         @default(now())
-  profiles  Profile[]
-  visitors  Visitor[]
-  config    WorkspaceConfig?
+  id            Int              @id @default(autoincrement())
+  name          String?
+  plan          String           @default("free") // "free" | "pro"
+  createdAt     DateTime         @default(now())
+  profiles      Profile[]
+  visitors      Visitor[]
+  config        WorkspaceConfig?
+  subscriptions Subscription[]
+  transactions  Transaction[]
+  registrationLinks PublicRegistrationLink[]
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -65,6 +68,7 @@ model Profile {
   wid              Int?
   workspace        Workspace? @relation(fields: [wid], references: [id], onDelete: Cascade)
   visitors         Visitor[]  @relation("HostRelation")
+  registrationLinks PublicRegistrationLink[]
 
   @@index([wid])              // fast workspace scoped queries
   @@index([email])            // fast lookup by email
@@ -102,4 +106,86 @@ model Visitor {
   @@index([status])           // filter by status
   @@index([wid, status])      // compound: workspace + status filter (most common query)
   @@index([preRegisteredAt])  // date-sorted lists
+}
+
+// ─────────────────────────────────────────────────────────────
+// Subscription — workspace Pro plan subscription records
+// ─────────────────────────────────────────────────────────────
+model Subscription {
+  id                 String        @id @default(cuid())
+  wid                Int
+  workspace          Workspace     @relation(fields: [wid], references: [id], onDelete: Cascade)
+  plan               String        @default("pro") // "pro"
+  status             String        @default("pending") // "pending" | "active" | "cancelled" | "expired" | "failed"
+  amount             Int           // minor units (paisa / cents)
+  currency           String
+  region             String        // "IN" | "INTL"
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  cancelledAt        DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  transactions       Transaction[]
+
+  @@index([wid])
+  @@index([wid, status])
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Transaction — individual payment attempts (success / failed)
+// ─────────────────────────────────────────────────────────────
+model Transaction {
+  id                String        @id @default(cuid())
+  wid               Int
+  workspace         Workspace     @relation(fields: [wid], references: [id], onDelete: Cascade)
+  subscriptionId    String
+  subscription      Subscription  @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  razorpayOrderId   String        @unique
+  razorpayPaymentId String?       @unique
+  amount            Int
+  currency          String
+  region            String
+  status            String        @default("pending") // "pending" | "success" | "failed" | "cancelled"
+  failureReason     String?
+  createdAt         DateTime      @default(now())
+  verifiedAt        DateTime?
+
+  @@index([wid])
+  @@index([subscriptionId])
+  @@index([status])
+  @@index([wid, status])
+}
+
+// ─────────────────────────────────────────────────────────────
+// PublicRegistrationLink — customizable public pre-register page
+// ─────────────────────────────────────────────────────────────
+model PublicRegistrationLink {
+  id                 String    @id @default(cuid())
+  slug               String    @unique
+  wid                Int
+  workspace          Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)
+  hostId             String
+  host               Profile   @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  officeBranch       String
+  enabled            Boolean   @default(true)
+  designTheme        String    @default("classic") // classic | modern | minimal | bold | glass
+  pageTitle          String?
+  welcomeMessage     String?
+  qrValidityPeriod   String    @default("24h")
+  fieldNameRequired     Boolean @default(true)
+  fieldPhoneRequired    Boolean @default(false)
+  fieldEmailRequired    Boolean @default(false)
+  fieldPurposeRequired  Boolean @default(false)
+  fieldIdProofRequired  Boolean @default(false)
+  fieldCompanyEnabled   Boolean @default(true)
+  fieldCompanyRequired  Boolean @default(false)
+  fieldNotesEnabled     Boolean @default(true)
+  fieldNotesRequired    Boolean @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@unique([wid, hostId])
+  @@index([wid])
+  @@index([hostId])
 }

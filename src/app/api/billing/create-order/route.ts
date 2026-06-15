@@ -3,6 +3,7 @@ import {
   detectRegionFromCountry,
   getProPricing,
 } from "@/config/billing";
+import { createPendingSubscriptionAndTransaction } from "@/lib/billing-records";
 import { getRazorpay } from "@/lib/razorpay";
 
 function getCountryFromRequest(req: NextRequest): string | null {
@@ -23,18 +24,28 @@ export async function POST(req: NextRequest) {
     const region = detectRegionFromCountry(country);
     const pricing = getProPricing(region);
 
+    const workspaceId = Number(wid) || 1;
     const razorpay = getRazorpay();
     const order = await razorpay.orders.create({
       amount: pricing.amountMinor,
       currency: pricing.currency,
-      receipt: `visitor-pro-${wid}-${Date.now()}`,
+      receipt: `visitor-pro-${workspaceId}-${Date.now()}`,
       notes: {
-        wid: String(wid),
+        wid: String(workspaceId),
         product: "ansh-visitor-pro",
         region,
         pricingModel: "flat-workspace",
       },
     });
+
+    const { subscription, transaction } =
+      await createPendingSubscriptionAndTransaction({
+        wid: workspaceId,
+        razorpayOrderId: order.id,
+        amount: Number(order.amount),
+        currency: order.currency ?? pricing.currency,
+        region,
+      });
 
     return NextResponse.json(
       {
@@ -44,6 +55,8 @@ export async function POST(req: NextRequest) {
         region,
         proPrice: pricing.amount,
         proPriceDisplay: pricing.display,
+        subscriptionId: subscription.id,
+        transactionId: transaction.id,
       },
       { status: 200 }
     );

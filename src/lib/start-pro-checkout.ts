@@ -28,6 +28,18 @@ export async function startProCheckout(options: {
     throw new Error("Razorpay is not configured");
   }
 
+  const cancelPendingOrder = async () => {
+    try {
+      await fetch("/api/billing/cancel-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId, wid: options.wid }),
+      });
+    } catch {
+      // Best-effort audit trail when checkout is dismissed
+    }
+  };
+
   await openRazorpayCheckout({
     key: publicKey,
     orderId,
@@ -36,7 +48,10 @@ export async function startProCheckout(options: {
     name: options.userName,
     email: options.userEmail,
     description: PRO_CHECKOUT_DESCRIPTION,
-    onDismiss: options.onDismiss,
+    onDismiss: async () => {
+      await cancelPendingOrder();
+      options.onDismiss?.();
+    },
     onSuccess: async (response: RazorpayCheckoutResponse) => {
       try {
         const verifyRes = await fetch("/api/billing/verify-payment", {

@@ -26,13 +26,14 @@ export const FREE_PLAN_FEATURES = [
 ] as const;
 
 export const FREE_PLAN_LIMITATIONS = [
-  "No multi-branch analytics, custom badges, or audit exports",
+  "No multi-branch analytics, custom badges, audit exports, or My Link pages",
 ] as const;
 
 export const PRO_PLAN_FEATURES = [
   "Flat price — entire workspace, unlimited teammates",
   "Unlimited visitor check-ins & pre-registrations",
   "Multiple office branches & locations",
+  "Custom public My Link pre-registration pages",
   "Custom badge designer & branding",
   "Advanced reports & audit log exports",
   "WhatsApp / SMS host arrival alerts",
@@ -68,6 +69,11 @@ export const PLAN_COMPARISON_ROWS = [
   },
   {
     feature: "Custom badge designer",
+    free: false,
+    pro: true,
+  },
+  {
+    feature: "My Link public pre-registration pages",
     free: false,
     pro: true,
   },
