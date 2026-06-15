@@ -1,0 +1,57 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+model Workspace {
+  id        Int       @id @default(autoincrement())
+  name      String?
+  plan      String    @default("free") // "free" | "pro"
+  createdAt DateTime  @default(now())
+  profiles  Profile[]
+  visitors  Visitor[]
+}
+
+model Profile {
+  id             String    @id // Matches Supabase Auth ID
+  name           String
+  email          String    @unique
+  role           String    @default("Employee") // "Admin" | "Manager" | "Employee"
+  department     String    @default("General")
+  avatarInitials String    @default("EE")
+  status         String    @default("Active") // "Active" | "Inactive"
+  phoneNumber    String?
+  createdAt      DateTime  @default(now())
+  wid            Int?
+  workspace      Workspace? @relation(fields: [wid], references: [id], onDelete: Cascade)
+  visitors       Visitor[]  @relation("HostRelation")
+}
+
+model Visitor {
+  id             String    @id @default(cuid())
+  name           String
+  email          String
+  phone          String
+  company        String?
+  purpose        String    // "Interview" | "Meeting" | "Delivery" | "Vendor" | "Other"
+  status         String    @default("Expected") // "Expected" | "CheckedIn" | "CheckedOut"
+  hostId         String
+  host           Profile   @relation("HostRelation", fields: [hostId], references: [id], onDelete: Cascade)
+  hostName       String
+  checkedInAt    DateTime?
+  checkedOutAt   DateTime?
+  preRegisteredAt DateTime @default(now())
+  idProofType    String?   // "Aadhaar" | "PAN" | "Driving License" | "Other"
+  idProofNumber  String?
+  badgeNumber    String?
+  qrCode         String?
+  notes          String?
+  wid            Int
+  workspace      Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)
+}
