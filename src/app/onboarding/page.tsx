@@ -180,8 +180,8 @@ export default function OnboardingPage() {
 
         {/* Branding */}
         <div className="relative z-10 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 font-extrabold text-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.15)]">
-            A
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
+            <img src="/logoAnshapps.png" alt="Ansh Visitor" className="h-10 w-10 object-contain" />
           </div>
           <div>
             <span className="text-sm font-extrabold tracking-wider text-white uppercase block">Ansh Visitor</span>
