@@ -987,6 +987,7 @@ export default function TeamDirectoryPage() {
             <DialogFooter className="px-6 py-5 border-t border-border/40 bg-slate-50/50 dark:bg-slate-900/50 flex sm:items-center sm:justify-between gap-3">
               {step === 1 ? (
                 <Button
+                  key="cancel-btn"
                   variant="outline"
                   type="button"
                   onClick={() => setOpenWizard(false)}
@@ -996,6 +997,7 @@ export default function TeamDirectoryPage() {
                 </Button>
               ) : (
                 <Button
+                  key="back-btn"
                   variant="outline"
                   type="button"
                   onClick={handleBackStep}
@@ -1007,6 +1009,7 @@ export default function TeamDirectoryPage() {
 
               {step < 3 ? (
                 <Button
+                  key="next-btn"
                   type="button"
                   onClick={handleNextStep}
                   className="w-full sm:w-44 h-11 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white border-0 cursor-pointer rounded-2xl flex items-center justify-center gap-2"
@@ -1016,6 +1019,7 @@ export default function TeamDirectoryPage() {
                 </Button>
               ) : (
                 <Button
+                  key="submit-btn"
                   type="submit"
                   className="w-full sm:w-44 h-11 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white border-0 cursor-pointer rounded-2xl"
                 >
