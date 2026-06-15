@@ -63,6 +63,18 @@ interface VisitorState {
   registerWalkIn: (walkInData: Omit<Visitor, "id" | "status" | "preRegisteredAt" | "qrCode" | "checkedInAt">) => void;
   addHost: (hostData: Omit<Host, "id" | "avatarInitials" | "status">) => void;
   updateCurrentUser: (hostData: Partial<Host>) => void;
+  departments: string[];
+  designations: string[];
+  officeBranches: string[];
+  workLocations: string[];
+  addDepartment: (dept: string) => void;
+  deleteDepartment: (dept: string) => void;
+  addDesignation: (desig: string) => void;
+  deleteDesignation: (desig: string) => void;
+  addOfficeBranch: (branch: string) => void;
+  deleteOfficeBranch: (branch: string) => void;
+  addWorkLocation: (loc: string) => void;
+  deleteWorkLocation: (loc: string) => void;
 }
 
 const SEEDED_HOSTS: Host[] = [
@@ -182,6 +194,10 @@ export const useVisitorStore = create<VisitorState>()(
         maxVisitors: 100,
         locations: 1
       },
+      departments: ["Engineering", "HR & Operations", "Product Management", "Enterprise Sales"],
+      designations: ["Software Engineer", "Senior Developer", "Product Manager", "HR Manager", "Operations Admin", "Security Officer", "Sales Director"],
+      officeBranches: ["HQ - Bangalore", "Delhi Branch", "Mumbai Office"],
+      workLocations: ["Remote", "On-site", "Hybrid"],
 
       initialize: async () => {
         // Mock async initialization delay
@@ -311,6 +327,35 @@ export const useVisitorStore = create<VisitorState>()(
             )
           };
         });
+      },
+
+      addDepartment: (dept) => {
+        if (!dept.trim() || get().departments.includes(dept.trim())) return;
+        set((state) => ({ departments: [...state.departments, dept.trim()] }));
+      },
+      deleteDepartment: (dept) => {
+        set((state) => ({ departments: state.departments.filter((d) => d !== dept) }));
+      },
+      addDesignation: (desig) => {
+        if (!desig.trim() || get().designations.includes(desig.trim())) return;
+        set((state) => ({ designations: [...state.designations, desig.trim()] }));
+      },
+      deleteDesignation: (desig) => {
+        set((state) => ({ designations: state.designations.filter((d) => d !== desig) }));
+      },
+      addOfficeBranch: (branch) => {
+        if (!branch.trim() || get().officeBranches.includes(branch.trim())) return;
+        set((state) => ({ officeBranches: [...state.officeBranches, branch.trim()] }));
+      },
+      deleteOfficeBranch: (branch) => {
+        set((state) => ({ officeBranches: state.officeBranches.filter((b) => b !== branch) }));
+      },
+      addWorkLocation: (loc) => {
+        if (!loc.trim() || get().workLocations.includes(loc.trim())) return;
+        set((state) => ({ workLocations: [...state.workLocations, loc.trim()] }));
+      },
+      deleteWorkLocation: (loc) => {
+        set((state) => ({ workLocations: state.workLocations.filter((l) => l !== loc) }));
       }
     }),
     {

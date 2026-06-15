@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/crm/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -37,7 +38,8 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function TeamDirectoryPage() {
-  const { hosts, addHost, switchUser, currentUser } = useVisitorStore();
+  const router = useRouter();
+  const { hosts, addHost, switchUser, currentUser, departments, designations, officeBranches } = useVisitorStore();
 
   // Directory UI states
   const [searchQuery, setSearchQuery] = useState("");
@@ -65,11 +67,11 @@ export default function TeamDirectoryPage() {
   // Form Fields - Step 2: JOB DETAILS
   const [teammateCode, setTeammateCode] = useState("");
   const [joiningDate, setJoiningDate] = useState("");
-  const [designation, setDesignation] = useState("Software Engineer");
-  const [department, setDepartment] = useState("Engineering");
+  const [designation, setDesignation] = useState(designations[0] || "Software Engineer");
+  const [department, setDepartment] = useState(departments[0] || "Engineering");
   const [accessRole, setAccessRole] = useState("Employee");
   const [employmentStatus, setEmploymentStatus] = useState("Active");
-  const [officeBranch, setOfficeBranch] = useState("HQ - Bangalore");
+  const [officeBranch, setOfficeBranch] = useState(officeBranches[0] || "HQ - Bangalore");
   const [workLocation, setWorkLocation] = useState("Remote");
   const [reportingManager, setReportingManager] = useState("");
   const [reportingHR, setReportingHR] = useState("");
@@ -81,7 +83,7 @@ export default function TeamDirectoryPage() {
   const [emergencyPhone, setEmergencyPhone] = useState("+91");
 
   // Departments for filters
-  const departments = Array.from(new Set(hosts.map((h) => h.department)));
+  const departmentsFilterList = Array.from(new Set([...departments, ...hosts.map((h) => h.department)]));
 
   // Populate form for Edit
   const handleEditTeammate = (host: Host) => {
@@ -134,11 +136,11 @@ export default function TeamDirectoryPage() {
     setDob("");
     setTeammateCode(`ANSH-${Math.floor(100 + Math.random() * 900)}`);
     setJoiningDate("");
-    setDesignation("Software Engineer");
-    setDepartment("Engineering");
+    setDesignation(designations[0] || "Software Engineer");
+    setDepartment(departments[0] || "Engineering");
     setAccessRole("Employee");
     setEmploymentStatus("Active");
-    setOfficeBranch("HQ - Bangalore");
+    setOfficeBranch(officeBranches[0] || "HQ - Bangalore");
     setWorkLocation("Remote");
     setReportingManager(hosts[0]?.id || "");
     setReportingHR(hosts.find(h => h.department.toLowerCase().includes("hr"))?.id || hosts[0]?.id || "");
@@ -331,7 +333,7 @@ export default function TeamDirectoryPage() {
         <div className="flex gap-4">
           <Select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="w-40 bg-card border-input text-foreground">
             <option value="All">All Departments</option>
-            {departments.map((d) => (
+            {departmentsFilterList.map((d) => (
               <option key={d} value={d}>
                 {d}
               </option>
@@ -753,7 +755,13 @@ export default function TeamDirectoryPage() {
                         <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                           Designation
                         </label>
-                        <span className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer">
+                        <span
+                          onClick={() => {
+                            setOpenWizard(false);
+                            router.push("/settings/workspace");
+                          }}
+                          className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer"
+                        >
                           + Add
                         </span>
                       </div>
@@ -762,13 +770,11 @@ export default function TeamDirectoryPage() {
                         onChange={(e) => setDesignation(e.target.value)}
                         className="mt-2 bg-card border-input text-foreground"
                       >
-                        <option value="Software Engineer">Software Engineer</option>
-                        <option value="Senior Developer">Senior Developer</option>
-                        <option value="Product Manager">Product Manager</option>
-                        <option value="HR Manager">HR Manager</option>
-                        <option value="Operations Admin">Operations Admin</option>
-                        <option value="Security Officer">Security Officer</option>
-                        <option value="Sales Director">Sales Director</option>
+                        {designations.map((d) => (
+                          <option key={d} value={d}>
+                            {d}
+                          </option>
+                        ))}
                       </Select>
                     </div>
                     <div>
@@ -776,7 +782,13 @@ export default function TeamDirectoryPage() {
                         <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                           Department
                         </label>
-                        <span className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer">
+                        <span
+                          onClick={() => {
+                            setOpenWizard(false);
+                            router.push("/settings/workspace");
+                          }}
+                          className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer"
+                        >
                           + Add
                         </span>
                       </div>
@@ -785,10 +797,11 @@ export default function TeamDirectoryPage() {
                         onChange={(e) => setDepartment(e.target.value)}
                         className="mt-2 bg-card border-input text-foreground"
                       >
-                        <option value="Engineering">Engineering</option>
-                        <option value="HR & Operations">HR & Operations</option>
-                        <option value="Product Management">Product Management</option>
-                        <option value="Enterprise Sales">Enterprise Sales</option>
+                        {departments.map((d) => (
+                          <option key={d} value={d}>
+                            {d}
+                          </option>
+                        ))}
                       </Select>
                     </div>
                   </div>
@@ -830,7 +843,13 @@ export default function TeamDirectoryPage() {
                         <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                           Office Branch
                         </label>
-                        <span className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer">
+                        <span
+                          onClick={() => {
+                            setOpenWizard(false);
+                            router.push("/settings/workspace");
+                          }}
+                          className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer"
+                        >
                           + Add
                         </span>
                       </div>
@@ -839,9 +858,11 @@ export default function TeamDirectoryPage() {
                         onChange={(e) => setOfficeBranch(e.target.value)}
                         className="mt-2 bg-card border-input text-foreground"
                       >
-                        <option value="HQ - Bangalore">HQ - Bangalore</option>
-                        <option value="Delhi Branch">Delhi Branch</option>
-                        <option value="Mumbai Office">Mumbai Office</option>
+                        {officeBranches.map((ob) => (
+                          <option key={ob} value={ob}>
+                            {ob}
+                          </option>
+                        ))}
                       </Select>
                     </div>
                     <div>
@@ -849,7 +870,13 @@ export default function TeamDirectoryPage() {
                         <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                           Work Location
                         </label>
-                        <span className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer">
+                        <span
+                          onClick={() => {
+                            setOpenWizard(false);
+                            router.push("/settings/workspace");
+                          }}
+                          className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer"
+                        >
                           + Add
                         </span>
                       </div>

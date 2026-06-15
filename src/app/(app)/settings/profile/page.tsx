@@ -40,7 +40,7 @@ import {
 } from "lucide-react";
 
 export default function ProfileSettingsPage() {
-  const { currentUser, hosts, updateCurrentUser } = useVisitorStore();
+  const { currentUser, hosts, updateCurrentUser, departments, designations, officeBranches } = useVisitorStore();
   const [openEditModal, setOpenEditModal] = useState(false);
 
   // Form states
@@ -55,9 +55,9 @@ export default function ProfileSettingsPage() {
   
   const [employeeCode, setEmployeeCode] = useState(currentUser.code || "");
   const [joiningDateVal, setJoiningDateVal] = useState(currentUser.joiningDate || "");
-  const [designationVal, setDesignationVal] = useState(currentUser.designation || "Software Engineer");
-  const [departmentVal, setDepartmentVal] = useState(currentUser.department || "Engineering");
-  const [officeBranchVal, setOfficeBranchVal] = useState(currentUser.officeBranch || "HQ - Bangalore");
+  const [designationVal, setDesignationVal] = useState(currentUser.designation || designations[0] || "Software Engineer");
+  const [departmentVal, setDepartmentVal] = useState(currentUser.department || departments[0] || "Engineering");
+  const [officeBranchVal, setOfficeBranchVal] = useState(currentUser.officeBranch || officeBranches[0] || "HQ - Bangalore");
   const [workLocationVal, setWorkLocationVal] = useState(currentUser.workLocation || "Remote");
   
   const [reportingManagerVal, setReportingManagerVal] = useState(currentUser.reportingManager || "");
@@ -587,13 +587,11 @@ export default function ProfileSettingsPage() {
                       onChange={(e) => setDesignationVal(e.target.value)}
                       className="mt-2"
                     >
-                      <option value="Software Engineer">Software Engineer</option>
-                      <option value="Senior Developer">Senior Developer</option>
-                      <option value="Product Manager">Product Manager</option>
-                      <option value="HR Manager">HR Manager</option>
-                      <option value="Operations Admin">Operations Admin</option>
-                      <option value="Security Officer">Security Officer</option>
-                      <option value="Sales Director">Sales Director</option>
+                      {designations.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
                     </Select>
                   </div>
                   <div>
@@ -605,10 +603,11 @@ export default function ProfileSettingsPage() {
                       onChange={(e) => setDepartmentVal(e.target.value)}
                       className="mt-2"
                     >
-                      <option value="Engineering">Engineering</option>
-                      <option value="HR & Operations">HR & Operations</option>
-                      <option value="Product Management">Product Management</option>
-                      <option value="Enterprise Sales">Enterprise Sales</option>
+                      {departments.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
                     </Select>
                   </div>
                 </div>
@@ -623,9 +622,11 @@ export default function ProfileSettingsPage() {
                       onChange={(e) => setOfficeBranchVal(e.target.value)}
                       className="mt-2"
                     >
-                      <option value="HQ - Bangalore">HQ - Bangalore</option>
-                      <option value="Delhi Branch">Delhi Branch</option>
-                      <option value="Mumbai Office">Mumbai Office</option>
+                      {officeBranches.map((ob) => (
+                        <option key={ob} value={ob}>
+                          {ob}
+                        </option>
+                      ))}
                     </Select>
                   </div>
                   <div>
