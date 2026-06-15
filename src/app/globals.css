@@ -375,3 +375,11 @@
   border-color: #fff;
 }
 
+/* Fix native select options contrast in dark theme */
+select option,
+.PhoneInputCountrySelect option {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+
+
