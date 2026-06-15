@@ -62,6 +62,7 @@ interface VisitorState {
   checkOutVisitor: (visitorId: string) => void;
   registerWalkIn: (walkInData: Omit<Visitor, "id" | "status" | "preRegisteredAt" | "qrCode" | "checkedInAt">) => void;
   addHost: (hostData: Omit<Host, "id" | "avatarInitials" | "status">) => void;
+  updateCurrentUser: (hostData: Partial<Host>) => void;
 }
 
 const SEEDED_HOSTS: Host[] = [
@@ -286,6 +287,30 @@ export const useVisitorStore = create<VisitorState>()(
         set((state) => ({
           hosts: [...state.hosts, newHost]
         }));
+      },
+
+      updateCurrentUser: (hostData) => {
+        set((state) => {
+          const updatedUser = {
+            ...state.currentUser,
+            ...hostData,
+            avatarInitials: hostData.name
+              ? hostData.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()
+                  .substring(0, 2)
+              : state.currentUser.avatarInitials
+          };
+          
+          return {
+            currentUser: updatedUser,
+            hosts: state.hosts.map((h) => 
+              h.id === state.currentUser.id ? updatedUser : h
+            )
+          };
+        });
       }
     }),
     {
