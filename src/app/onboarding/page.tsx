@@ -238,7 +238,7 @@ export default function OnboardingPage() {
         {/* Footer */}
         <div className="relative z-10">
           <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">
-            🛡️ Enterprise Grade Security
+            ✨ Powering Smart Lobby & Visitor Management
           </p>
         </div>
       </div>
