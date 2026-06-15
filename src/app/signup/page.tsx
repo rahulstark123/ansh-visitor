@@ -11,7 +11,7 @@ export default function SignupPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [companyName, setCompanyName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [emailSent, setEmailSent] = useState(false); // for email confirmation flow
@@ -28,10 +28,10 @@ export default function SignupPage() {
         email: email.trim().toLowerCase(),
         password,
         options: {
-          // Store workspace name in user metadata for onboarding retrieval
+          // Store user's name in metadata — onboarding will read it
           data: {
-            company_name: companyName.trim(),
-            full_name: "",  // Will be filled in onboarding
+            full_name: fullName.trim(),
+            company_name: "", // will be filled during onboarding
           },
           // After email confirmation, redirect back to onboarding
           emailRedirectTo: `${window.location.origin}/onboarding`,
@@ -54,13 +54,12 @@ export default function SignupPage() {
       }
 
       if (data.session) {
-        // Email confirmation disabled — user is auto-confirmed and logged in
-        // Store company name in localStorage for onboarding page
-        localStorage.setItem("ansh_onboarding_company", companyName.trim());
+        // Auto-confirmed — store name for onboarding greeting
+        localStorage.setItem("ansh_onboarding_name", fullName.trim());
         router.push("/onboarding");
       } else if (data.user) {
-        // Email confirmation required — show "check your email" state
-        localStorage.setItem("ansh_onboarding_company", companyName.trim());
+        // Email confirmation required
+        localStorage.setItem("ansh_onboarding_name", fullName.trim());
         setEmailSent(true);
         setLoading(false);
       }
@@ -134,14 +133,14 @@ export default function SignupPage() {
           <form onSubmit={handleSignup} className="space-y-5">
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                Organization / Company Name
+                Your Full Name
               </label>
               <input
                 type="text"
                 required
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Acme Inc"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Vikram Raj"
                 className="mt-2 block w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 shadow-[0_1px_2px_rgba(0,0,0,0.02)] outline-none transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               />
             </div>

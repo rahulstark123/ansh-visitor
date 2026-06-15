@@ -29,18 +29,16 @@ export default function OnboardingPage() {
   const [companyName, setCompanyName] = useState("");
   const [officeBranch, setOfficeBranch] = useState("HQ - Main Office");
 
-  // Pre-fill company name from signup metadata / localStorage
+  // Pre-fill full name from signup localStorage / Supabase metadata
   useEffect(() => {
-    const saved = localStorage.getItem("ansh_onboarding_company");
-    if (saved) setCompanyName(saved);
+    // 1. Read name saved during signup
+    const savedName = localStorage.getItem("ansh_onboarding_name");
+    if (savedName) setFullName(savedName);
 
-    // Also try to read from Supabase user metadata
+    // 2. Also try Supabase user metadata as fallback
     const supabase = createSupabaseClient();
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user?.user_metadata?.company_name && !saved) {
-        setCompanyName(user.user_metadata.company_name);
-      }
-      if (user?.user_metadata?.full_name && !fullName) {
+      if (user?.user_metadata?.full_name && !savedName) {
         setFullName(user.user_metadata.full_name);
       }
     });
@@ -115,7 +113,7 @@ export default function OnboardingPage() {
       });
 
       // 4️⃣  Cleanup and advance to done state
-      localStorage.removeItem("ansh_onboarding_company");
+      localStorage.removeItem("ansh_onboarding_name");
       setStep(3);
 
       // Brief "Done" display then redirect
