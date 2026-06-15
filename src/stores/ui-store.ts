@@ -8,16 +8,22 @@ interface UiState {
   subSidebarCollapsed: boolean;
   appearance: Appearance;
   accentTheme: AccentTheme;
+  trialBannerDismissed: boolean;
   toggleMainSidebar: () => void;
   toggleSubSidebar: () => void;
   setMainSidebarCollapsed: (collapsed: boolean) => void;
   setAppearance: (appearance: Appearance) => void;
   setAccentTheme: (accent: AccentTheme) => void;
+  setTrialBannerDismissed: (dismissed: boolean) => void;
 }
 
 type PersistedUiState = Pick<
   UiState,
-  "mainSidebarCollapsed" | "subSidebarCollapsed" | "appearance" | "accentTheme"
+  | "mainSidebarCollapsed"
+  | "subSidebarCollapsed"
+  | "appearance"
+  | "accentTheme"
+  | "trialBannerDismissed"
 >;
 
 const defaultPersisted: PersistedUiState = {
@@ -25,6 +31,7 @@ const defaultPersisted: PersistedUiState = {
   subSidebarCollapsed: false,
   appearance: "light",
   accentTheme: "emerald", // Default accent for Visitor app is emerald
+  trialBannerDismissed: false,
 };
 
 function isAppearance(value: unknown): value is Appearance {
@@ -66,6 +73,10 @@ function normalizePersisted(persisted: unknown): PersistedUiState {
     accentTheme: isAccentTheme(data.accentTheme)
       ? data.accentTheme
       : defaultPersisted.accentTheme,
+    trialBannerDismissed:
+      typeof data.trialBannerDismissed === "boolean"
+        ? data.trialBannerDismissed
+        : defaultPersisted.trialBannerDismissed,
   };
 }
 
@@ -76,6 +87,7 @@ export const useUiStore = create<UiState>()(
       subSidebarCollapsed: false,
       appearance: "light",
       accentTheme: "emerald",
+      trialBannerDismissed: false,
       toggleMainSidebar: () =>
         set((s) => ({ mainSidebarCollapsed: !s.mainSidebarCollapsed })),
       toggleSubSidebar: () =>
@@ -84,6 +96,8 @@ export const useUiStore = create<UiState>()(
         set({ mainSidebarCollapsed: collapsed }),
       setAppearance: (appearance) => set({ appearance }),
       setAccentTheme: (accentTheme) => set({ accentTheme }),
+      setTrialBannerDismissed: (trialBannerDismissed) =>
+        set({ trialBannerDismissed }),
     }),
 
     {
@@ -95,6 +109,7 @@ export const useUiStore = create<UiState>()(
         subSidebarCollapsed: state.subSidebarCollapsed,
         appearance: state.appearance,
         accentTheme: state.accentTheme,
+        trialBannerDismissed: state.trialBannerDismissed,
       }),
       migrate: (persisted) => normalizePersisted(persisted),
     }

@@ -34,10 +34,10 @@ import {
   ArrowRight,
   ShieldCheck,
   Save,
-  Loader2,
   CheckCircle,
   FileText
 } from "lucide-react";
+import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
 
 export default function ProfileSettingsPage() {
   const { currentUser, hosts, updateCurrentUser, departments, designations, officeBranches } = useVisitorStore();
@@ -708,10 +708,7 @@ export default function ProfileSettingsPage() {
                   className="w-full sm:w-44 h-10 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white border-0 cursor-pointer rounded-xl flex items-center justify-center gap-2"
                 >
                   {saving ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Saving changes...
-                    </>
+                    <ButtonLoadingSkeleton />
                   ) : (
                     <>
                       <Save className="h-4 w-4" />

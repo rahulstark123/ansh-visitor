@@ -2,22 +2,20 @@ import type { LucideIcon } from "lucide-react";
 import {
   LayoutDashboard,
   UsersRound,
-  UserCheck,
   BarChart3,
   Settings,
   User,
   Building,
-  QrCode,
   ClipboardList,
   Contact,
   BadgeCent,
-  Users
+  Users,
+  CreditCard,
 } from "lucide-react";
 
 export type NavSectionId =
   | "dashboard"
   | "visitors"
-  | "check-in"
   | "team"
   | "reports"
   | "settings";
@@ -52,18 +50,8 @@ export const mainNav: MainNavItem[] = [
     icon: UsersRound,
     subNav: [
       { id: "today-visitors", label: "Today's Guests", href: "/visitors", icon: Contact },
-      { id: "pre-registered", label: "Pre-registered", href: "/visitors/pre-registered", icon: ClipboardList },
+      { id: "pre-registered", label: "Registered Users", href: "/visitors/pre-registered", icon: ClipboardList },
       { id: "all-visitors", label: "All Visitors Log", href: "/visitors/all", icon: UsersRound },
-    ],
-  },
-  {
-    id: "check-in",
-    label: "Check-in Kiosk",
-    href: "/check-in",
-    icon: UserCheck,
-    subNav: [
-      { id: "kiosk-scan", label: "QR Code Scan", href: "/check-in", icon: QrCode },
-      { id: "kiosk-manual", label: "Manual Entry", href: "/check-in/manual", icon: User },
     ],
   },
   {
@@ -86,6 +74,7 @@ export const mainNav: MainNavItem[] = [
     subNav: [
       { id: "profile", label: "Profile Settings", href: "/settings/profile", icon: User },
       { id: "company", label: "Company Settings", href: "/settings/company", icon: Building },
+      { id: "billing", label: "Billing", href: "/settings/billing", icon: CreditCard },
       { id: "workspace", label: "Workspace Settings", href: "/settings/workspace", icon: Settings },
       { id: "badge", label: "Badge Customizer", href: "/settings/badge", icon: BadgeCent },
     ],

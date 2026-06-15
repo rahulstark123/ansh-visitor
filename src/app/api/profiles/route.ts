@@ -40,7 +40,13 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "asc" },
     });
 
-    return NextResponse.json({ profiles }, { status: 200 });
+    // Map phoneNumber to phone for frontend store compatibility
+    const mappedProfiles = profiles.map((p) => ({
+      ...p,
+      phone: p.phoneNumber || undefined,
+    }));
+
+    return NextResponse.json({ profiles: mappedProfiles }, { status: 200 });
   } catch (err) {
     console.error("[GET /api/profiles]", err);
     return NextResponse.json({ error: "Failed to fetch profiles" }, { status: 500 });
@@ -63,6 +69,7 @@ export async function POST(req: NextRequest) {
       officeBranch,
       workLocation,
       phoneNumber,
+      phone, // support phone payload field
       personalEmail,
       bloodGroup,
       dob,
@@ -99,7 +106,7 @@ export async function POST(req: NextRequest) {
         designation,
         officeBranch,
         workLocation,
-        phoneNumber,
+        phoneNumber: phoneNumber ?? phone, // map phone fallback
         personalEmail,
         bloodGroup,
         dob,
@@ -115,7 +122,12 @@ export async function POST(req: NextRequest) {
       select: PROFILE_SELECT,
     });
 
-    return NextResponse.json({ profile }, { status: 201 });
+    const mappedProfile = {
+      ...profile,
+      phone: profile.phoneNumber || undefined,
+    };
+
+    return NextResponse.json({ profile: mappedProfile }, { status: 201 });
   } catch (err) {
     console.error("[POST /api/profiles]", err);
     return NextResponse.json({ error: "Failed to create profile" }, { status: 500 });

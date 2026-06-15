@@ -18,7 +18,7 @@ const monoFont = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Ansh Visitor",
-  description: "A premium, state-of-the-art visitor management and lobby kiosk check-in system for modern organizations.",
+  description: "A premium visitor management system for modern organizations.",
   icons: {
     icon: "/anshFavicon.png",
   },

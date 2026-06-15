@@ -91,6 +91,8 @@ model Visitor {
   idProofNumber   String?
   badgeNumber     String?
   qrCode          String?
+  qrValidUntil    DateTime?
+  walkIn          Boolean   @default(false)
   notes           String?
   wid             Int
   workspace       Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)

@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
 import { AuthMarketingPanel } from "@/components/auth/auth-marketing-panel";
+import { GoogleAuthButton, AuthDivider } from "@/components/auth/google-auth-button";
 import { createSupabaseClient } from "@/lib/supabase";
 import { toast } from "@/components/ui/toast";
 
@@ -74,6 +76,13 @@ export default function LoginPage() {
             </p>
           </div>
 
+          <GoogleAuthButton
+            label="Sign in with Google"
+            disabled={loading}
+          />
+
+          <AuthDivider />
+
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
@@ -131,10 +140,7 @@ export default function LoginPage() {
                 className="flex w-full justify-center items-center gap-2 rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-slate-800 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Signing in...
-                  </>
+                  <ButtonLoadingSkeleton className="h-4 w-32 rounded bg-primary-foreground/30" />
                 ) : (
                   "Sign in to Workspace"
                 )}

@@ -17,7 +17,7 @@ import {
   Moon,
   Sun,
   Clock,
-  UserCheck,
+  BarChart3,
   Building,
   ArrowUpRight,
   Lock,
@@ -29,6 +29,10 @@ import {
   User
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PricingSection } from "@/components/landing/pricing-section";
+import { PassPreviewSkeleton, ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/toast";
 
 const MOCK_DEMO_HOSTS = [
   { id: "h-1", name: "Vikram Raj", role: "HR & Operations" },
@@ -75,7 +79,7 @@ export default function LandingPage() {
   const handleGenerateDemoPass = (e: React.FormEvent) => {
     e.preventDefault();
     if (!visitorName.trim() || !visitorPhone.trim()) {
-      alert("Please enter both visitor name and phone number.");
+      toast.warning("Missing details", "Please enter both visitor name and phone number.");
       return;
     }
 
@@ -91,6 +95,10 @@ export default function LandingPage() {
         passcode,
       });
       setLoadingDemo(false);
+      toast.success(
+        "Demo pass created",
+        `${visitorName} · Passcode ${passcode}`
+      );
     }, 800);
   };
 
@@ -210,7 +218,7 @@ export default function LandingPage() {
               </h1>
 
               <p className="text-base sm:text-lg text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                Ansh Visitor is a premium, secure, and state-of-the-art visitor management and kiosk lobby terminal system. Speed up front-desk operations, verify government IDs, generate QR passes, and log visits seamlessly.
+                Ansh Visitor is a premium, secure visitor management system for modern offices. Speed up front-desk operations, verify government IDs, generate QR passes, and log visits seamlessly.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
@@ -232,10 +240,10 @@ export default function LandingPage() {
                       <ArrowRight className="h-5 w-5" />
                     </Link>
                     <Link
-                      href="/check-in"
+                      href="#pricing"
                       className="w-full sm:w-auto px-8 h-12 text-sm font-bold border border-border bg-card hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-2xl flex items-center justify-center gap-2 cursor-pointer transition-colors text-slate-700 dark:text-slate-300"
                     >
-                      Launch Kiosk Terminal
+                      View Pricing
                       <ArrowUpRight className="h-4 w-4" />
                     </Link>
                   </>
@@ -390,9 +398,9 @@ export default function LandingPage() {
                 desc: "Front-desk managers can use the quick verification scanner modal to check in expected guests via keyboard scanner emulation in under 1 second.",
               },
               {
-                icon: UserCheck,
-                title: "Self-Service Lobby Kiosk",
-                desc: "iPad/tablet kiosk layouts at `/check-in` allow walk-in guests to register, select hosts, and check in entirely by themselves.",
+                icon: BarChart3,
+                title: "Reports & Audit Logs",
+                desc: "Export visitor history, filter by date and status, and maintain compliance-ready audit trails for your organization.",
               },
               {
                 icon: Users,
@@ -434,7 +442,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto rounded-3xl border border-border/40 bg-card overflow-hidden shadow-2xl grid lg:grid-cols-12">
             
-            {/* Try Kiosk Widget Left Form */}
+            {/* Demo registration form */}
             <div className="lg:col-span-7 p-8 sm:p-10 space-y-6">
               <div className="space-y-1">
                 <span className="text-[10px] font-black text-primary uppercase tracking-widest">
@@ -458,7 +466,7 @@ export default function LandingPage() {
                       Pass Generated Successfully!
                     </h3>
                     <p className="text-[11px] text-slate-400 font-semibold">
-                      Your guest can check in using this passcode at the desk or kiosk.
+                      Your guest can check in using this passcode at the reception desk.
                     </p>
                   </div>
                   <button
@@ -539,15 +547,21 @@ export default function LandingPage() {
                     disabled={loadingDemo}
                     className="w-full btn-primary h-11 rounded-xl font-bold cursor-pointer text-xs uppercase tracking-wider disabled:opacity-50"
                   >
-                    {loadingDemo ? "Generating pass..." : "Pre-register Visitor"}
+                    {loadingDemo ? (
+                      <ButtonLoadingSkeleton className="mx-auto h-4 w-36 rounded bg-primary-foreground/30" />
+                    ) : (
+                      "Pre-register Visitor"
+                    )}
                   </button>
                 </form>
               )}
             </div>
 
-            {/* Try Kiosk Pass Preview Right Column */}
+            {/* Demo pass preview */}
             <div className="lg:col-span-5 p-8 border-l border-border/40 bg-slate-50/30 dark:bg-slate-900/30 flex flex-col justify-center items-center">
-              {demoPass ? (
+              {loadingDemo ? (
+                <PassPreviewSkeleton />
+              ) : demoPass ? (
                 <div className="w-full max-w-[270px] bg-card border border-border/40 rounded-2xl p-5 shadow-lg flex flex-col items-center space-y-4 animate-in zoom-in duration-300">
                   <div className="text-center">
                     <span className="text-[9px] font-extrabold uppercase text-slate-400 dark:text-slate-500 tracking-widest">
@@ -587,13 +601,17 @@ export default function LandingPage() {
                   </span>
                 </div>
               ) : (
-                <div className="text-center p-8 space-y-3">
-                  <QrCode className="h-14 w-14 text-slate-300 dark:text-slate-700 animate-pulse mx-auto" />
+                <div className="w-full max-w-[270px] space-y-4 text-center">
+                  <div className="space-y-3 opacity-50">
+                    <Skeleton className="mx-auto h-32 w-32 rounded-xl" />
+                    <Skeleton className="mx-auto h-4 w-28 rounded-full" />
+                    <Skeleton className="mx-auto h-3 w-40 rounded" />
+                  </div>
                   <div className="space-y-1">
                     <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wide">
                       Pass Preview
                     </h4>
-                    <p className="text-[10px] text-slate-400 font-semibold leading-relaxed max-w-[200px] mx-auto">
+                    <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">
                       Fill out the demo pre-registration form to generate your interactive QR code pass preview.
                     </p>
                   </div>
@@ -648,107 +666,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* PRICING SECTION */}
-      <section id="pricing" className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">
-            <span className="text-xs font-black tracking-widest text-primary uppercase">
-              Transparent Pricing
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-              Choose the perfect plan for your office
-            </h2>
-            <p className="text-sm sm:text-base text-slate-400 font-medium">
-              Flexible options, from startups getting off the ground to multi-location organizations.
-            </p>
-          </div>
-
-          <div className="grid gap-8 max-w-3xl mx-auto sm:grid-cols-2">
-            {/* Free Tier */}
-            <div className="crm-card p-8 flex flex-col justify-between space-y-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-primary/20 text-primary font-black uppercase text-[8px] tracking-wider px-3 py-1 rounded-bl-xl">
-                Active Plan
-              </div>
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <h3 className="text-lg font-black text-slate-900 dark:text-white leading-none">
-                    Free Tier
-                  </h3>
-                  <p className="text-xs text-slate-400 font-semibold">Great for individual workspaces</p>
-                </div>
-                <div className="flex items-baseline leading-none">
-                  <span className="text-4xl font-black tracking-tight text-slate-900 dark:text-white">
-                    ₹0
-                  </span>
-                  <span className="text-xs text-slate-400 font-semibold ml-2">/ month</span>
-                </div>
-                <ul className="space-y-3 text-xs font-semibold text-slate-500">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary shrink-0" />
-                    Up to 100 Monthly Visitors
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary shrink-0" />
-                    1 Workspace Location
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary shrink-0" />
-                    Team Directory (4 Seed Hosts)
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary shrink-0" />
-                    Lobby Kiosk & QR Passes
-                  </li>
-                </ul>
-              </div>
-              <Link
-                href={isLoggedIn ? "/dashboard" : "/signup"}
-                className="btn-primary w-full rounded-xl flex items-center justify-center font-bold text-xs uppercase tracking-wider cursor-pointer h-10"
-              >
-                {isLoggedIn ? "Go to Dashboard" : "Sign Up Free"}
-              </Link>
-            </div>
-
-            {/* Enterprise Tier */}
-            <div className="crm-card p-8 flex flex-col justify-between space-y-6 border-slate-300 dark:border-slate-800 bg-slate-50/20 dark:bg-slate-950/20">
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <h3 className="text-lg font-black text-slate-900 dark:text-white leading-none">
-                    Enterprise
-                  </h3>
-                  <p className="text-xs text-slate-400 font-semibold">For scaling operations and multi-office</p>
-                </div>
-                <div className="flex items-baseline leading-none">
-                  <span className="text-4xl font-black tracking-tight text-slate-900 dark:text-white">
-                    Custom
-                  </span>
-                </div>
-                <ul className="space-y-3 text-xs font-semibold text-slate-500">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary shrink-0" />
-                    Unlimited Visitors & Passes
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary shrink-0" />
-                    Multiple Building Locations
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary shrink-0" />
-                    Custom Badge Lanyard Customizer
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary shrink-0" />
-                    Dedicated Account Manager
-                  </li>
-                </ul>
-              </div>
-              <button className="w-full h-10 text-xs font-bold border border-border hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300 rounded-xl transition-colors cursor-pointer uppercase tracking-wider">
-                Contact Sales
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PricingSection isLoggedIn={isLoggedIn} />
 
       {/* FOOTER */}
       <footer className="mt-auto border-t border-border/40 bg-card py-12">

@@ -1,24 +1,112 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Loader2, Mail, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, Mail, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
 import { AuthMarketingPanel } from "@/components/auth/auth-marketing-panel";
+import { GoogleAuthButton, AuthDivider } from "@/components/auth/google-auth-button";
 import { createSupabaseClient } from "@/lib/supabase";
+import { toast } from "@/components/ui/toast";
+
+// ─── Password strength calculator ─────────────────────────────────────────────
+function getPasswordStrength(pw: string): {
+  score: number;        // 0–4
+  label: string;
+  color: string;
+  bars: string[];
+} {
+  if (!pw) return { score: 0, label: "", color: "", bars: Array(4).fill("bg-slate-200") };
+
+  let score = 0;
+  if (pw.length >= 8)                    score++;
+  if (/[A-Z]/.test(pw))                  score++;
+  if (/[0-9]/.test(pw))                  score++;
+  if (/[^A-Za-z0-9]/.test(pw))          score++;
+
+  const map = [
+    { label: "Too weak",  color: "text-rose-500" },
+    { label: "Weak",      color: "text-orange-500" },
+    { label: "Fair",      color: "text-amber-500" },
+    { label: "Strong",    color: "text-emerald-500" },
+    { label: "Very strong", color: "text-emerald-600" },
+  ];
+
+  const barColors = [
+    "bg-slate-200 dark:bg-slate-700",
+    "bg-rose-400",
+    "bg-orange-400",
+    "bg-amber-400",
+    "bg-emerald-400",
+  ];
+
+  const bars = Array(4).fill("").map((_, i) =>
+    i < score ? barColors[score] : "bg-slate-200 dark:bg-slate-700"
+  );
+
+  return { score, label: map[score].label, color: map[score].color, bars };
+}
+
+// ─── Password rule checklist ───────────────────────────────────────────────────
+function PasswordRules({ pw }: { pw: string }) {
+  const rules = [
+    { label: "At least 8 characters",      ok: pw.length >= 8 },
+    { label: "One uppercase letter (A–Z)",  ok: /[A-Z]/.test(pw) },
+    { label: "One number (0–9)",            ok: /[0-9]/.test(pw) },
+    { label: "One special character",       ok: /[^A-Za-z0-9]/.test(pw) },
+  ];
+
+  if (!pw) return null;
+
+  return (
+    <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1">
+      {rules.map((r) => (
+        <div key={r.label} className={`flex items-center gap-1.5 text-[10px] font-semibold transition-colors ${r.ok ? "text-emerald-600" : "text-slate-400"}`}>
+          <span className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ${r.ok ? "bg-emerald-100 text-emerald-600" : "bg-slate-100 text-slate-300"}`}>
+            {r.ok ? "✓" : "·"}
+          </span>
+          {r.label}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function SignupPage() {
   const router = useRouter();
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [emailSent, setEmailSent] = useState(false); // for email confirmation flow
+  const [emailSent, setEmailSent] = useState(false);
+
+  const strength = useMemo(() => getPasswordStrength(password), [password]);
+
+  // ── Password match indicator ─────────────────────────────────────────────────
+  const passwordMismatch = confirmPassword.length > 0 && confirmPassword !== password;
+  const passwordMatch    = confirmPassword.length > 0 && confirmPassword === password;
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg("");
+
+    // Client-side validation → show toasts
+    if (!fullName.trim()) {
+      toast.error("Name required", "Please enter your full name.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Passwords don't match", "Make sure both passwords are identical.");
+      return;
+    }
+    if (strength.score < 2) {
+      toast.warning("Weak password", "Use at least 8 characters, a number and an uppercase letter.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -28,34 +116,30 @@ export default function SignupPage() {
         email: email.trim().toLowerCase(),
         password,
         options: {
-          // Store user's name in metadata — onboarding will read it
           data: {
             full_name: fullName.trim(),
-            company_name: "", // will be filled during onboarding
+            company_name: "",
           },
-          // After email confirmation, redirect back to onboarding
           emailRedirectTo: `${window.location.origin}/onboarding`,
         },
       });
 
       if (error) {
-        // Map Supabase error codes to user-friendly messages
         if (error.message.includes("already registered") || error.message.includes("already exists")) {
-          setErrorMsg("This email is already registered. Try logging in instead.");
+          toast.error("Email already in use", "Try logging in instead.");
         } else if (error.message.includes("Password should be")) {
-          setErrorMsg("Password must be at least 6 characters.");
-        } else if (error.message.includes("valid email")) {
-          setErrorMsg("Please enter a valid email address.");
+          toast.error("Password too short", "Minimum 6 characters required.");
         } else {
-          setErrorMsg(error.message);
+          toast.error("Sign up failed", error.message);
         }
         setLoading(false);
         return;
       }
 
       if (data.session) {
-        // Auto-confirmed — store name for onboarding greeting
+        // Auto-confirmed — redirect immediately
         localStorage.setItem("ansh_onboarding_name", fullName.trim());
+        toast.success("Account created! 🎉", "Setting up your workspace...");
         router.push("/onboarding");
       } else if (data.user) {
         // Email confirmation required
@@ -64,12 +148,12 @@ export default function SignupPage() {
         setLoading(false);
       }
     } catch {
-      setErrorMsg("Something went wrong. Please try again.");
+      toast.error("Network error", "Something went wrong. Please try again.");
       setLoading(false);
     }
   };
 
-  // ── Email confirmation pending screen ────────────────────────────────
+  // ── Email sent screen ────────────────────────────────────────────────────────
   if (emailSent) {
     return (
       <div className="flex min-h-screen bg-white text-slate-800">
@@ -85,21 +169,19 @@ export default function SignupPage() {
               <p className="mt-3 text-sm text-slate-500 leading-relaxed">
                 We sent a confirmation link to{" "}
                 <span className="font-bold text-slate-800">{email}</span>.
-                <br />
-                Click the link to activate your account and continue onboarding.
+                <br />Click it to activate your account and continue.
               </p>
             </div>
             <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-4 text-xs font-semibold text-emerald-700">
               <CheckCircle2 className="inline-block h-3.5 w-3.5 mr-1.5 -mt-0.5" />
-              Didn't receive it? Check your spam folder or{" "}
+              Didn't receive it? Check spam or{" "}
               <button
                 type="button"
                 onClick={() => setEmailSent(false)}
                 className="underline underline-offset-2 cursor-pointer hover:text-emerald-600"
               >
                 go back
-              </button>
-              .
+              </button>.
             </div>
           </div>
         </div>
@@ -107,14 +189,14 @@ export default function SignupPage() {
     );
   }
 
-  // ── Signup form ──────────────────────────────────────────────────────
+  // ── Signup form ──────────────────────────────────────────────────────────────
   return (
     <div className="flex min-h-screen bg-white text-slate-800">
       <title>Sign Up | Ansh Visitor</title>
       <AuthMarketingPanel />
 
       <div className="flex w-full items-center justify-center bg-white px-6 py-12 lg:w-1/2">
-        <div className="w-full max-w-[420px] space-y-8 animate-in fade-in duration-500">
+        <div className="w-full max-w-[420px] space-y-6 animate-in fade-in duration-500">
           <div className="text-center">
             <h2 className="font-sans text-3xl font-extrabold tracking-tight text-slate-900">
               Create an account
@@ -124,13 +206,15 @@ export default function SignupPage() {
             </p>
           </div>
 
-          {errorMsg && (
-            <div className="rounded-xl border border-rose-100 bg-rose-50 p-4 text-xs font-bold text-rose-600 animate-in fade-in duration-200">
-              {errorMsg}
-            </div>
-          )}
+          <GoogleAuthButton
+            label="Sign up with Google"
+            disabled={loading}
+          />
 
-          <form onSubmit={handleSignup} className="space-y-5">
+          <AuthDivider />
+
+          <form onSubmit={handleSignup} className="space-y-4">
+            {/* Full Name */}
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
                 Your Full Name
@@ -145,6 +229,7 @@ export default function SignupPage() {
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
                 Work Email Address
@@ -159,32 +244,98 @@ export default function SignupPage() {
               />
             </div>
 
+            {/* Password + Strength */}
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
                 Password
               </label>
-              <input
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Min. 6 characters"
-                className="mt-2 block w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 shadow-[0_1px_2px_rgba(0,0,0,0.02)] outline-none transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-              />
+              <div className="relative mt-2">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  minLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Min. 6 characters"
+                  className="block w-full rounded-xl border border-slate-200 bg-white pl-4 pr-10 py-3.5 text-sm text-slate-900 shadow-[0_1px_2px_rgba(0,0,0,0.02)] outline-none transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+
+              {/* Strength bars */}
+              {password.length > 0 && (
+                <div className="mt-2.5 space-y-1.5">
+                  <div className="flex items-center gap-1.5">
+                    {strength.bars.map((bar, i) => (
+                      <div
+                        key={i}
+                        className={`h-1 flex-1 rounded-full transition-all duration-300 ${bar}`}
+                      />
+                    ))}
+                    <span className={`ml-1 text-[10px] font-bold transition-colors ${strength.color}`}>
+                      {strength.label}
+                    </span>
+                  </div>
+                  <PasswordRules pw={password} />
+                </div>
+              )}
             </div>
 
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                Confirm Password
+              </label>
+              <div className="relative mt-2">
+                <input
+                  type={showConfirm ? "text" : "password"}
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter your password"
+                  className={`block w-full rounded-xl border bg-white pl-4 pr-10 py-3.5 text-sm text-slate-900 shadow-[0_1px_2px_rgba(0,0,0,0.02)] outline-none transition-all placeholder:text-slate-400 focus:ring-1 ${
+                    passwordMismatch
+                      ? "border-rose-400 focus:border-rose-400 focus:ring-rose-200"
+                      : passwordMatch
+                      ? "border-emerald-400 focus:border-emerald-400 focus:ring-emerald-200"
+                      : "border-slate-200 focus:border-emerald-500 focus:ring-emerald-500"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                >
+                  {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {passwordMismatch && (
+                <p className="mt-1.5 text-[10px] font-bold text-rose-500">
+                  ✗ Passwords don't match
+                </p>
+              )}
+              {passwordMatch && (
+                <p className="mt-1.5 text-[10px] font-bold text-emerald-600 flex items-center gap-1">
+                  <ShieldCheck className="h-3 w-3" /> Passwords match
+                </p>
+              )}
+            </div>
+
+            {/* Submit */}
             <div className="pt-2">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || passwordMismatch}
                 className="flex w-full justify-center items-center gap-2 rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-slate-800 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Creating workspace...
-                  </>
+                  <ButtonLoadingSkeleton className="h-4 w-36 rounded bg-white/30" />
                 ) : (
                   "Create Free Workspace"
                 )}
@@ -192,7 +343,7 @@ export default function SignupPage() {
             </div>
           </form>
 
-          <p className="mt-6 text-center text-sm font-semibold text-slate-400">
+          <p className="text-center text-sm font-semibold text-slate-400">
             Already have an account?{" "}
             <Link href="/login" className="font-bold text-emerald-600 hover:text-emerald-500">
               Log in

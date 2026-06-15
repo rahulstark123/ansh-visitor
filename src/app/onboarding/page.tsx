@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Building2, User, Phone, Briefcase, MapPin, ChevronDown } from "lucide-react";
+import { Building2, User, Phone, Briefcase, MapPin, ChevronDown } from "lucide-react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { createSupabaseClient } from "@/lib/supabase";
+import { AuthFormSkeleton, ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
 
 const STEPS = [
   { 
@@ -53,8 +54,13 @@ export default function OnboardingPage() {
     // 2. Also try Supabase user metadata as fallback
     const supabase = createSupabaseClient();
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user?.user_metadata?.full_name && !savedName) {
-        setFullName(user.user_metadata.full_name);
+      const metaName =
+        user?.user_metadata?.full_name ||
+        user?.user_metadata?.name ||
+        user?.user_metadata?.given_name;
+      if (metaName && !savedName) {
+        setFullName(metaName);
+        localStorage.setItem("ansh_onboarding_name", metaName);
       }
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -156,14 +162,7 @@ export default function OnboardingPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#070809] px-6">
         <title>Setting Up | Ansh Visitor</title>
-        <div className="w-full max-w-[420px] rounded-[2rem] border border-white/5 bg-slate-950/80 p-10 text-center shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-500">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 mx-auto mb-6">
-            <span className="text-3xl">🎉</span>
-          </div>
-          <h2 className="text-xl font-extrabold text-white mb-2">Workspace Ready!</h2>
-          <p className="text-sm text-slate-400">Taking you to your dashboard...</p>
-          <Loader2 className="h-5 w-5 animate-spin text-emerald-500 mx-auto mt-6" />
-        </div>
+        <AuthFormSkeleton />
       </div>
     );
   }
@@ -185,7 +184,7 @@ export default function OnboardingPage() {
           </div>
           <div>
             <span className="text-sm font-extrabold tracking-wider text-white uppercase block">Ansh Visitor</span>
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">Lobby & Kiosk CRM</span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">Visitor Management</span>
           </div>
         </div>
 
@@ -417,6 +416,7 @@ export default function OnboardingPage() {
                       <option value="Manager">Manager</option>
                       <option value="HR">HR</option>
                       <option value="Employee">Employee</option>
+                      <option value="Security">Security</option>
                     </select>
                     {/* Premium Custom Dropdown Arrow */}
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
@@ -440,10 +440,7 @@ export default function OnboardingPage() {
                   className="flex-1 flex justify-center items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {loading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Setting up...
-                    </>
+                    <ButtonLoadingSkeleton className="h-4 w-28 rounded bg-white/30" />
                   ) : (
                     "Complete Setup 🚀"
                   )}

@@ -10,6 +10,22 @@ export async function PATCH(
   try {
     const { id } = await params;
 
+    const existing = await prisma.visitor.findUnique({
+      where: { id },
+      select: { status: true },
+    });
+
+    if (!existing) {
+      return NextResponse.json({ error: "Visitor not found" }, { status: 404 });
+    }
+
+    if (existing.status !== "CheckedIn") {
+      return NextResponse.json(
+        { error: "Guest is not checked in" },
+        { status: 400 }
+      );
+    }
+
     const visitor = await prisma.visitor.update({
       where: { id },
       data: {

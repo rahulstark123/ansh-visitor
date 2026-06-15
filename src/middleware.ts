@@ -3,7 +3,7 @@
  *
  * Runs on EVERY request before it hits the page.
  * 1. Refreshes the Supabase session token (keeps users logged in)
- * 2. Protects /dashboard, /visitors, /settings, /team, /reports, /check-in
+ * 2. Protects /dashboard, /visitors, /settings, /team, /reports, /help
  *    — redirects unauthenticated users to /login
  * 3. Redirects already-authenticated users away from /login and /signup
  */
@@ -17,7 +17,7 @@ const PROTECTED = [
   "/settings",
   "/team",
   "/reports",
-  "/check-in",
+  "/help",
 ];
 
 // Auth routes — authenticated users should not see these

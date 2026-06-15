@@ -5,15 +5,17 @@ import { usePathname, useRouter } from "next/navigation";
 import { SubSidebar } from "./sub-sidebar";
 import { MainSidebar } from "./main-sidebar";
 import { AppHeader } from "./app-header";
+import { ProTrialBanner } from "./pro-trial-banner";
 import { useVisitorStore } from "@/stores/visitor-store";
 import { createSupabaseClient } from "@/lib/supabase";
-import { Loader2, Monitor } from "lucide-react";
+import { AppShellSkeleton } from "@/components/ui/page-skeletons";
+import { Monitor } from "lucide-react";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileSize, setIsMobileSize] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [appReady, setAppReady] = useState(false);
   const initialize = useVisitorStore((s) => s.initialize);
   const hasChecked = useRef(false);
 
@@ -33,13 +35,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        // Session valid — initialize local store and show app
-        setCheckingAuth(false);
         try {
           await initialize();
         } catch (err) {
           console.error("Store initialization failed:", err);
         }
+
+        setAppReady(true);
       } catch {
         router.push("/login");
       }
@@ -79,17 +81,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   // Suppress unused variable warning
   void pathname;
 
-  if (checkingAuth) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#070809]">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
-            Validating secure session...
-          </span>
-        </div>
-      </div>
-    );
+  if (!appReady) {
+    return <AppShellSkeleton />;
   }
 
   if (isMobileSize) {
@@ -118,6 +111,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <MainSidebar />
       <SubSidebar />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+        <ProTrialBanner />
         <AppHeader />
         <main className="mesh-gradient min-h-0 flex-1 overflow-y-auto overscroll-contain">
           <div className="mx-auto w-full max-w-7xl p-6 md:p-10 lg:p-12">

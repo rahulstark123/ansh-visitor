@@ -33,17 +33,27 @@ import {
   QrCode
 } from "lucide-react";
 import { PageHeader } from "./page-header";
+import { formatQrValidUntil, QR_VALIDITY_OPTIONS, type QrValidityPeriod, isQrValid } from "@/lib/qr-validity";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import {
+  GuestVerifyModal,
+  type GuestVerifyMode,
+} from "@/components/crm/guest-verify-modal";
 
 interface VisitorLogListProps {
   filterType: "today" | "pre-registered" | "all";
 }
 
 export function VisitorLogList({ filterType }: VisitorLogListProps) {
-  const { visitors, addVisitor, checkInVisitor, checkOutVisitor, registerWalkIn, hosts, currentUser } = useVisitorStore();
+  const { visitors, addVisitor, checkInVisitor, registerWalkIn, hosts, currentUser } = useVisitorStore();
+  const [verifyOpen, setVerifyOpen] = useState(false);
+  const [verifyMode, setVerifyMode] = useState<GuestVerifyMode>("check-in");
   
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState("");
   const [purposeFilter, setPurposeFilter] = useState("All");
+  const [regTypeFilter, setRegTypeFilter] = useState<"All" | "Pre-registered" | "Walk-in">("All");
 
   // Dialog State
   const [openRegister, setOpenRegister] = useState(false);
@@ -57,6 +67,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
   const [newGuestNotes, setNewGuestNotes] = useState("");
   const [newGuestIdProofType, setNewGuestIdProofType] = useState("");
   const [newGuestIdProofNumber, setNewGuestIdProofNumber] = useState("");
+  const [newGuestQrValidity, setNewGuestQrValidity] = useState<QrValidityPeriod>("24h");
 
   // Check In Confirm State
   const [confirmCheckInVisitor, setConfirmCheckInVisitor] = useState<Visitor | null>(null);
@@ -74,9 +85,15 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
     if (filterType === "today") {
       // CheckedIn or CheckedOut today
       list = list.filter(v => v.status === "CheckedIn" || v.status === "CheckedOut");
-    } else if (filterType === "pre-registered") {
-      // Expected invitations
-      list = list.filter(v => v.status === "Expected");
+    }
+
+    // Filter by registration type (pre-registered vs walk-in)
+    if (regTypeFilter !== "All") {
+      if (regTypeFilter === "Pre-registered") {
+        list = list.filter((v) => !v.walkIn);
+      } else if (regTypeFilter === "Walk-in") {
+        list = list.filter((v) => v.walkIn);
+      }
     }
 
     // Filter by search query
@@ -105,7 +122,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
     e.preventDefault();
     if (!newGuestName || !newGuestEmail || !newGuestPhone) return;
 
-    const host = hosts.find(h => h.id === newGuestHostId) || currentUser;
+    const host = currentUser;
 
     if (regMode === "walk-in") {
       registerWalkIn({
@@ -131,7 +148,8 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
         hostName: host.name,
         notes: newGuestNotes || undefined,
         idProofType: newGuestIdProofType || undefined,
-        idProofNumber: newGuestIdProofNumber || undefined
+        idProofNumber: newGuestIdProofNumber || undefined,
+        qrValidityPeriod: newGuestQrValidity,
       });
     }
 
@@ -144,6 +162,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
     setNewGuestNotes("");
     setNewGuestIdProofType("");
     setNewGuestIdProofNumber("");
+    setNewGuestQrValidity("24h");
     setOpenRegister(false);
   };
 
@@ -174,7 +193,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
 
   const getPageHeaderDescription = () => {
     if (filterType === "today") return "Browse visitors logged at the desk today.";
-    if (filterType === "pre-registered") return "Overview of expected invitations sent to scheduled guests.";
+    if (filterType === "pre-registered") return "Overview of all registered guests, both pre-registered and walk-ins.";
     return "Complete history logs of all workspace visits.";
   };
 
@@ -182,7 +201,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
     <div className="space-y-6 select-none animate-in fade-in duration-300">
       <PageHeader
         eyebrow="Visitor Operations"
-        title={filterType === "today" ? "Today's Guests" : filterType === "pre-registered" ? "Pre-registered" : "All Visitors Log"}
+        title={filterType === "today" ? "Today's Guests" : filterType === "pre-registered" ? "Registered Users" : "All Visitors Log"}
         description={getPageHeaderDescription()}
         action={{
           label: "Register Guest",
@@ -203,6 +222,20 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
             className="pl-10"
           />
         </div>
+        {/* Registration Type Filter */}
+        <div className="w-full sm:w-44">
+          <Select
+            value={regTypeFilter}
+            onChange={(e) =>
+              setRegTypeFilter(e.target.value as "All" | "Pre-registered" | "Walk-in")
+            }
+          >
+            <option value="All">All Types</option>
+            <option value="Pre-registered">Pre-registered</option>
+            <option value="Walk-in">Walk In</option>
+          </Select>
+        </div>
+
         {/* Purpose Filter */}
         <div className="w-full sm:w-44">
           <Select value={purposeFilter} onChange={(e) => setPurposeFilter(e.target.value)}>
@@ -309,12 +342,25 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
                               Check In
                             </Button>
                           )}
+                          {v.status === "CheckedOut" && isQrValid(v.qrValidUntil) && (
+                            <Button
+                              variant="outline"
+                              size="xs"
+                              className="border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/10 cursor-pointer"
+                              onClick={() => setConfirmCheckInVisitor(v)}
+                            >
+                              Re-check In
+                            </Button>
+                          )}
                           {v.status === "CheckedIn" && (
                             <Button
                               variant="outline"
                               size="xs"
                               className="border-rose-500/20 text-rose-500 hover:bg-rose-500/10 cursor-pointer"
-                              onClick={() => checkOutVisitor(v.id)}
+                              onClick={() => {
+                                setVerifyMode("check-out");
+                                setVerifyOpen(true);
+                              }}
                             >
                               Check Out
                             </Button>
@@ -347,7 +393,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
 
       {/* PRE-REGISTER / WALK-IN DIALOG MODAL */}
       <Dialog open={openRegister} onOpenChange={setOpenRegister}>
-        <DialogContent className="sm:max-w-[480px]">
+        <DialogContent className="sm:max-w-[540px]">
           <form onSubmit={handleCreateInvitation} className="space-y-4">
             <DialogHeader>
               <DialogTitle>Register Guest</DialogTitle>
@@ -413,16 +459,15 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">
                     Guest Phone Number
                   </label>
-                  <Input
-                    required
-                    type="tel"
+                  <PhoneInput
+                    placeholder="Enter phone number"
                     value={newGuestPhone}
-                    onChange={(e) => setNewGuestPhone(e.target.value)}
-                    placeholder="+91 98765 43210"
-                    className="mt-2"
+                    onChange={(val) => setNewGuestPhone(val || "")}
+                    defaultCountry="IN"
+                    required
                   />
                 </div>
                 <div>
@@ -440,40 +485,46 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                  Visit Purpose
+                </label>
+                <Select
+                  value={newGuestPurpose}
+                  onChange={(e) => setNewGuestPurpose(e.target.value as any)}
+                  className="mt-2 bg-card border-input text-foreground"
+                >
+                  <option value="Meeting">Meeting</option>
+                  <option value="Interview">Interview</option>
+                  <option value="Vendor">Vendor</option>
+                  <option value="Delivery">Delivery</option>
+                  <option value="Other">Other</option>
+                </Select>
+              </div>
+
+              {regMode === "pre-register" && (
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Visit Purpose
+                    QR Pass Validity
                   </label>
                   <Select
-                    value={newGuestPurpose}
-                    onChange={(e) => setNewGuestPurpose(e.target.value as any)}
+                    value={newGuestQrValidity}
+                    onChange={(e) =>
+                      setNewGuestQrValidity(e.target.value as QrValidityPeriod)
+                    }
                     className="mt-2 bg-card border-input text-foreground"
                   >
-                    <option value="Meeting">Meeting</option>
-                    <option value="Interview">Interview</option>
-                    <option value="Vendor">Vendor</option>
-                    <option value="Delivery">Delivery</option>
-                    <option value="Other">Other</option>
-                  </Select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Host Mapped
-                  </label>
-                  <Select
-                    value={newGuestHostId}
-                    onChange={(e) => setNewGuestHostId(e.target.value)}
-                    className="mt-2 bg-card border-input text-foreground"
-                  >
-                    {hosts.map((h) => (
-                      <option key={h.id} value={h.id}>
-                        {h.name} ({h.department})
+                    {QR_VALIDITY_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label} — {opt.description}
                       </option>
                     ))}
                   </Select>
+                  <p className="mt-1.5 text-[10px] text-slate-400 leading-relaxed">
+                    The same QR pass can be scanned on multiple days until this period ends.
+                  </p>
                 </div>
-              </div>
+              )}
 
               {/* Optional Govt ID Card */}
               <div className="grid grid-cols-2 gap-4">
@@ -625,7 +676,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
       <Dialog open={openPass} onOpenChange={setOpenPass}>
         <DialogContent className="sm:max-w-[400px] text-slate-800 dark:text-slate-100">
           {selectedPass && (
-            <div className="space-y-6 py-2">
+            <div className="printable-pass space-y-6 py-2">
               <DialogHeader>
                 <DialogTitle className="text-center font-bold tracking-tight">ANSH VISITOR PASS</DialogTitle>
                 <DialogDescription className="text-center text-xs text-slate-400">
@@ -658,8 +709,16 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
                   <p className="text-xs text-slate-400">
                     Company: <strong className="text-slate-700 dark:text-slate-350">{selectedPass.company || "Individual"}</strong>
                   </p>
+                  {selectedPass.qrValidUntil && (
+                    <p className="text-xs text-slate-400">
+                      Valid until:{" "}
+                      <strong className="text-slate-700 dark:text-slate-350">
+                        {formatQrValidUntil(selectedPass.qrValidUntil)}
+                      </strong>
+                    </p>
+                  )}
                   <p className="text-xs text-slate-400">
-                    Host: <strong className="text-slate-700 dark:text-slate-350">{selectedPass.hostName}</strong>
+                    Branch: <strong className="text-slate-700 dark:text-slate-350">{hosts.find((h) => h.id === selectedPass.hostId)?.officeBranch || "HQ - Bangalore"}</strong>
                   </p>
                   {selectedPass.idProofType && (
                     <p className="text-xs text-slate-400">
@@ -674,7 +733,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 no-print">
                 <Button
                   variant="outline"
                   className="flex-1 h-11 text-sm font-semibold cursor-pointer"
@@ -694,6 +753,12 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
           )}
         </DialogContent>
       </Dialog>
+
+      <GuestVerifyModal
+        open={verifyOpen}
+        onOpenChange={setVerifyOpen}
+        mode={verifyMode}
+      />
     </div>
   );
 }

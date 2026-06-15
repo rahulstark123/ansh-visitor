@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/crm/page-header";
-import { QrCode, Printer, Save, Loader2, RefreshCw } from "lucide-react";
+import { QrCode, Printer, Save, RefreshCw } from "lucide-react";
+import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
 import { cn } from "@/lib/utils";
 import { QRCodeSVG } from "qrcode.react";
 
@@ -141,10 +142,7 @@ export default function BadgeCustomizerPage() {
                 )}
                 <Button type="submit" disabled={saving} className="btn-primary border-0 gap-2 cursor-pointer">
                   {saving ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Saving...
-                    </>
+                    <ButtonLoadingSkeleton />
                   ) : (
                     <>
                       <Save className="h-4 w-4" />
@@ -172,7 +170,7 @@ export default function BadgeCustomizerPage() {
             <div className="h-4 w-5 bg-slate-600 rounded-md border border-slate-500 z-10 -mt-1 shadow" />
             
             {/* Badge Card Wrapper */}
-            <div className="w-64 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl z-20 dark:border-slate-800 dark:bg-slate-950/90 text-slate-800 dark:text-slate-100 flex flex-col items-center text-center">
+            <div className="printable-pass w-64 rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl z-20 dark:border-slate-800 dark:bg-slate-950/90 text-slate-800 dark:text-slate-100 flex flex-col items-center text-center">
               {/* Badge Custom Title */}
               <h3 className={cn("text-xs font-black tracking-widest uppercase border-b border-border/60 pb-2.5 w-full", selectedColor.text)}>
                 {badgeTitle}

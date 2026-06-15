@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/crm/page-header";
-import { FileDown, Calendar, Users, ShieldCheck, Download, Loader2 } from "lucide-react";
+import { FileDown, Calendar, Users, ShieldCheck, Download } from "lucide-react";
+import { ProcessingOverlaySkeleton } from "@/components/ui/page-skeletons";
 
 export default function ReportsPage() {
   const { visitors } = useVisitorStore();
@@ -156,13 +157,10 @@ export default function ReportsPage() {
 
       {/* EXPORTING LOADING MODAL */}
       {downloading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-sm rounded-3xl border border-white/[0.08] bg-slate-950/90 p-8 text-center shadow-2xl backdrop-blur-xl animate-in zoom-in-95 duration-200 text-slate-200">
-            <Loader2 className="h-8 w-8 animate-spin text-emerald-500 mx-auto mb-4" />
-            <h3 className="text-base font-bold text-white mb-2">Generating Audit Logs</h3>
-            <p className="text-xs text-slate-500">Compiling database rows into spreadsheet format...</p>
-          </div>
-        </div>
+        <ProcessingOverlaySkeleton
+          title="Generating Audit Logs"
+          description="Compiling database rows into spreadsheet format..."
+        />
       )}
     </div>
   );

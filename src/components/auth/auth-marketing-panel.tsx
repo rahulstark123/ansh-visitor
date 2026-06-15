@@ -36,7 +36,7 @@ const SLIDES: SlideData[] = [
         <span className="text-slate-200">in seconds</span>
       </>
     ),
-    copy: "Visitors receive custom invitation passes with dynamic QR codes via Email or SMS, allowing quick scan-and-go kiosk verification at entryways.",
+    copy: "Visitors receive custom invitation passes with dynamic QR codes via Email or SMS, allowing quick scan-and-go verification at the reception desk.",
   },
   {
     id: 1,
@@ -171,7 +171,7 @@ export function AuthMarketingPanel() {
                 </div>
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">Lobby Kiosk Alert</span>
+                    <span className="text-xs font-bold text-white">Guest Arrival Alert</span>
                     <span className="text-[9px] text-slate-500 font-semibold">Just now</span>
                   </div>
                   <span className="block text-[10px] font-bold text-emerald-400">

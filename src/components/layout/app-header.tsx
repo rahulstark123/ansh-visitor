@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter, usePathname } from "next/navigation";
-import { Search, ChevronDown, LogOut, User, UsersRound, UserCheck, Settings, Loader2, BarChart3 } from "lucide-react";
+import { Search, ChevronDown, LogOut, User, UsersRound, Settings, BarChart3 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createSupabaseClient } from "@/lib/supabase";
 
@@ -18,15 +19,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { useVisitorStore } from "@/stores/visitor-store";
+import { ProcessingOverlaySkeleton } from "@/components/ui/page-skeletons";
 
 export function AppHeader() {
   const router = useRouter();
   const pathname = usePathname();
-  const { currentUser, plan } = useVisitorStore();
+  const { currentUser, plan, workspacePlan } = useVisitorStore();
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleMouseEnter = () => {
     if (hoverTimeout) {
@@ -62,9 +69,9 @@ export function AppHeader() {
   const getPageTitle = () => {
     if (pathname.startsWith("/dashboard")) return "Lobby Dashboard";
     if (pathname.startsWith("/visitors")) return "Visitors Management";
-    if (pathname.startsWith("/check-in")) return "Self-Serve Lobby Kiosk";
     if (pathname.startsWith("/reports")) return "Audits & Log Reports";
     if (pathname.startsWith("/settings")) return "Workspace Customizer";
+    if (pathname.startsWith("/help")) return "Help Center";
     return "Workspace";
   };
 
@@ -83,11 +90,17 @@ export function AppHeader() {
       <div className="flex shrink-0 items-center gap-3">
         {/* Plan Badge */}
         <Link
-          href="/settings/profile"
-          className="hidden sm:inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest transition-colors hover:opacity-90"
-          title="View plan details"
+          href="/settings/billing"
+          className={`hidden sm:inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-black uppercase tracking-widest transition-colors hover:opacity-90 ${
+            workspacePlan === "pro_trial"
+              ? "border-sky-300/60 bg-sky-100 text-sky-700 dark:border-sky-800 dark:bg-sky-950/50 dark:text-sky-300"
+              : workspacePlan === "pro"
+                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-450"
+                : "border-slate-300/60 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400"
+          }`}
+          title="View billing & plan"
         >
-          {plan.name}
+          {workspacePlan === "pro_trial" ? "Pro" : plan.name}
         </Link>
 
         {/* User profile Dropdown */}
@@ -147,13 +160,6 @@ export function AppHeader() {
                 <span className="font-semibold">Visitors Log</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => router.push("/check-in")}
-                className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-350 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-all cursor-pointer outline-none"
-              >
-                <UserCheck className="h-4 w-4 text-slate-400 shrink-0" />
-                <span className="font-semibold">Lobby Kiosk</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
                 onClick={() => router.push("/reports")}
                 className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-350 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-all cursor-pointer outline-none"
               >
@@ -194,14 +200,12 @@ export function AppHeader() {
       </div>
 
       {/* Premium logout transition overlay */}
-      {isLoggingOut && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-sm rounded-3xl border border-white/[0.08] bg-slate-950/90 p-8 text-center shadow-2xl backdrop-blur-xl animate-in zoom-in-95 duration-200 text-slate-200">
-            <Loader2 className="h-8 w-8 animate-spin text-emerald-500 mx-auto mb-4" />
-            <h3 className="text-base font-bold text-white mb-2">Signing Out</h3>
-            <p className="text-xs text-slate-500">Securing your session logs...</p>
-          </div>
-        </div>
+      {isLoggingOut && mounted && createPortal(
+        <ProcessingOverlaySkeleton
+          title="Signing Out"
+          description="Securing your session logs..."
+        />,
+        document.body
       )}
     </header>
   );

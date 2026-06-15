@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  computeQrValidUntil,
+  type QrValidityPeriod,
+} from "@/lib/qr-validity";
 
 // ─── Visitor field selector (reuse to avoid over-fetching) ───────────
 const VISITOR_SELECT = {
@@ -19,6 +23,8 @@ const VISITOR_SELECT = {
   idProofNumber: true,
   badgeNumber: true,
   qrCode: true,
+  qrValidUntil: true,
+  walkIn: true,
   notes: true,
   wid: true,
 } as const;
@@ -47,6 +53,34 @@ export async function GET(req: NextRequest) {
   }
 }
 
+// Generates a unique 6-digit uppercase alphanumeric code
+async function generateUniqueQRCode(wid: number): Promise<string> {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let qrCode = "";
+  let isUnique = false;
+
+  while (!isUnique) {
+    qrCode = "";
+    for (let i = 0; i < 6; i++) {
+      qrCode += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    // Check if this qrCode is already in use for the workspace
+    const existing = await prisma.visitor.findFirst({
+      where: {
+        wid,
+        qrCode,
+      },
+    });
+
+    if (!existing) {
+      isUnique = true;
+    }
+  }
+
+  return qrCode;
+}
+
 // ─── POST /api/visitors ───────────────────────────────────────────────
 // Creates a pre-registered visitor (Expected) or walk-in (CheckedIn).
 export async function POST(req: NextRequest) {
@@ -65,16 +99,23 @@ export async function POST(req: NextRequest) {
       idProofNumber,
       wid = 1,
       walkIn = false,
+      qrValidityPeriod = "24h",
     } = body;
 
     if (!name || !email || !phone || !hostId || !hostName) {
       return NextResponse.json({ error: "Missing required fields: name, email, phone, hostId, hostName" }, { status: 400 });
     }
 
-    const qrCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const qrCode = await generateUniqueQRCode(wid);
     const badgeNumber = walkIn
       ? `BADGE-${Math.floor(100 + Math.random() * 900)}`
       : undefined;
+
+    const validPeriods: QrValidityPeriod[] = ["24h", "7d", "30d", "90d"];
+    const period: QrValidityPeriod = validPeriods.includes(qrValidityPeriod)
+      ? qrValidityPeriod
+      : "24h";
+    const qrValidUntil = walkIn ? undefined : computeQrValidUntil(period);
 
     const visitor = await prisma.visitor.create({
       data: {
@@ -91,6 +132,7 @@ export async function POST(req: NextRequest) {
         wid,
         status: walkIn ? "CheckedIn" : "Expected",
         qrCode,
+        qrValidUntil,
         badgeNumber,
         checkedInAt: walkIn ? new Date() : undefined,
       },

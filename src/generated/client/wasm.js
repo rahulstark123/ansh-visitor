@@ -100,15 +100,37 @@ exports.Prisma.WorkspaceScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.WorkspaceConfigScalarFieldEnum = {
+  id: 'id',
+  wid: 'wid',
+  departments: 'departments',
+  designations: 'designations',
+  officeBranches: 'officeBranches',
+  workLocations: 'workLocations',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProfileScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
   role: 'role',
   department: 'department',
+  designation: 'designation',
+  officeBranch: 'officeBranch',
+  workLocation: 'workLocation',
   avatarInitials: 'avatarInitials',
   status: 'status',
   phoneNumber: 'phoneNumber',
+  personalEmail: 'personalEmail',
+  bloodGroup: 'bloodGroup',
+  dob: 'dob',
+  code: 'code',
+  joiningDate: 'joiningDate',
+  reportingManager: 'reportingManager',
+  reportingHR: 'reportingHR',
+  emergencyName: 'emergencyName',
+  emergencyPhone: 'emergencyPhone',
   createdAt: 'createdAt',
   wid: 'wid'
 };
@@ -130,6 +152,8 @@ exports.Prisma.VisitorScalarFieldEnum = {
   idProofNumber: 'idProofNumber',
   badgeNumber: 'badgeNumber',
   qrCode: 'qrCode',
+  qrValidUntil: 'qrValidUntil',
+  walkIn: 'walkIn',
   notes: 'notes',
   wid: 'wid'
 };
@@ -152,6 +176,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   Workspace: 'Workspace',
+  WorkspaceConfig: 'WorkspaceConfig',
   Profile: 'Profile',
   Visitor: 'Visitor'
 };
@@ -184,7 +209,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -194,6 +219,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -202,13 +228,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "datasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\nmodel Workspace {\n  id        Int       @id @default(autoincrement())\n  name      String?\n  plan      String    @default(\"free\") // \"free\" | \"pro\"\n  createdAt DateTime  @default(now())\n  profiles  Profile[]\n  visitors  Visitor[]\n}\n\nmodel Profile {\n  id             String     @id // Matches Supabase Auth ID\n  name           String\n  email          String     @unique\n  role           String     @default(\"Employee\") // \"Admin\" | \"Manager\" | \"Employee\"\n  department     String     @default(\"General\")\n  avatarInitials String     @default(\"EE\")\n  status         String     @default(\"Active\") // \"Active\" | \"Inactive\"\n  phoneNumber    String?\n  createdAt      DateTime   @default(now())\n  wid            Int?\n  workspace      Workspace? @relation(fields: [wid], references: [id], onDelete: Cascade)\n  visitors       Visitor[]  @relation(\"HostRelation\")\n}\n\nmodel Visitor {\n  id              String    @id @default(cuid())\n  name            String\n  email           String\n  phone           String\n  company         String?\n  purpose         String // \"Interview\" | \"Meeting\" | \"Delivery\" | \"Vendor\" | \"Other\"\n  status          String    @default(\"Expected\") // \"Expected\" | \"CheckedIn\" | \"CheckedOut\"\n  hostId          String\n  host            Profile   @relation(\"HostRelation\", fields: [hostId], references: [id], onDelete: Cascade)\n  hostName        String\n  checkedInAt     DateTime?\n  checkedOutAt    DateTime?\n  preRegisteredAt DateTime  @default(now())\n  idProofType     String? // \"Aadhaar\" | \"PAN\" | \"Driving License\" | \"Other\"\n  idProofNumber   String?\n  badgeNumber     String?\n  qrCode          String?\n  notes           String?\n  wid             Int\n  workspace       Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)\n}\n",
-  "inlineSchemaHash": "850bc22427fa9204d41fa40b1f508d7612efaf5ebecf3ee16fbfd8fe6e449c86",
+  "inlineSchema": "datasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\n// ─────────────────────────────────────────────────────────────\n// Workspace — top-level tenant container\n// ─────────────────────────────────────────────────────────────\nmodel Workspace {\n  id        Int              @id @default(autoincrement())\n  name      String?\n  plan      String           @default(\"free\") // \"free\" | \"pro\"\n  createdAt DateTime         @default(now())\n  profiles  Profile[]\n  visitors  Visitor[]\n  config    WorkspaceConfig?\n}\n\n// ─────────────────────────────────────────────────────────────\n// WorkspaceConfig — persists dropdown option lists as PG arrays\n// One record per workspace (unique wid)\n// ─────────────────────────────────────────────────────────────\nmodel WorkspaceConfig {\n  id             Int       @id @default(autoincrement())\n  wid            Int       @unique\n  workspace      Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)\n  departments    String[]  @default([\"Engineering\", \"HR & Operations\", \"Product Management\", \"Enterprise Sales\"])\n  designations   String[]  @default([\"Software Engineer\", \"Senior Developer\", \"Product Manager\", \"HR Manager\", \"Operations Admin\", \"Sales Director\"])\n  officeBranches String[]  @default([\"HQ - Bangalore\", \"Delhi Branch\", \"Mumbai Office\"])\n  workLocations  String[]  @default([\"Remote\", \"On-site\", \"Hybrid\"])\n  updatedAt      DateTime  @updatedAt\n}\n\n// ─────────────────────────────────────────────────────────────\n// Profile — team member / host (maps to Supabase Auth user id)\n// ─────────────────────────────────────────────────────────────\nmodel Profile {\n  id               String     @id // Supabase Auth UUID\n  name             String\n  email            String     @unique\n  role             String     @default(\"Employee\") // \"Admin\" | \"Manager\" | \"Employee\"\n  department       String     @default(\"General\")\n  designation      String?\n  officeBranch     String?\n  workLocation     String?\n  avatarInitials   String     @default(\"EE\")\n  status           String     @default(\"Active\") // \"Active\" | \"Inactive\"\n  phoneNumber      String?\n  personalEmail    String?\n  bloodGroup       String?\n  dob              String?\n  code             String?\n  joiningDate      String?\n  reportingManager String?\n  reportingHR      String?\n  emergencyName    String?\n  emergencyPhone   String?\n  createdAt        DateTime   @default(now())\n  wid              Int?\n  workspace        Workspace? @relation(fields: [wid], references: [id], onDelete: Cascade)\n  visitors         Visitor[]  @relation(\"HostRelation\")\n\n  @@index([wid]) // fast workspace scoped queries\n  @@index([email]) // fast lookup by email\n}\n\n// ─────────────────────────────────────────────────────────────\n// Visitor — individual visit log entry\n// ─────────────────────────────────────────────────────────────\nmodel Visitor {\n  id              String    @id @default(cuid())\n  name            String\n  email           String\n  phone           String\n  company         String?\n  purpose         String // \"Interview\" | \"Meeting\" | \"Delivery\" | \"Vendor\" | \"Other\"\n  status          String    @default(\"Expected\") // \"Expected\" | \"CheckedIn\" | \"CheckedOut\"\n  hostId          String\n  host            Profile   @relation(\"HostRelation\", fields: [hostId], references: [id], onDelete: Cascade)\n  hostName        String\n  checkedInAt     DateTime?\n  checkedOutAt    DateTime?\n  preRegisteredAt DateTime  @default(now())\n  idProofType     String?\n  idProofNumber   String?\n  badgeNumber     String?\n  qrCode          String?\n  qrValidUntil    DateTime?\n  walkIn          Boolean   @default(false)\n  notes           String?\n  wid             Int\n  workspace       Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)\n\n  @@index([wid]) // workspace list queries\n  @@index([hostId]) // host-scoped visitor lists\n  @@index([status]) // filter by status\n  @@index([wid, status]) // compound: workspace + status filter (most common query)\n  @@index([preRegisteredAt]) // date-sorted lists\n}\n",
+  "inlineSchemaHash": "2ed113ef6d3ac86ff2b8893ac10cab8d9f6104505f3caaa6c16664f373748611",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Workspace\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"plan\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"profiles\",\"kind\":\"object\",\"type\":\"Profile\",\"relationName\":\"ProfileToWorkspace\"},{\"name\":\"visitors\",\"kind\":\"object\",\"type\":\"Visitor\",\"relationName\":\"VisitorToWorkspace\"}],\"dbName\":null},\"Profile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"department\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"avatarInitials\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"wid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"workspace\",\"kind\":\"object\",\"type\":\"Workspace\",\"relationName\":\"ProfileToWorkspace\"},{\"name\":\"visitors\",\"kind\":\"object\",\"type\":\"Visitor\",\"relationName\":\"HostRelation\"}],\"dbName\":null},\"Visitor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"purpose\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hostId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"host\",\"kind\":\"object\",\"type\":\"Profile\",\"relationName\":\"HostRelation\"},{\"name\":\"hostName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"checkedInAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"checkedOutAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"preRegisteredAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"idProofType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"idProofNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"badgeNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qrCode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"wid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"workspace\",\"kind\":\"object\",\"type\":\"Workspace\",\"relationName\":\"VisitorToWorkspace\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Workspace\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"plan\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"profiles\",\"kind\":\"object\",\"type\":\"Profile\",\"relationName\":\"ProfileToWorkspace\"},{\"name\":\"visitors\",\"kind\":\"object\",\"type\":\"Visitor\",\"relationName\":\"VisitorToWorkspace\"},{\"name\":\"config\",\"kind\":\"object\",\"type\":\"WorkspaceConfig\",\"relationName\":\"WorkspaceToWorkspaceConfig\"}],\"dbName\":null},\"WorkspaceConfig\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"wid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"workspace\",\"kind\":\"object\",\"type\":\"Workspace\",\"relationName\":\"WorkspaceToWorkspaceConfig\"},{\"name\":\"departments\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"designations\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"officeBranches\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"workLocations\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Profile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"department\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"designation\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"officeBranch\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"workLocation\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"avatarInitials\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"personalEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bloodGroup\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dob\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"joiningDate\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"reportingManager\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"reportingHR\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emergencyName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emergencyPhone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"wid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"workspace\",\"kind\":\"object\",\"type\":\"Workspace\",\"relationName\":\"ProfileToWorkspace\"},{\"name\":\"visitors\",\"kind\":\"object\",\"type\":\"Visitor\",\"relationName\":\"HostRelation\"}],\"dbName\":null},\"Visitor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"purpose\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hostId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"host\",\"kind\":\"object\",\"type\":\"Profile\",\"relationName\":\"HostRelation\"},{\"name\":\"hostName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"checkedInAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"checkedOutAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"preRegisteredAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"idProofType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"idProofNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"badgeNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qrCode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qrValidUntil\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"walkIn\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"wid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"workspace\",\"kind\":\"object\",\"type\":\"Workspace\",\"relationName\":\"VisitorToWorkspace\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

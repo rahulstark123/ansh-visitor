@@ -9,30 +9,70 @@ generator client {
   output   = "../src/generated/client"
 }
 
+// ─────────────────────────────────────────────────────────────
+// Workspace — top-level tenant container
+// ─────────────────────────────────────────────────────────────
 model Workspace {
-  id        Int       @id @default(autoincrement())
+  id        Int              @id @default(autoincrement())
   name      String?
-  plan      String    @default("free") // "free" | "pro"
-  createdAt DateTime  @default(now())
+  plan      String           @default("free") // "free" | "pro"
+  createdAt DateTime         @default(now())
   profiles  Profile[]
   visitors  Visitor[]
+  config    WorkspaceConfig?
 }
 
+// ─────────────────────────────────────────────────────────────
+// WorkspaceConfig — persists dropdown option lists as PG arrays
+// One record per workspace (unique wid)
+// ─────────────────────────────────────────────────────────────
+model WorkspaceConfig {
+  id             Int       @id @default(autoincrement())
+  wid            Int       @unique
+  workspace      Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)
+  departments    String[]  @default(["Engineering", "HR & Operations", "Product Management", "Enterprise Sales"])
+  designations   String[]  @default(["Software Engineer", "Senior Developer", "Product Manager", "HR Manager", "Operations Admin", "Sales Director"])
+  officeBranches String[]  @default(["HQ - Bangalore", "Delhi Branch", "Mumbai Office"])
+  workLocations  String[]  @default(["Remote", "On-site", "Hybrid"])
+  updatedAt      DateTime  @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────
+// Profile — team member / host (maps to Supabase Auth user id)
+// ─────────────────────────────────────────────────────────────
 model Profile {
-  id             String     @id // Matches Supabase Auth ID
-  name           String
-  email          String     @unique
-  role           String     @default("Employee") // "Admin" | "Manager" | "Employee"
-  department     String     @default("General")
-  avatarInitials String     @default("EE")
-  status         String     @default("Active") // "Active" | "Inactive"
-  phoneNumber    String?
-  createdAt      DateTime   @default(now())
-  wid            Int?
-  workspace      Workspace? @relation(fields: [wid], references: [id], onDelete: Cascade)
-  visitors       Visitor[]  @relation("HostRelation")
+  id               String     @id // Supabase Auth UUID
+  name             String
+  email            String     @unique
+  role             String     @default("Employee") // "Admin" | "Manager" | "Employee"
+  department       String     @default("General")
+  designation      String?
+  officeBranch     String?
+  workLocation     String?
+  avatarInitials   String     @default("EE")
+  status           String     @default("Active") // "Active" | "Inactive"
+  phoneNumber      String?
+  personalEmail    String?
+  bloodGroup       String?
+  dob              String?
+  code             String?
+  joiningDate      String?
+  reportingManager String?
+  reportingHR      String?
+  emergencyName    String?
+  emergencyPhone   String?
+  createdAt        DateTime   @default(now())
+  wid              Int?
+  workspace        Workspace? @relation(fields: [wid], references: [id], onDelete: Cascade)
+  visitors         Visitor[]  @relation("HostRelation")
+
+  @@index([wid]) // fast workspace scoped queries
+  @@index([email]) // fast lookup by email
 }
 
+// ─────────────────────────────────────────────────────────────
+// Visitor — individual visit log entry
+// ─────────────────────────────────────────────────────────────
 model Visitor {
   id              String    @id @default(cuid())
   name            String
@@ -47,11 +87,18 @@ model Visitor {
   checkedInAt     DateTime?
   checkedOutAt    DateTime?
   preRegisteredAt DateTime  @default(now())
-  idProofType     String? // "Aadhaar" | "PAN" | "Driving License" | "Other"
+  idProofType     String?
   idProofNumber   String?
   badgeNumber     String?
   qrCode          String?
+  walkIn          Boolean   @default(false)
   notes           String?
   wid             Int
   workspace       Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)
+
+  @@index([wid]) // workspace list queries
+  @@index([hostId]) // host-scoped visitor lists
+  @@index([status]) // filter by status
+  @@index([wid, status]) // compound: workspace + status filter (most common query)
+  @@index([preRegisteredAt]) // date-sorted lists
 }

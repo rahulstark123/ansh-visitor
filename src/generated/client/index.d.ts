@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Workspace = $Result.DefaultSelection<Prisma.$WorkspacePayload>
 /**
+ * Model WorkspaceConfig
+ * 
+ */
+export type WorkspaceConfig = $Result.DefaultSelection<Prisma.$WorkspaceConfigPayload>
+/**
  * Model Profile
  * 
  */
@@ -156,6 +161,16 @@ export class PrismaClient<
     * ```
     */
   get workspace(): Prisma.WorkspaceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.workspaceConfig`: Exposes CRUD operations for the **WorkspaceConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WorkspaceConfigs
+    * const workspaceConfigs = await prisma.workspaceConfig.findMany()
+    * ```
+    */
+  get workspaceConfig(): Prisma.WorkspaceConfigDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.profile`: Exposes CRUD operations for the **Profile** model.
@@ -618,6 +633,7 @@ export namespace Prisma {
 
   export const ModelName: {
     Workspace: 'Workspace',
+    WorkspaceConfig: 'WorkspaceConfig',
     Profile: 'Profile',
     Visitor: 'Visitor'
   };
@@ -638,7 +654,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "workspace" | "profile" | "visitor"
+      modelProps: "workspace" | "workspaceConfig" | "profile" | "visitor"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -713,6 +729,80 @@ export namespace Prisma {
           count: {
             args: Prisma.WorkspaceCountArgs<ExtArgs>
             result: $Utils.Optional<WorkspaceCountAggregateOutputType> | number
+          }
+        }
+      }
+      WorkspaceConfig: {
+        payload: Prisma.$WorkspaceConfigPayload<ExtArgs>
+        fields: Prisma.WorkspaceConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WorkspaceConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WorkspaceConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.WorkspaceConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WorkspaceConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>
+          }
+          findMany: {
+            args: Prisma.WorkspaceConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>[]
+          }
+          create: {
+            args: Prisma.WorkspaceConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>
+          }
+          createMany: {
+            args: Prisma.WorkspaceConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WorkspaceConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.WorkspaceConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>
+          }
+          update: {
+            args: Prisma.WorkspaceConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.WorkspaceConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WorkspaceConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.WorkspaceConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.WorkspaceConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkspaceConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.WorkspaceConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWorkspaceConfig>
+          }
+          groupBy: {
+            args: Prisma.WorkspaceConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WorkspaceConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WorkspaceConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<WorkspaceConfigCountAggregateOutputType> | number
           }
         }
       }
@@ -961,6 +1051,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     workspace?: WorkspaceOmit
+    workspaceConfig?: WorkspaceConfigOmit
     profile?: ProfileOmit
     visitor?: VisitorOmit
   }
@@ -1305,6 +1396,7 @@ export namespace Prisma {
     createdAt?: boolean
     profiles?: boolean | Workspace$profilesArgs<ExtArgs>
     visitors?: boolean | Workspace$visitorsArgs<ExtArgs>
+    config?: boolean | Workspace$configArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
@@ -1333,6 +1425,7 @@ export namespace Prisma {
   export type WorkspaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profiles?: boolean | Workspace$profilesArgs<ExtArgs>
     visitors?: boolean | Workspace$visitorsArgs<ExtArgs>
+    config?: boolean | Workspace$configArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1343,6 +1436,7 @@ export namespace Prisma {
     objects: {
       profiles: Prisma.$ProfilePayload<ExtArgs>[]
       visitors: Prisma.$VisitorPayload<ExtArgs>[]
+      config: Prisma.$WorkspaceConfigPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1745,6 +1839,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     profiles<T extends Workspace$profilesArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     visitors<T extends Workspace$visitorsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$visitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    config<T extends Workspace$configArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$configArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2214,6 +2309,25 @@ export namespace Prisma {
   }
 
   /**
+   * Workspace.config
+   */
+  export type Workspace$configArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    where?: WorkspaceConfigWhereInput
+  }
+
+  /**
    * Workspace without action
    */
   export type WorkspaceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2229,6 +2343,1112 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: WorkspaceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model WorkspaceConfig
+   */
+
+  export type AggregateWorkspaceConfig = {
+    _count: WorkspaceConfigCountAggregateOutputType | null
+    _avg: WorkspaceConfigAvgAggregateOutputType | null
+    _sum: WorkspaceConfigSumAggregateOutputType | null
+    _min: WorkspaceConfigMinAggregateOutputType | null
+    _max: WorkspaceConfigMaxAggregateOutputType | null
+  }
+
+  export type WorkspaceConfigAvgAggregateOutputType = {
+    id: number | null
+    wid: number | null
+  }
+
+  export type WorkspaceConfigSumAggregateOutputType = {
+    id: number | null
+    wid: number | null
+  }
+
+  export type WorkspaceConfigMinAggregateOutputType = {
+    id: number | null
+    wid: number | null
+    updatedAt: Date | null
+  }
+
+  export type WorkspaceConfigMaxAggregateOutputType = {
+    id: number | null
+    wid: number | null
+    updatedAt: Date | null
+  }
+
+  export type WorkspaceConfigCountAggregateOutputType = {
+    id: number
+    wid: number
+    departments: number
+    designations: number
+    officeBranches: number
+    workLocations: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type WorkspaceConfigAvgAggregateInputType = {
+    id?: true
+    wid?: true
+  }
+
+  export type WorkspaceConfigSumAggregateInputType = {
+    id?: true
+    wid?: true
+  }
+
+  export type WorkspaceConfigMinAggregateInputType = {
+    id?: true
+    wid?: true
+    updatedAt?: true
+  }
+
+  export type WorkspaceConfigMaxAggregateInputType = {
+    id?: true
+    wid?: true
+    updatedAt?: true
+  }
+
+  export type WorkspaceConfigCountAggregateInputType = {
+    id?: true
+    wid?: true
+    departments?: true
+    designations?: true
+    officeBranches?: true
+    workLocations?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type WorkspaceConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WorkspaceConfig to aggregate.
+     */
+    where?: WorkspaceConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkspaceConfigs to fetch.
+     */
+    orderBy?: WorkspaceConfigOrderByWithRelationInput | WorkspaceConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WorkspaceConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkspaceConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkspaceConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WorkspaceConfigs
+    **/
+    _count?: true | WorkspaceConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WorkspaceConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WorkspaceConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WorkspaceConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WorkspaceConfigMaxAggregateInputType
+  }
+
+  export type GetWorkspaceConfigAggregateType<T extends WorkspaceConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateWorkspaceConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWorkspaceConfig[P]>
+      : GetScalarType<T[P], AggregateWorkspaceConfig[P]>
+  }
+
+
+
+
+  export type WorkspaceConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WorkspaceConfigWhereInput
+    orderBy?: WorkspaceConfigOrderByWithAggregationInput | WorkspaceConfigOrderByWithAggregationInput[]
+    by: WorkspaceConfigScalarFieldEnum[] | WorkspaceConfigScalarFieldEnum
+    having?: WorkspaceConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WorkspaceConfigCountAggregateInputType | true
+    _avg?: WorkspaceConfigAvgAggregateInputType
+    _sum?: WorkspaceConfigSumAggregateInputType
+    _min?: WorkspaceConfigMinAggregateInputType
+    _max?: WorkspaceConfigMaxAggregateInputType
+  }
+
+  export type WorkspaceConfigGroupByOutputType = {
+    id: number
+    wid: number
+    departments: string[]
+    designations: string[]
+    officeBranches: string[]
+    workLocations: string[]
+    updatedAt: Date
+    _count: WorkspaceConfigCountAggregateOutputType | null
+    _avg: WorkspaceConfigAvgAggregateOutputType | null
+    _sum: WorkspaceConfigSumAggregateOutputType | null
+    _min: WorkspaceConfigMinAggregateOutputType | null
+    _max: WorkspaceConfigMaxAggregateOutputType | null
+  }
+
+  type GetWorkspaceConfigGroupByPayload<T extends WorkspaceConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WorkspaceConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WorkspaceConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WorkspaceConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], WorkspaceConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WorkspaceConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    departments?: boolean
+    designations?: boolean
+    officeBranches?: boolean
+    workLocations?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["workspaceConfig"]>
+
+  export type WorkspaceConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    departments?: boolean
+    designations?: boolean
+    officeBranches?: boolean
+    workLocations?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["workspaceConfig"]>
+
+  export type WorkspaceConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    wid?: boolean
+    departments?: boolean
+    designations?: boolean
+    officeBranches?: boolean
+    workLocations?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["workspaceConfig"]>
+
+  export type WorkspaceConfigSelectScalar = {
+    id?: boolean
+    wid?: boolean
+    departments?: boolean
+    designations?: boolean
+    officeBranches?: boolean
+    workLocations?: boolean
+    updatedAt?: boolean
+  }
+
+  export type WorkspaceConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "wid" | "departments" | "designations" | "officeBranches" | "workLocations" | "updatedAt", ExtArgs["result"]["workspaceConfig"]>
+  export type WorkspaceConfigInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+  export type WorkspaceConfigIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+  export type WorkspaceConfigIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+
+  export type $WorkspaceConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WorkspaceConfig"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      wid: number
+      departments: string[]
+      designations: string[]
+      officeBranches: string[]
+      workLocations: string[]
+      updatedAt: Date
+    }, ExtArgs["result"]["workspaceConfig"]>
+    composites: {}
+  }
+
+  type WorkspaceConfigGetPayload<S extends boolean | null | undefined | WorkspaceConfigDefaultArgs> = $Result.GetResult<Prisma.$WorkspaceConfigPayload, S>
+
+  type WorkspaceConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WorkspaceConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WorkspaceConfigCountAggregateInputType | true
+    }
+
+  export interface WorkspaceConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WorkspaceConfig'], meta: { name: 'WorkspaceConfig' } }
+    /**
+     * Find zero or one WorkspaceConfig that matches the filter.
+     * @param {WorkspaceConfigFindUniqueArgs} args - Arguments to find a WorkspaceConfig
+     * @example
+     * // Get one WorkspaceConfig
+     * const workspaceConfig = await prisma.workspaceConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WorkspaceConfigFindUniqueArgs>(args: SelectSubset<T, WorkspaceConfigFindUniqueArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one WorkspaceConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WorkspaceConfigFindUniqueOrThrowArgs} args - Arguments to find a WorkspaceConfig
+     * @example
+     * // Get one WorkspaceConfig
+     * const workspaceConfig = await prisma.workspaceConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WorkspaceConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, WorkspaceConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WorkspaceConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkspaceConfigFindFirstArgs} args - Arguments to find a WorkspaceConfig
+     * @example
+     * // Get one WorkspaceConfig
+     * const workspaceConfig = await prisma.workspaceConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WorkspaceConfigFindFirstArgs>(args?: SelectSubset<T, WorkspaceConfigFindFirstArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WorkspaceConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkspaceConfigFindFirstOrThrowArgs} args - Arguments to find a WorkspaceConfig
+     * @example
+     * // Get one WorkspaceConfig
+     * const workspaceConfig = await prisma.workspaceConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WorkspaceConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, WorkspaceConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more WorkspaceConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkspaceConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WorkspaceConfigs
+     * const workspaceConfigs = await prisma.workspaceConfig.findMany()
+     * 
+     * // Get first 10 WorkspaceConfigs
+     * const workspaceConfigs = await prisma.workspaceConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const workspaceConfigWithIdOnly = await prisma.workspaceConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WorkspaceConfigFindManyArgs>(args?: SelectSubset<T, WorkspaceConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a WorkspaceConfig.
+     * @param {WorkspaceConfigCreateArgs} args - Arguments to create a WorkspaceConfig.
+     * @example
+     * // Create one WorkspaceConfig
+     * const WorkspaceConfig = await prisma.workspaceConfig.create({
+     *   data: {
+     *     // ... data to create a WorkspaceConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends WorkspaceConfigCreateArgs>(args: SelectSubset<T, WorkspaceConfigCreateArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many WorkspaceConfigs.
+     * @param {WorkspaceConfigCreateManyArgs} args - Arguments to create many WorkspaceConfigs.
+     * @example
+     * // Create many WorkspaceConfigs
+     * const workspaceConfig = await prisma.workspaceConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WorkspaceConfigCreateManyArgs>(args?: SelectSubset<T, WorkspaceConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many WorkspaceConfigs and returns the data saved in the database.
+     * @param {WorkspaceConfigCreateManyAndReturnArgs} args - Arguments to create many WorkspaceConfigs.
+     * @example
+     * // Create many WorkspaceConfigs
+     * const workspaceConfig = await prisma.workspaceConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many WorkspaceConfigs and only return the `id`
+     * const workspaceConfigWithIdOnly = await prisma.workspaceConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WorkspaceConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, WorkspaceConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a WorkspaceConfig.
+     * @param {WorkspaceConfigDeleteArgs} args - Arguments to delete one WorkspaceConfig.
+     * @example
+     * // Delete one WorkspaceConfig
+     * const WorkspaceConfig = await prisma.workspaceConfig.delete({
+     *   where: {
+     *     // ... filter to delete one WorkspaceConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WorkspaceConfigDeleteArgs>(args: SelectSubset<T, WorkspaceConfigDeleteArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one WorkspaceConfig.
+     * @param {WorkspaceConfigUpdateArgs} args - Arguments to update one WorkspaceConfig.
+     * @example
+     * // Update one WorkspaceConfig
+     * const workspaceConfig = await prisma.workspaceConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WorkspaceConfigUpdateArgs>(args: SelectSubset<T, WorkspaceConfigUpdateArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more WorkspaceConfigs.
+     * @param {WorkspaceConfigDeleteManyArgs} args - Arguments to filter WorkspaceConfigs to delete.
+     * @example
+     * // Delete a few WorkspaceConfigs
+     * const { count } = await prisma.workspaceConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WorkspaceConfigDeleteManyArgs>(args?: SelectSubset<T, WorkspaceConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WorkspaceConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkspaceConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WorkspaceConfigs
+     * const workspaceConfig = await prisma.workspaceConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WorkspaceConfigUpdateManyArgs>(args: SelectSubset<T, WorkspaceConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WorkspaceConfigs and returns the data updated in the database.
+     * @param {WorkspaceConfigUpdateManyAndReturnArgs} args - Arguments to update many WorkspaceConfigs.
+     * @example
+     * // Update many WorkspaceConfigs
+     * const workspaceConfig = await prisma.workspaceConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more WorkspaceConfigs and only return the `id`
+     * const workspaceConfigWithIdOnly = await prisma.workspaceConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends WorkspaceConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, WorkspaceConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one WorkspaceConfig.
+     * @param {WorkspaceConfigUpsertArgs} args - Arguments to update or create a WorkspaceConfig.
+     * @example
+     * // Update or create a WorkspaceConfig
+     * const workspaceConfig = await prisma.workspaceConfig.upsert({
+     *   create: {
+     *     // ... data to create a WorkspaceConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WorkspaceConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WorkspaceConfigUpsertArgs>(args: SelectSubset<T, WorkspaceConfigUpsertArgs<ExtArgs>>): Prisma__WorkspaceConfigClient<$Result.GetResult<Prisma.$WorkspaceConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of WorkspaceConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkspaceConfigCountArgs} args - Arguments to filter WorkspaceConfigs to count.
+     * @example
+     * // Count the number of WorkspaceConfigs
+     * const count = await prisma.workspaceConfig.count({
+     *   where: {
+     *     // ... the filter for the WorkspaceConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends WorkspaceConfigCountArgs>(
+      args?: Subset<T, WorkspaceConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WorkspaceConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WorkspaceConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkspaceConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WorkspaceConfigAggregateArgs>(args: Subset<T, WorkspaceConfigAggregateArgs>): Prisma.PrismaPromise<GetWorkspaceConfigAggregateType<T>>
+
+    /**
+     * Group by WorkspaceConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkspaceConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WorkspaceConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WorkspaceConfigGroupByArgs['orderBy'] }
+        : { orderBy?: WorkspaceConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WorkspaceConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWorkspaceConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WorkspaceConfig model
+   */
+  readonly fields: WorkspaceConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WorkspaceConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WorkspaceConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WorkspaceConfig model
+   */
+  interface WorkspaceConfigFieldRefs {
+    readonly id: FieldRef<"WorkspaceConfig", 'Int'>
+    readonly wid: FieldRef<"WorkspaceConfig", 'Int'>
+    readonly departments: FieldRef<"WorkspaceConfig", 'String[]'>
+    readonly designations: FieldRef<"WorkspaceConfig", 'String[]'>
+    readonly officeBranches: FieldRef<"WorkspaceConfig", 'String[]'>
+    readonly workLocations: FieldRef<"WorkspaceConfig", 'String[]'>
+    readonly updatedAt: FieldRef<"WorkspaceConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WorkspaceConfig findUnique
+   */
+  export type WorkspaceConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkspaceConfig to fetch.
+     */
+    where: WorkspaceConfigWhereUniqueInput
+  }
+
+  /**
+   * WorkspaceConfig findUniqueOrThrow
+   */
+  export type WorkspaceConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkspaceConfig to fetch.
+     */
+    where: WorkspaceConfigWhereUniqueInput
+  }
+
+  /**
+   * WorkspaceConfig findFirst
+   */
+  export type WorkspaceConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkspaceConfig to fetch.
+     */
+    where?: WorkspaceConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkspaceConfigs to fetch.
+     */
+    orderBy?: WorkspaceConfigOrderByWithRelationInput | WorkspaceConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WorkspaceConfigs.
+     */
+    cursor?: WorkspaceConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkspaceConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkspaceConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WorkspaceConfigs.
+     */
+    distinct?: WorkspaceConfigScalarFieldEnum | WorkspaceConfigScalarFieldEnum[]
+  }
+
+  /**
+   * WorkspaceConfig findFirstOrThrow
+   */
+  export type WorkspaceConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkspaceConfig to fetch.
+     */
+    where?: WorkspaceConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkspaceConfigs to fetch.
+     */
+    orderBy?: WorkspaceConfigOrderByWithRelationInput | WorkspaceConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WorkspaceConfigs.
+     */
+    cursor?: WorkspaceConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkspaceConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkspaceConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WorkspaceConfigs.
+     */
+    distinct?: WorkspaceConfigScalarFieldEnum | WorkspaceConfigScalarFieldEnum[]
+  }
+
+  /**
+   * WorkspaceConfig findMany
+   */
+  export type WorkspaceConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkspaceConfigs to fetch.
+     */
+    where?: WorkspaceConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkspaceConfigs to fetch.
+     */
+    orderBy?: WorkspaceConfigOrderByWithRelationInput | WorkspaceConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WorkspaceConfigs.
+     */
+    cursor?: WorkspaceConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkspaceConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkspaceConfigs.
+     */
+    skip?: number
+    distinct?: WorkspaceConfigScalarFieldEnum | WorkspaceConfigScalarFieldEnum[]
+  }
+
+  /**
+   * WorkspaceConfig create
+   */
+  export type WorkspaceConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to create a WorkspaceConfig.
+     */
+    data: XOR<WorkspaceConfigCreateInput, WorkspaceConfigUncheckedCreateInput>
+  }
+
+  /**
+   * WorkspaceConfig createMany
+   */
+  export type WorkspaceConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WorkspaceConfigs.
+     */
+    data: WorkspaceConfigCreateManyInput | WorkspaceConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WorkspaceConfig createManyAndReturn
+   */
+  export type WorkspaceConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many WorkspaceConfigs.
+     */
+    data: WorkspaceConfigCreateManyInput | WorkspaceConfigCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * WorkspaceConfig update
+   */
+  export type WorkspaceConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to update a WorkspaceConfig.
+     */
+    data: XOR<WorkspaceConfigUpdateInput, WorkspaceConfigUncheckedUpdateInput>
+    /**
+     * Choose, which WorkspaceConfig to update.
+     */
+    where: WorkspaceConfigWhereUniqueInput
+  }
+
+  /**
+   * WorkspaceConfig updateMany
+   */
+  export type WorkspaceConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WorkspaceConfigs.
+     */
+    data: XOR<WorkspaceConfigUpdateManyMutationInput, WorkspaceConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which WorkspaceConfigs to update
+     */
+    where?: WorkspaceConfigWhereInput
+    /**
+     * Limit how many WorkspaceConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkspaceConfig updateManyAndReturn
+   */
+  export type WorkspaceConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update WorkspaceConfigs.
+     */
+    data: XOR<WorkspaceConfigUpdateManyMutationInput, WorkspaceConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which WorkspaceConfigs to update
+     */
+    where?: WorkspaceConfigWhereInput
+    /**
+     * Limit how many WorkspaceConfigs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * WorkspaceConfig upsert
+   */
+  export type WorkspaceConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * The filter to search for the WorkspaceConfig to update in case it exists.
+     */
+    where: WorkspaceConfigWhereUniqueInput
+    /**
+     * In case the WorkspaceConfig found by the `where` argument doesn't exist, create a new WorkspaceConfig with this data.
+     */
+    create: XOR<WorkspaceConfigCreateInput, WorkspaceConfigUncheckedCreateInput>
+    /**
+     * In case the WorkspaceConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WorkspaceConfigUpdateInput, WorkspaceConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * WorkspaceConfig delete
+   */
+  export type WorkspaceConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
+    /**
+     * Filter which WorkspaceConfig to delete.
+     */
+    where: WorkspaceConfigWhereUniqueInput
+  }
+
+  /**
+   * WorkspaceConfig deleteMany
+   */
+  export type WorkspaceConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WorkspaceConfigs to delete
+     */
+    where?: WorkspaceConfigWhereInput
+    /**
+     * Limit how many WorkspaceConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkspaceConfig without action
+   */
+  export type WorkspaceConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkspaceConfig
+     */
+    select?: WorkspaceConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkspaceConfig
+     */
+    omit?: WorkspaceConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceConfigInclude<ExtArgs> | null
   }
 
 
@@ -2258,9 +3478,21 @@ export namespace Prisma {
     email: string | null
     role: string | null
     department: string | null
+    designation: string | null
+    officeBranch: string | null
+    workLocation: string | null
     avatarInitials: string | null
     status: string | null
     phoneNumber: string | null
+    personalEmail: string | null
+    bloodGroup: string | null
+    dob: string | null
+    code: string | null
+    joiningDate: string | null
+    reportingManager: string | null
+    reportingHR: string | null
+    emergencyName: string | null
+    emergencyPhone: string | null
     createdAt: Date | null
     wid: number | null
   }
@@ -2271,9 +3503,21 @@ export namespace Prisma {
     email: string | null
     role: string | null
     department: string | null
+    designation: string | null
+    officeBranch: string | null
+    workLocation: string | null
     avatarInitials: string | null
     status: string | null
     phoneNumber: string | null
+    personalEmail: string | null
+    bloodGroup: string | null
+    dob: string | null
+    code: string | null
+    joiningDate: string | null
+    reportingManager: string | null
+    reportingHR: string | null
+    emergencyName: string | null
+    emergencyPhone: string | null
     createdAt: Date | null
     wid: number | null
   }
@@ -2284,9 +3528,21 @@ export namespace Prisma {
     email: number
     role: number
     department: number
+    designation: number
+    officeBranch: number
+    workLocation: number
     avatarInitials: number
     status: number
     phoneNumber: number
+    personalEmail: number
+    bloodGroup: number
+    dob: number
+    code: number
+    joiningDate: number
+    reportingManager: number
+    reportingHR: number
+    emergencyName: number
+    emergencyPhone: number
     createdAt: number
     wid: number
     _all: number
@@ -2307,9 +3563,21 @@ export namespace Prisma {
     email?: true
     role?: true
     department?: true
+    designation?: true
+    officeBranch?: true
+    workLocation?: true
     avatarInitials?: true
     status?: true
     phoneNumber?: true
+    personalEmail?: true
+    bloodGroup?: true
+    dob?: true
+    code?: true
+    joiningDate?: true
+    reportingManager?: true
+    reportingHR?: true
+    emergencyName?: true
+    emergencyPhone?: true
     createdAt?: true
     wid?: true
   }
@@ -2320,9 +3588,21 @@ export namespace Prisma {
     email?: true
     role?: true
     department?: true
+    designation?: true
+    officeBranch?: true
+    workLocation?: true
     avatarInitials?: true
     status?: true
     phoneNumber?: true
+    personalEmail?: true
+    bloodGroup?: true
+    dob?: true
+    code?: true
+    joiningDate?: true
+    reportingManager?: true
+    reportingHR?: true
+    emergencyName?: true
+    emergencyPhone?: true
     createdAt?: true
     wid?: true
   }
@@ -2333,9 +3613,21 @@ export namespace Prisma {
     email?: true
     role?: true
     department?: true
+    designation?: true
+    officeBranch?: true
+    workLocation?: true
     avatarInitials?: true
     status?: true
     phoneNumber?: true
+    personalEmail?: true
+    bloodGroup?: true
+    dob?: true
+    code?: true
+    joiningDate?: true
+    reportingManager?: true
+    reportingHR?: true
+    emergencyName?: true
+    emergencyPhone?: true
     createdAt?: true
     wid?: true
     _all?: true
@@ -2433,9 +3725,21 @@ export namespace Prisma {
     email: string
     role: string
     department: string
+    designation: string | null
+    officeBranch: string | null
+    workLocation: string | null
     avatarInitials: string
     status: string
     phoneNumber: string | null
+    personalEmail: string | null
+    bloodGroup: string | null
+    dob: string | null
+    code: string | null
+    joiningDate: string | null
+    reportingManager: string | null
+    reportingHR: string | null
+    emergencyName: string | null
+    emergencyPhone: string | null
     createdAt: Date
     wid: number | null
     _count: ProfileCountAggregateOutputType | null
@@ -2465,9 +3769,21 @@ export namespace Prisma {
     email?: boolean
     role?: boolean
     department?: boolean
+    designation?: boolean
+    officeBranch?: boolean
+    workLocation?: boolean
     avatarInitials?: boolean
     status?: boolean
     phoneNumber?: boolean
+    personalEmail?: boolean
+    bloodGroup?: boolean
+    dob?: boolean
+    code?: boolean
+    joiningDate?: boolean
+    reportingManager?: boolean
+    reportingHR?: boolean
+    emergencyName?: boolean
+    emergencyPhone?: boolean
     createdAt?: boolean
     wid?: boolean
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
@@ -2481,9 +3797,21 @@ export namespace Prisma {
     email?: boolean
     role?: boolean
     department?: boolean
+    designation?: boolean
+    officeBranch?: boolean
+    workLocation?: boolean
     avatarInitials?: boolean
     status?: boolean
     phoneNumber?: boolean
+    personalEmail?: boolean
+    bloodGroup?: boolean
+    dob?: boolean
+    code?: boolean
+    joiningDate?: boolean
+    reportingManager?: boolean
+    reportingHR?: boolean
+    emergencyName?: boolean
+    emergencyPhone?: boolean
     createdAt?: boolean
     wid?: boolean
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
@@ -2495,9 +3823,21 @@ export namespace Prisma {
     email?: boolean
     role?: boolean
     department?: boolean
+    designation?: boolean
+    officeBranch?: boolean
+    workLocation?: boolean
     avatarInitials?: boolean
     status?: boolean
     phoneNumber?: boolean
+    personalEmail?: boolean
+    bloodGroup?: boolean
+    dob?: boolean
+    code?: boolean
+    joiningDate?: boolean
+    reportingManager?: boolean
+    reportingHR?: boolean
+    emergencyName?: boolean
+    emergencyPhone?: boolean
     createdAt?: boolean
     wid?: boolean
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
@@ -2509,14 +3849,26 @@ export namespace Prisma {
     email?: boolean
     role?: boolean
     department?: boolean
+    designation?: boolean
+    officeBranch?: boolean
+    workLocation?: boolean
     avatarInitials?: boolean
     status?: boolean
     phoneNumber?: boolean
+    personalEmail?: boolean
+    bloodGroup?: boolean
+    dob?: boolean
+    code?: boolean
+    joiningDate?: boolean
+    reportingManager?: boolean
+    reportingHR?: boolean
+    emergencyName?: boolean
+    emergencyPhone?: boolean
     createdAt?: boolean
     wid?: boolean
   }
 
-  export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "role" | "department" | "avatarInitials" | "status" | "phoneNumber" | "createdAt" | "wid", ExtArgs["result"]["profile"]>
+  export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "role" | "department" | "designation" | "officeBranch" | "workLocation" | "avatarInitials" | "status" | "phoneNumber" | "personalEmail" | "bloodGroup" | "dob" | "code" | "joiningDate" | "reportingManager" | "reportingHR" | "emergencyName" | "emergencyPhone" | "createdAt" | "wid", ExtArgs["result"]["profile"]>
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
     visitors?: boolean | Profile$visitorsArgs<ExtArgs>
@@ -2541,9 +3893,21 @@ export namespace Prisma {
       email: string
       role: string
       department: string
+      designation: string | null
+      officeBranch: string | null
+      workLocation: string | null
       avatarInitials: string
       status: string
       phoneNumber: string | null
+      personalEmail: string | null
+      bloodGroup: string | null
+      dob: string | null
+      code: string | null
+      joiningDate: string | null
+      reportingManager: string | null
+      reportingHR: string | null
+      emergencyName: string | null
+      emergencyPhone: string | null
       createdAt: Date
       wid: number | null
     }, ExtArgs["result"]["profile"]>
@@ -2976,9 +4340,21 @@ export namespace Prisma {
     readonly email: FieldRef<"Profile", 'String'>
     readonly role: FieldRef<"Profile", 'String'>
     readonly department: FieldRef<"Profile", 'String'>
+    readonly designation: FieldRef<"Profile", 'String'>
+    readonly officeBranch: FieldRef<"Profile", 'String'>
+    readonly workLocation: FieldRef<"Profile", 'String'>
     readonly avatarInitials: FieldRef<"Profile", 'String'>
     readonly status: FieldRef<"Profile", 'String'>
     readonly phoneNumber: FieldRef<"Profile", 'String'>
+    readonly personalEmail: FieldRef<"Profile", 'String'>
+    readonly bloodGroup: FieldRef<"Profile", 'String'>
+    readonly dob: FieldRef<"Profile", 'String'>
+    readonly code: FieldRef<"Profile", 'String'>
+    readonly joiningDate: FieldRef<"Profile", 'String'>
+    readonly reportingManager: FieldRef<"Profile", 'String'>
+    readonly reportingHR: FieldRef<"Profile", 'String'>
+    readonly emergencyName: FieldRef<"Profile", 'String'>
+    readonly emergencyPhone: FieldRef<"Profile", 'String'>
     readonly createdAt: FieldRef<"Profile", 'DateTime'>
     readonly wid: FieldRef<"Profile", 'Int'>
   }
@@ -3475,6 +4851,8 @@ export namespace Prisma {
     idProofNumber: string | null
     badgeNumber: string | null
     qrCode: string | null
+    qrValidUntil: Date | null
+    walkIn: boolean | null
     notes: string | null
     wid: number | null
   }
@@ -3496,6 +4874,8 @@ export namespace Prisma {
     idProofNumber: string | null
     badgeNumber: string | null
     qrCode: string | null
+    qrValidUntil: Date | null
+    walkIn: boolean | null
     notes: string | null
     wid: number | null
   }
@@ -3517,6 +4897,8 @@ export namespace Prisma {
     idProofNumber: number
     badgeNumber: number
     qrCode: number
+    qrValidUntil: number
+    walkIn: number
     notes: number
     wid: number
     _all: number
@@ -3548,6 +4930,8 @@ export namespace Prisma {
     idProofNumber?: true
     badgeNumber?: true
     qrCode?: true
+    qrValidUntil?: true
+    walkIn?: true
     notes?: true
     wid?: true
   }
@@ -3569,6 +4953,8 @@ export namespace Prisma {
     idProofNumber?: true
     badgeNumber?: true
     qrCode?: true
+    qrValidUntil?: true
+    walkIn?: true
     notes?: true
     wid?: true
   }
@@ -3590,6 +4976,8 @@ export namespace Prisma {
     idProofNumber?: true
     badgeNumber?: true
     qrCode?: true
+    qrValidUntil?: true
+    walkIn?: true
     notes?: true
     wid?: true
     _all?: true
@@ -3698,6 +5086,8 @@ export namespace Prisma {
     idProofNumber: string | null
     badgeNumber: string | null
     qrCode: string | null
+    qrValidUntil: Date | null
+    walkIn: boolean
     notes: string | null
     wid: number
     _count: VisitorCountAggregateOutputType | null
@@ -3738,6 +5128,8 @@ export namespace Prisma {
     idProofNumber?: boolean
     badgeNumber?: boolean
     qrCode?: boolean
+    qrValidUntil?: boolean
+    walkIn?: boolean
     notes?: boolean
     wid?: boolean
     host?: boolean | ProfileDefaultArgs<ExtArgs>
@@ -3761,6 +5153,8 @@ export namespace Prisma {
     idProofNumber?: boolean
     badgeNumber?: boolean
     qrCode?: boolean
+    qrValidUntil?: boolean
+    walkIn?: boolean
     notes?: boolean
     wid?: boolean
     host?: boolean | ProfileDefaultArgs<ExtArgs>
@@ -3784,6 +5178,8 @@ export namespace Prisma {
     idProofNumber?: boolean
     badgeNumber?: boolean
     qrCode?: boolean
+    qrValidUntil?: boolean
+    walkIn?: boolean
     notes?: boolean
     wid?: boolean
     host?: boolean | ProfileDefaultArgs<ExtArgs>
@@ -3807,11 +5203,13 @@ export namespace Prisma {
     idProofNumber?: boolean
     badgeNumber?: boolean
     qrCode?: boolean
+    qrValidUntil?: boolean
+    walkIn?: boolean
     notes?: boolean
     wid?: boolean
   }
 
-  export type VisitorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "company" | "purpose" | "status" | "hostId" | "hostName" | "checkedInAt" | "checkedOutAt" | "preRegisteredAt" | "idProofType" | "idProofNumber" | "badgeNumber" | "qrCode" | "notes" | "wid", ExtArgs["result"]["visitor"]>
+  export type VisitorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "company" | "purpose" | "status" | "hostId" | "hostName" | "checkedInAt" | "checkedOutAt" | "preRegisteredAt" | "idProofType" | "idProofNumber" | "badgeNumber" | "qrCode" | "qrValidUntil" | "walkIn" | "notes" | "wid", ExtArgs["result"]["visitor"]>
   export type VisitorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | ProfileDefaultArgs<ExtArgs>
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -3848,6 +5246,8 @@ export namespace Prisma {
       idProofNumber: string | null
       badgeNumber: string | null
       qrCode: string | null
+      qrValidUntil: Date | null
+      walkIn: boolean
       notes: string | null
       wid: number
     }, ExtArgs["result"]["visitor"]>
@@ -4291,6 +5691,8 @@ export namespace Prisma {
     readonly idProofNumber: FieldRef<"Visitor", 'String'>
     readonly badgeNumber: FieldRef<"Visitor", 'String'>
     readonly qrCode: FieldRef<"Visitor", 'String'>
+    readonly qrValidUntil: FieldRef<"Visitor", 'DateTime'>
+    readonly walkIn: FieldRef<"Visitor", 'Boolean'>
     readonly notes: FieldRef<"Visitor", 'String'>
     readonly wid: FieldRef<"Visitor", 'Int'>
   }
@@ -4731,15 +6133,40 @@ export namespace Prisma {
   export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
 
 
+  export const WorkspaceConfigScalarFieldEnum: {
+    id: 'id',
+    wid: 'wid',
+    departments: 'departments',
+    designations: 'designations',
+    officeBranches: 'officeBranches',
+    workLocations: 'workLocations',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WorkspaceConfigScalarFieldEnum = (typeof WorkspaceConfigScalarFieldEnum)[keyof typeof WorkspaceConfigScalarFieldEnum]
+
+
   export const ProfileScalarFieldEnum: {
     id: 'id',
     name: 'name',
     email: 'email',
     role: 'role',
     department: 'department',
+    designation: 'designation',
+    officeBranch: 'officeBranch',
+    workLocation: 'workLocation',
     avatarInitials: 'avatarInitials',
     status: 'status',
     phoneNumber: 'phoneNumber',
+    personalEmail: 'personalEmail',
+    bloodGroup: 'bloodGroup',
+    dob: 'dob',
+    code: 'code',
+    joiningDate: 'joiningDate',
+    reportingManager: 'reportingManager',
+    reportingHR: 'reportingHR',
+    emergencyName: 'emergencyName',
+    emergencyPhone: 'emergencyPhone',
     createdAt: 'createdAt',
     wid: 'wid'
   };
@@ -4764,6 +6191,8 @@ export namespace Prisma {
     idProofNumber: 'idProofNumber',
     badgeNumber: 'badgeNumber',
     qrCode: 'qrCode',
+    qrValidUntil: 'qrValidUntil',
+    walkIn: 'walkIn',
     notes: 'notes',
     wid: 'wid'
   };
@@ -4843,6 +6272,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -4869,6 +6305,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     profiles?: ProfileListRelationFilter
     visitors?: VisitorListRelationFilter
+    config?: XOR<WorkspaceConfigNullableScalarRelationFilter, WorkspaceConfigWhereInput> | null
   }
 
   export type WorkspaceOrderByWithRelationInput = {
@@ -4878,6 +6315,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     profiles?: ProfileOrderByRelationAggregateInput
     visitors?: VisitorOrderByRelationAggregateInput
+    config?: WorkspaceConfigOrderByWithRelationInput
   }
 
   export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -4890,6 +6328,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     profiles?: ProfileListRelationFilter
     visitors?: VisitorListRelationFilter
+    config?: XOR<WorkspaceConfigNullableScalarRelationFilter, WorkspaceConfigWhereInput> | null
   }, "id">
 
   export type WorkspaceOrderByWithAggregationInput = {
@@ -4914,6 +6353,73 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Workspace"> | Date | string
   }
 
+  export type WorkspaceConfigWhereInput = {
+    AND?: WorkspaceConfigWhereInput | WorkspaceConfigWhereInput[]
+    OR?: WorkspaceConfigWhereInput[]
+    NOT?: WorkspaceConfigWhereInput | WorkspaceConfigWhereInput[]
+    id?: IntFilter<"WorkspaceConfig"> | number
+    wid?: IntFilter<"WorkspaceConfig"> | number
+    departments?: StringNullableListFilter<"WorkspaceConfig">
+    designations?: StringNullableListFilter<"WorkspaceConfig">
+    officeBranches?: StringNullableListFilter<"WorkspaceConfig">
+    workLocations?: StringNullableListFilter<"WorkspaceConfig">
+    updatedAt?: DateTimeFilter<"WorkspaceConfig"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+  }
+
+  export type WorkspaceConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    departments?: SortOrder
+    designations?: SortOrder
+    officeBranches?: SortOrder
+    workLocations?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+  }
+
+  export type WorkspaceConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    wid?: number
+    AND?: WorkspaceConfigWhereInput | WorkspaceConfigWhereInput[]
+    OR?: WorkspaceConfigWhereInput[]
+    NOT?: WorkspaceConfigWhereInput | WorkspaceConfigWhereInput[]
+    departments?: StringNullableListFilter<"WorkspaceConfig">
+    designations?: StringNullableListFilter<"WorkspaceConfig">
+    officeBranches?: StringNullableListFilter<"WorkspaceConfig">
+    workLocations?: StringNullableListFilter<"WorkspaceConfig">
+    updatedAt?: DateTimeFilter<"WorkspaceConfig"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+  }, "id" | "wid">
+
+  export type WorkspaceConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    departments?: SortOrder
+    designations?: SortOrder
+    officeBranches?: SortOrder
+    workLocations?: SortOrder
+    updatedAt?: SortOrder
+    _count?: WorkspaceConfigCountOrderByAggregateInput
+    _avg?: WorkspaceConfigAvgOrderByAggregateInput
+    _max?: WorkspaceConfigMaxOrderByAggregateInput
+    _min?: WorkspaceConfigMinOrderByAggregateInput
+    _sum?: WorkspaceConfigSumOrderByAggregateInput
+  }
+
+  export type WorkspaceConfigScalarWhereWithAggregatesInput = {
+    AND?: WorkspaceConfigScalarWhereWithAggregatesInput | WorkspaceConfigScalarWhereWithAggregatesInput[]
+    OR?: WorkspaceConfigScalarWhereWithAggregatesInput[]
+    NOT?: WorkspaceConfigScalarWhereWithAggregatesInput | WorkspaceConfigScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"WorkspaceConfig"> | number
+    wid?: IntWithAggregatesFilter<"WorkspaceConfig"> | number
+    departments?: StringNullableListFilter<"WorkspaceConfig">
+    designations?: StringNullableListFilter<"WorkspaceConfig">
+    officeBranches?: StringNullableListFilter<"WorkspaceConfig">
+    workLocations?: StringNullableListFilter<"WorkspaceConfig">
+    updatedAt?: DateTimeWithAggregatesFilter<"WorkspaceConfig"> | Date | string
+  }
+
   export type ProfileWhereInput = {
     AND?: ProfileWhereInput | ProfileWhereInput[]
     OR?: ProfileWhereInput[]
@@ -4923,9 +6429,21 @@ export namespace Prisma {
     email?: StringFilter<"Profile"> | string
     role?: StringFilter<"Profile"> | string
     department?: StringFilter<"Profile"> | string
+    designation?: StringNullableFilter<"Profile"> | string | null
+    officeBranch?: StringNullableFilter<"Profile"> | string | null
+    workLocation?: StringNullableFilter<"Profile"> | string | null
     avatarInitials?: StringFilter<"Profile"> | string
     status?: StringFilter<"Profile"> | string
     phoneNumber?: StringNullableFilter<"Profile"> | string | null
+    personalEmail?: StringNullableFilter<"Profile"> | string | null
+    bloodGroup?: StringNullableFilter<"Profile"> | string | null
+    dob?: StringNullableFilter<"Profile"> | string | null
+    code?: StringNullableFilter<"Profile"> | string | null
+    joiningDate?: StringNullableFilter<"Profile"> | string | null
+    reportingManager?: StringNullableFilter<"Profile"> | string | null
+    reportingHR?: StringNullableFilter<"Profile"> | string | null
+    emergencyName?: StringNullableFilter<"Profile"> | string | null
+    emergencyPhone?: StringNullableFilter<"Profile"> | string | null
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     wid?: IntNullableFilter<"Profile"> | number | null
     workspace?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
@@ -4938,9 +6456,21 @@ export namespace Prisma {
     email?: SortOrder
     role?: SortOrder
     department?: SortOrder
+    designation?: SortOrderInput | SortOrder
+    officeBranch?: SortOrderInput | SortOrder
+    workLocation?: SortOrderInput | SortOrder
     avatarInitials?: SortOrder
     status?: SortOrder
     phoneNumber?: SortOrderInput | SortOrder
+    personalEmail?: SortOrderInput | SortOrder
+    bloodGroup?: SortOrderInput | SortOrder
+    dob?: SortOrderInput | SortOrder
+    code?: SortOrderInput | SortOrder
+    joiningDate?: SortOrderInput | SortOrder
+    reportingManager?: SortOrderInput | SortOrder
+    reportingHR?: SortOrderInput | SortOrder
+    emergencyName?: SortOrderInput | SortOrder
+    emergencyPhone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     wid?: SortOrderInput | SortOrder
     workspace?: WorkspaceOrderByWithRelationInput
@@ -4956,9 +6486,21 @@ export namespace Prisma {
     name?: StringFilter<"Profile"> | string
     role?: StringFilter<"Profile"> | string
     department?: StringFilter<"Profile"> | string
+    designation?: StringNullableFilter<"Profile"> | string | null
+    officeBranch?: StringNullableFilter<"Profile"> | string | null
+    workLocation?: StringNullableFilter<"Profile"> | string | null
     avatarInitials?: StringFilter<"Profile"> | string
     status?: StringFilter<"Profile"> | string
     phoneNumber?: StringNullableFilter<"Profile"> | string | null
+    personalEmail?: StringNullableFilter<"Profile"> | string | null
+    bloodGroup?: StringNullableFilter<"Profile"> | string | null
+    dob?: StringNullableFilter<"Profile"> | string | null
+    code?: StringNullableFilter<"Profile"> | string | null
+    joiningDate?: StringNullableFilter<"Profile"> | string | null
+    reportingManager?: StringNullableFilter<"Profile"> | string | null
+    reportingHR?: StringNullableFilter<"Profile"> | string | null
+    emergencyName?: StringNullableFilter<"Profile"> | string | null
+    emergencyPhone?: StringNullableFilter<"Profile"> | string | null
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     wid?: IntNullableFilter<"Profile"> | number | null
     workspace?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
@@ -4971,9 +6513,21 @@ export namespace Prisma {
     email?: SortOrder
     role?: SortOrder
     department?: SortOrder
+    designation?: SortOrderInput | SortOrder
+    officeBranch?: SortOrderInput | SortOrder
+    workLocation?: SortOrderInput | SortOrder
     avatarInitials?: SortOrder
     status?: SortOrder
     phoneNumber?: SortOrderInput | SortOrder
+    personalEmail?: SortOrderInput | SortOrder
+    bloodGroup?: SortOrderInput | SortOrder
+    dob?: SortOrderInput | SortOrder
+    code?: SortOrderInput | SortOrder
+    joiningDate?: SortOrderInput | SortOrder
+    reportingManager?: SortOrderInput | SortOrder
+    reportingHR?: SortOrderInput | SortOrder
+    emergencyName?: SortOrderInput | SortOrder
+    emergencyPhone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     wid?: SortOrderInput | SortOrder
     _count?: ProfileCountOrderByAggregateInput
@@ -4992,9 +6546,21 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Profile"> | string
     role?: StringWithAggregatesFilter<"Profile"> | string
     department?: StringWithAggregatesFilter<"Profile"> | string
+    designation?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    officeBranch?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    workLocation?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     avatarInitials?: StringWithAggregatesFilter<"Profile"> | string
     status?: StringWithAggregatesFilter<"Profile"> | string
     phoneNumber?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    personalEmail?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    bloodGroup?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    dob?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    code?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    joiningDate?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    reportingManager?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    reportingHR?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    emergencyName?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    emergencyPhone?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Profile"> | Date | string
     wid?: IntNullableWithAggregatesFilter<"Profile"> | number | null
   }
@@ -5019,6 +6585,8 @@ export namespace Prisma {
     idProofNumber?: StringNullableFilter<"Visitor"> | string | null
     badgeNumber?: StringNullableFilter<"Visitor"> | string | null
     qrCode?: StringNullableFilter<"Visitor"> | string | null
+    qrValidUntil?: DateTimeNullableFilter<"Visitor"> | Date | string | null
+    walkIn?: BoolFilter<"Visitor"> | boolean
     notes?: StringNullableFilter<"Visitor"> | string | null
     wid?: IntFilter<"Visitor"> | number
     host?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
@@ -5042,6 +6610,8 @@ export namespace Prisma {
     idProofNumber?: SortOrderInput | SortOrder
     badgeNumber?: SortOrderInput | SortOrder
     qrCode?: SortOrderInput | SortOrder
+    qrValidUntil?: SortOrderInput | SortOrder
+    walkIn?: SortOrder
     notes?: SortOrderInput | SortOrder
     wid?: SortOrder
     host?: ProfileOrderByWithRelationInput
@@ -5068,6 +6638,8 @@ export namespace Prisma {
     idProofNumber?: StringNullableFilter<"Visitor"> | string | null
     badgeNumber?: StringNullableFilter<"Visitor"> | string | null
     qrCode?: StringNullableFilter<"Visitor"> | string | null
+    qrValidUntil?: DateTimeNullableFilter<"Visitor"> | Date | string | null
+    walkIn?: BoolFilter<"Visitor"> | boolean
     notes?: StringNullableFilter<"Visitor"> | string | null
     wid?: IntFilter<"Visitor"> | number
     host?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
@@ -5091,6 +6663,8 @@ export namespace Prisma {
     idProofNumber?: SortOrderInput | SortOrder
     badgeNumber?: SortOrderInput | SortOrder
     qrCode?: SortOrderInput | SortOrder
+    qrValidUntil?: SortOrderInput | SortOrder
+    walkIn?: SortOrder
     notes?: SortOrderInput | SortOrder
     wid?: SortOrder
     _count?: VisitorCountOrderByAggregateInput
@@ -5120,6 +6694,8 @@ export namespace Prisma {
     idProofNumber?: StringNullableWithAggregatesFilter<"Visitor"> | string | null
     badgeNumber?: StringNullableWithAggregatesFilter<"Visitor"> | string | null
     qrCode?: StringNullableWithAggregatesFilter<"Visitor"> | string | null
+    qrValidUntil?: DateTimeNullableWithAggregatesFilter<"Visitor"> | Date | string | null
+    walkIn?: BoolWithAggregatesFilter<"Visitor"> | boolean
     notes?: StringNullableWithAggregatesFilter<"Visitor"> | string | null
     wid?: IntWithAggregatesFilter<"Visitor"> | number
   }
@@ -5130,6 +6706,7 @@ export namespace Prisma {
     createdAt?: Date | string
     profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
     visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateInput = {
@@ -5139,6 +6716,7 @@ export namespace Prisma {
     createdAt?: Date | string
     profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
     visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUpdateInput = {
@@ -5147,6 +6725,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
     visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateInput = {
@@ -5156,6 +6735,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
     visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateManyInput = {
@@ -5178,15 +6758,93 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type WorkspaceConfigCreateInput = {
+    departments?: WorkspaceConfigCreatedepartmentsInput | string[]
+    designations?: WorkspaceConfigCreatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigCreateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigCreateworkLocationsInput | string[]
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutConfigInput
+  }
+
+  export type WorkspaceConfigUncheckedCreateInput = {
+    id?: number
+    wid: number
+    departments?: WorkspaceConfigCreatedepartmentsInput | string[]
+    designations?: WorkspaceConfigCreatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigCreateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigCreateworkLocationsInput | string[]
+    updatedAt?: Date | string
+  }
+
+  export type WorkspaceConfigUpdateInput = {
+    departments?: WorkspaceConfigUpdatedepartmentsInput | string[]
+    designations?: WorkspaceConfigUpdatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigUpdateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigUpdateworkLocationsInput | string[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutConfigNestedInput
+  }
+
+  export type WorkspaceConfigUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    wid?: IntFieldUpdateOperationsInput | number
+    departments?: WorkspaceConfigUpdatedepartmentsInput | string[]
+    designations?: WorkspaceConfigUpdatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigUpdateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigUpdateworkLocationsInput | string[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkspaceConfigCreateManyInput = {
+    id?: number
+    wid: number
+    departments?: WorkspaceConfigCreatedepartmentsInput | string[]
+    designations?: WorkspaceConfigCreatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigCreateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigCreateworkLocationsInput | string[]
+    updatedAt?: Date | string
+  }
+
+  export type WorkspaceConfigUpdateManyMutationInput = {
+    departments?: WorkspaceConfigUpdatedepartmentsInput | string[]
+    designations?: WorkspaceConfigUpdatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigUpdateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigUpdateworkLocationsInput | string[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkspaceConfigUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    wid?: IntFieldUpdateOperationsInput | number
+    departments?: WorkspaceConfigUpdatedepartmentsInput | string[]
+    designations?: WorkspaceConfigUpdatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigUpdateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigUpdateworkLocationsInput | string[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProfileCreateInput = {
     id: string
     name: string
     email: string
     role?: string
     department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
     avatarInitials?: string
     status?: string
     phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
     createdAt?: Date | string
     workspace?: WorkspaceCreateNestedOneWithoutProfilesInput
     visitors?: VisitorCreateNestedManyWithoutHostInput
@@ -5198,9 +6856,21 @@ export namespace Prisma {
     email: string
     role?: string
     department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
     avatarInitials?: string
     status?: string
     phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
     createdAt?: Date | string
     wid?: number | null
     visitors?: VisitorUncheckedCreateNestedManyWithoutHostInput
@@ -5212,9 +6882,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneWithoutProfilesNestedInput
     visitors?: VisitorUpdateManyWithoutHostNestedInput
@@ -5226,9 +6908,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
     visitors?: VisitorUncheckedUpdateManyWithoutHostNestedInput
@@ -5240,9 +6934,21 @@ export namespace Prisma {
     email: string
     role?: string
     department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
     avatarInitials?: string
     status?: string
     phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
     createdAt?: Date | string
     wid?: number | null
   }
@@ -5253,9 +6959,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -5265,9 +6983,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -5288,6 +7018,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
     host: ProfileCreateNestedOneWithoutVisitorsInput
     workspace: WorkspaceCreateNestedOneWithoutVisitorsInput
@@ -5310,6 +7042,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
     wid: number
   }
@@ -5330,6 +7064,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     host?: ProfileUpdateOneRequiredWithoutVisitorsNestedInput
     workspace?: WorkspaceUpdateOneRequiredWithoutVisitorsNestedInput
@@ -5352,6 +7088,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     wid?: IntFieldUpdateOperationsInput | number
   }
@@ -5373,6 +7111,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
     wid: number
   }
@@ -5393,6 +7133,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -5413,6 +7155,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     wid?: IntFieldUpdateOperationsInput | number
   }
@@ -5479,6 +7223,11 @@ export namespace Prisma {
     every?: VisitorWhereInput
     some?: VisitorWhereInput
     none?: VisitorWhereInput
+  }
+
+  export type WorkspaceConfigNullableScalarRelationFilter = {
+    is?: WorkspaceConfigWhereInput | null
+    isNot?: WorkspaceConfigWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -5589,6 +7338,51 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type WorkspaceScalarRelationFilter = {
+    is?: WorkspaceWhereInput
+    isNot?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    departments?: SortOrder
+    designations?: SortOrder
+    officeBranches?: SortOrder
+    workLocations?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WorkspaceConfigAvgOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+  }
+
+  export type WorkspaceConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WorkspaceConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WorkspaceConfigSumOrderByAggregateInput = {
+    id?: SortOrder
+    wid?: SortOrder
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -5611,9 +7405,21 @@ export namespace Prisma {
     email?: SortOrder
     role?: SortOrder
     department?: SortOrder
+    designation?: SortOrder
+    officeBranch?: SortOrder
+    workLocation?: SortOrder
     avatarInitials?: SortOrder
     status?: SortOrder
     phoneNumber?: SortOrder
+    personalEmail?: SortOrder
+    bloodGroup?: SortOrder
+    dob?: SortOrder
+    code?: SortOrder
+    joiningDate?: SortOrder
+    reportingManager?: SortOrder
+    reportingHR?: SortOrder
+    emergencyName?: SortOrder
+    emergencyPhone?: SortOrder
     createdAt?: SortOrder
     wid?: SortOrder
   }
@@ -5628,9 +7434,21 @@ export namespace Prisma {
     email?: SortOrder
     role?: SortOrder
     department?: SortOrder
+    designation?: SortOrder
+    officeBranch?: SortOrder
+    workLocation?: SortOrder
     avatarInitials?: SortOrder
     status?: SortOrder
     phoneNumber?: SortOrder
+    personalEmail?: SortOrder
+    bloodGroup?: SortOrder
+    dob?: SortOrder
+    code?: SortOrder
+    joiningDate?: SortOrder
+    reportingManager?: SortOrder
+    reportingHR?: SortOrder
+    emergencyName?: SortOrder
+    emergencyPhone?: SortOrder
     createdAt?: SortOrder
     wid?: SortOrder
   }
@@ -5641,9 +7459,21 @@ export namespace Prisma {
     email?: SortOrder
     role?: SortOrder
     department?: SortOrder
+    designation?: SortOrder
+    officeBranch?: SortOrder
+    workLocation?: SortOrder
     avatarInitials?: SortOrder
     status?: SortOrder
     phoneNumber?: SortOrder
+    personalEmail?: SortOrder
+    bloodGroup?: SortOrder
+    dob?: SortOrder
+    code?: SortOrder
+    joiningDate?: SortOrder
+    reportingManager?: SortOrder
+    reportingHR?: SortOrder
+    emergencyName?: SortOrder
+    emergencyPhone?: SortOrder
     createdAt?: SortOrder
     wid?: SortOrder
   }
@@ -5679,14 +7509,14 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type ProfileScalarRelationFilter = {
     is?: ProfileWhereInput
     isNot?: ProfileWhereInput
-  }
-
-  export type WorkspaceScalarRelationFilter = {
-    is?: WorkspaceWhereInput
-    isNot?: WorkspaceWhereInput
   }
 
   export type VisitorCountOrderByAggregateInput = {
@@ -5706,6 +7536,8 @@ export namespace Prisma {
     idProofNumber?: SortOrder
     badgeNumber?: SortOrder
     qrCode?: SortOrder
+    qrValidUntil?: SortOrder
+    walkIn?: SortOrder
     notes?: SortOrder
     wid?: SortOrder
   }
@@ -5731,6 +7563,8 @@ export namespace Prisma {
     idProofNumber?: SortOrder
     badgeNumber?: SortOrder
     qrCode?: SortOrder
+    qrValidUntil?: SortOrder
+    walkIn?: SortOrder
     notes?: SortOrder
     wid?: SortOrder
   }
@@ -5752,6 +7586,8 @@ export namespace Prisma {
     idProofNumber?: SortOrder
     badgeNumber?: SortOrder
     qrCode?: SortOrder
+    qrValidUntil?: SortOrder
+    walkIn?: SortOrder
     notes?: SortOrder
     wid?: SortOrder
   }
@@ -5774,6 +7610,14 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type ProfileCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<ProfileCreateWithoutWorkspaceInput, ProfileUncheckedCreateWithoutWorkspaceInput> | ProfileCreateWithoutWorkspaceInput[] | ProfileUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: ProfileCreateOrConnectWithoutWorkspaceInput | ProfileCreateOrConnectWithoutWorkspaceInput[]
@@ -5788,6 +7632,12 @@ export namespace Prisma {
     connect?: VisitorWhereUniqueInput | VisitorWhereUniqueInput[]
   }
 
+  export type WorkspaceConfigCreateNestedOneWithoutWorkspaceInput = {
+    create?: XOR<WorkspaceConfigCreateWithoutWorkspaceInput, WorkspaceConfigUncheckedCreateWithoutWorkspaceInput>
+    connectOrCreate?: WorkspaceConfigCreateOrConnectWithoutWorkspaceInput
+    connect?: WorkspaceConfigWhereUniqueInput
+  }
+
   export type ProfileUncheckedCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<ProfileCreateWithoutWorkspaceInput, ProfileUncheckedCreateWithoutWorkspaceInput> | ProfileCreateWithoutWorkspaceInput[] | ProfileUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: ProfileCreateOrConnectWithoutWorkspaceInput | ProfileCreateOrConnectWithoutWorkspaceInput[]
@@ -5800,6 +7650,12 @@ export namespace Prisma {
     connectOrCreate?: VisitorCreateOrConnectWithoutWorkspaceInput | VisitorCreateOrConnectWithoutWorkspaceInput[]
     createMany?: VisitorCreateManyWorkspaceInputEnvelope
     connect?: VisitorWhereUniqueInput | VisitorWhereUniqueInput[]
+  }
+
+  export type WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput = {
+    create?: XOR<WorkspaceConfigCreateWithoutWorkspaceInput, WorkspaceConfigUncheckedCreateWithoutWorkspaceInput>
+    connectOrCreate?: WorkspaceConfigCreateOrConnectWithoutWorkspaceInput
+    connect?: WorkspaceConfigWhereUniqueInput
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -5842,6 +7698,16 @@ export namespace Prisma {
     deleteMany?: VisitorScalarWhereInput | VisitorScalarWhereInput[]
   }
 
+  export type WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput = {
+    create?: XOR<WorkspaceConfigCreateWithoutWorkspaceInput, WorkspaceConfigUncheckedCreateWithoutWorkspaceInput>
+    connectOrCreate?: WorkspaceConfigCreateOrConnectWithoutWorkspaceInput
+    upsert?: WorkspaceConfigUpsertWithoutWorkspaceInput
+    disconnect?: WorkspaceConfigWhereInput | boolean
+    delete?: WorkspaceConfigWhereInput | boolean
+    connect?: WorkspaceConfigWhereUniqueInput
+    update?: XOR<XOR<WorkspaceConfigUpdateToOneWithWhereWithoutWorkspaceInput, WorkspaceConfigUpdateWithoutWorkspaceInput>, WorkspaceConfigUncheckedUpdateWithoutWorkspaceInput>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -5876,6 +7742,66 @@ export namespace Prisma {
     update?: VisitorUpdateWithWhereUniqueWithoutWorkspaceInput | VisitorUpdateWithWhereUniqueWithoutWorkspaceInput[]
     updateMany?: VisitorUpdateManyWithWhereWithoutWorkspaceInput | VisitorUpdateManyWithWhereWithoutWorkspaceInput[]
     deleteMany?: VisitorScalarWhereInput | VisitorScalarWhereInput[]
+  }
+
+  export type WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput = {
+    create?: XOR<WorkspaceConfigCreateWithoutWorkspaceInput, WorkspaceConfigUncheckedCreateWithoutWorkspaceInput>
+    connectOrCreate?: WorkspaceConfigCreateOrConnectWithoutWorkspaceInput
+    upsert?: WorkspaceConfigUpsertWithoutWorkspaceInput
+    disconnect?: WorkspaceConfigWhereInput | boolean
+    delete?: WorkspaceConfigWhereInput | boolean
+    connect?: WorkspaceConfigWhereUniqueInput
+    update?: XOR<XOR<WorkspaceConfigUpdateToOneWithWhereWithoutWorkspaceInput, WorkspaceConfigUpdateWithoutWorkspaceInput>, WorkspaceConfigUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type WorkspaceConfigCreatedepartmentsInput = {
+    set: string[]
+  }
+
+  export type WorkspaceConfigCreatedesignationsInput = {
+    set: string[]
+  }
+
+  export type WorkspaceConfigCreateofficeBranchesInput = {
+    set: string[]
+  }
+
+  export type WorkspaceConfigCreateworkLocationsInput = {
+    set: string[]
+  }
+
+  export type WorkspaceCreateNestedOneWithoutConfigInput = {
+    create?: XOR<WorkspaceCreateWithoutConfigInput, WorkspaceUncheckedCreateWithoutConfigInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutConfigInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type WorkspaceConfigUpdatedepartmentsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type WorkspaceConfigUpdatedesignationsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type WorkspaceConfigUpdateofficeBranchesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type WorkspaceConfigUpdateworkLocationsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutConfigNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutConfigInput, WorkspaceUncheckedCreateWithoutConfigInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutConfigInput
+    upsert?: WorkspaceUpsertWithoutConfigInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutConfigInput, WorkspaceUpdateWithoutConfigInput>, WorkspaceUncheckedUpdateWithoutConfigInput>
   }
 
   export type WorkspaceCreateNestedOneWithoutProfilesInput = {
@@ -5958,6 +7884,10 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type ProfileUpdateOneRequiredWithoutVisitorsNestedInput = {
@@ -6150,6 +8080,11 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -6164,15 +8099,35 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type ProfileCreateWithoutWorkspaceInput = {
     id: string
     name: string
     email: string
     role?: string
     department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
     avatarInitials?: string
     status?: string
     phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
     createdAt?: Date | string
     visitors?: VisitorCreateNestedManyWithoutHostInput
   }
@@ -6183,9 +8138,21 @@ export namespace Prisma {
     email: string
     role?: string
     department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
     avatarInitials?: string
     status?: string
     phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
     createdAt?: Date | string
     visitors?: VisitorUncheckedCreateNestedManyWithoutHostInput
   }
@@ -6216,6 +8183,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
     host: ProfileCreateNestedOneWithoutVisitorsInput
   }
@@ -6237,6 +8206,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
   }
 
@@ -6248,6 +8219,28 @@ export namespace Prisma {
   export type VisitorCreateManyWorkspaceInputEnvelope = {
     data: VisitorCreateManyWorkspaceInput | VisitorCreateManyWorkspaceInput[]
     skipDuplicates?: boolean
+  }
+
+  export type WorkspaceConfigCreateWithoutWorkspaceInput = {
+    departments?: WorkspaceConfigCreatedepartmentsInput | string[]
+    designations?: WorkspaceConfigCreatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigCreateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigCreateworkLocationsInput | string[]
+    updatedAt?: Date | string
+  }
+
+  export type WorkspaceConfigUncheckedCreateWithoutWorkspaceInput = {
+    id?: number
+    departments?: WorkspaceConfigCreatedepartmentsInput | string[]
+    designations?: WorkspaceConfigCreatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigCreateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigCreateworkLocationsInput | string[]
+    updatedAt?: Date | string
+  }
+
+  export type WorkspaceConfigCreateOrConnectWithoutWorkspaceInput = {
+    where: WorkspaceConfigWhereUniqueInput
+    create: XOR<WorkspaceConfigCreateWithoutWorkspaceInput, WorkspaceConfigUncheckedCreateWithoutWorkspaceInput>
   }
 
   export type ProfileUpsertWithWhereUniqueWithoutWorkspaceInput = {
@@ -6275,9 +8268,21 @@ export namespace Prisma {
     email?: StringFilter<"Profile"> | string
     role?: StringFilter<"Profile"> | string
     department?: StringFilter<"Profile"> | string
+    designation?: StringNullableFilter<"Profile"> | string | null
+    officeBranch?: StringNullableFilter<"Profile"> | string | null
+    workLocation?: StringNullableFilter<"Profile"> | string | null
     avatarInitials?: StringFilter<"Profile"> | string
     status?: StringFilter<"Profile"> | string
     phoneNumber?: StringNullableFilter<"Profile"> | string | null
+    personalEmail?: StringNullableFilter<"Profile"> | string | null
+    bloodGroup?: StringNullableFilter<"Profile"> | string | null
+    dob?: StringNullableFilter<"Profile"> | string | null
+    code?: StringNullableFilter<"Profile"> | string | null
+    joiningDate?: StringNullableFilter<"Profile"> | string | null
+    reportingManager?: StringNullableFilter<"Profile"> | string | null
+    reportingHR?: StringNullableFilter<"Profile"> | string | null
+    emergencyName?: StringNullableFilter<"Profile"> | string | null
+    emergencyPhone?: StringNullableFilter<"Profile"> | string | null
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     wid?: IntNullableFilter<"Profile"> | number | null
   }
@@ -6318,8 +8323,88 @@ export namespace Prisma {
     idProofNumber?: StringNullableFilter<"Visitor"> | string | null
     badgeNumber?: StringNullableFilter<"Visitor"> | string | null
     qrCode?: StringNullableFilter<"Visitor"> | string | null
+    qrValidUntil?: DateTimeNullableFilter<"Visitor"> | Date | string | null
+    walkIn?: BoolFilter<"Visitor"> | boolean
     notes?: StringNullableFilter<"Visitor"> | string | null
     wid?: IntFilter<"Visitor"> | number
+  }
+
+  export type WorkspaceConfigUpsertWithoutWorkspaceInput = {
+    update: XOR<WorkspaceConfigUpdateWithoutWorkspaceInput, WorkspaceConfigUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<WorkspaceConfigCreateWithoutWorkspaceInput, WorkspaceConfigUncheckedCreateWithoutWorkspaceInput>
+    where?: WorkspaceConfigWhereInput
+  }
+
+  export type WorkspaceConfigUpdateToOneWithWhereWithoutWorkspaceInput = {
+    where?: WorkspaceConfigWhereInput
+    data: XOR<WorkspaceConfigUpdateWithoutWorkspaceInput, WorkspaceConfigUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type WorkspaceConfigUpdateWithoutWorkspaceInput = {
+    departments?: WorkspaceConfigUpdatedepartmentsInput | string[]
+    designations?: WorkspaceConfigUpdatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigUpdateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigUpdateworkLocationsInput | string[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkspaceConfigUncheckedUpdateWithoutWorkspaceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    departments?: WorkspaceConfigUpdatedepartmentsInput | string[]
+    designations?: WorkspaceConfigUpdatedesignationsInput | string[]
+    officeBranches?: WorkspaceConfigUpdateofficeBranchesInput | string[]
+    workLocations?: WorkspaceConfigUpdateworkLocationsInput | string[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkspaceCreateWithoutConfigInput = {
+    name?: string | null
+    plan?: string
+    createdAt?: Date | string
+    profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
+    visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutConfigInput = {
+    id?: number
+    name?: string | null
+    plan?: string
+    createdAt?: Date | string
+    profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
+    visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutConfigInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutConfigInput, WorkspaceUncheckedCreateWithoutConfigInput>
+  }
+
+  export type WorkspaceUpsertWithoutConfigInput = {
+    update: XOR<WorkspaceUpdateWithoutConfigInput, WorkspaceUncheckedUpdateWithoutConfigInput>
+    create: XOR<WorkspaceCreateWithoutConfigInput, WorkspaceUncheckedCreateWithoutConfigInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutConfigInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutConfigInput, WorkspaceUncheckedUpdateWithoutConfigInput>
+  }
+
+  export type WorkspaceUpdateWithoutConfigInput = {
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
+    visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutConfigInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
+    visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutProfilesInput = {
@@ -6327,6 +8412,7 @@ export namespace Prisma {
     plan?: string
     createdAt?: Date | string
     visitors?: VisitorCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutProfilesInput = {
@@ -6335,6 +8421,7 @@ export namespace Prisma {
     plan?: string
     createdAt?: Date | string
     visitors?: VisitorUncheckedCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutProfilesInput = {
@@ -6358,6 +8445,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
     workspace: WorkspaceCreateNestedOneWithoutVisitorsInput
   }
@@ -6378,6 +8467,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
     wid: number
   }
@@ -6408,6 +8499,7 @@ export namespace Prisma {
     plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutProfilesInput = {
@@ -6416,6 +8508,7 @@ export namespace Prisma {
     plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUncheckedUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type VisitorUpsertWithWhereUniqueWithoutHostInput = {
@@ -6440,9 +8533,21 @@ export namespace Prisma {
     email: string
     role?: string
     department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
     avatarInitials?: string
     status?: string
     phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
     createdAt?: Date | string
     workspace?: WorkspaceCreateNestedOneWithoutProfilesInput
   }
@@ -6453,9 +8558,21 @@ export namespace Prisma {
     email: string
     role?: string
     department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
     avatarInitials?: string
     status?: string
     phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
     createdAt?: Date | string
     wid?: number | null
   }
@@ -6470,6 +8587,7 @@ export namespace Prisma {
     plan?: string
     createdAt?: Date | string
     profiles?: ProfileCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutVisitorsInput = {
@@ -6478,6 +8596,7 @@ export namespace Prisma {
     plan?: string
     createdAt?: Date | string
     profiles?: ProfileUncheckedCreateNestedManyWithoutWorkspaceInput
+    config?: WorkspaceConfigUncheckedCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutVisitorsInput = {
@@ -6502,9 +8621,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneWithoutProfilesNestedInput
   }
@@ -6515,9 +8646,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -6538,6 +8681,7 @@ export namespace Prisma {
     plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: ProfileUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutVisitorsInput = {
@@ -6546,6 +8690,7 @@ export namespace Prisma {
     plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profiles?: ProfileUncheckedUpdateManyWithoutWorkspaceNestedInput
+    config?: WorkspaceConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type ProfileCreateManyWorkspaceInput = {
@@ -6554,9 +8699,21 @@ export namespace Prisma {
     email: string
     role?: string
     department?: string
+    designation?: string | null
+    officeBranch?: string | null
+    workLocation?: string | null
     avatarInitials?: string
     status?: string
     phoneNumber?: string | null
+    personalEmail?: string | null
+    bloodGroup?: string | null
+    dob?: string | null
+    code?: string | null
+    joiningDate?: string | null
+    reportingManager?: string | null
+    reportingHR?: string | null
+    emergencyName?: string | null
+    emergencyPhone?: string | null
     createdAt?: Date | string
   }
 
@@ -6577,6 +8734,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
   }
 
@@ -6586,9 +8745,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUpdateManyWithoutHostNestedInput
   }
@@ -6599,9 +8770,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUncheckedUpdateManyWithoutHostNestedInput
   }
@@ -6612,9 +8795,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     department?: StringFieldUpdateOperationsInput | string
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    officeBranch?: NullableStringFieldUpdateOperationsInput | string | null
+    workLocation?: NullableStringFieldUpdateOperationsInput | string | null
     avatarInitials?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    personalEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    dob?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManager?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6634,6 +8829,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     host?: ProfileUpdateOneRequiredWithoutVisitorsNestedInput
   }
@@ -6655,6 +8852,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -6675,6 +8874,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -6694,6 +8895,8 @@ export namespace Prisma {
     idProofNumber?: string | null
     badgeNumber?: string | null
     qrCode?: string | null
+    qrValidUntil?: Date | string | null
+    walkIn?: boolean
     notes?: string | null
     wid: number
   }
@@ -6714,6 +8917,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: WorkspaceUpdateOneRequiredWithoutVisitorsNestedInput
   }
@@ -6734,6 +8939,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     wid?: IntFieldUpdateOperationsInput | number
   }
@@ -6754,6 +8961,8 @@ export namespace Prisma {
     idProofNumber?: NullableStringFieldUpdateOperationsInput | string | null
     badgeNumber?: NullableStringFieldUpdateOperationsInput | string | null
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    qrValidUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walkIn?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     wid?: IntFieldUpdateOperationsInput | number
   }

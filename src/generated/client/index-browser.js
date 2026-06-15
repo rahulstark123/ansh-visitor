@@ -128,15 +128,37 @@ exports.Prisma.WorkspaceScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.WorkspaceConfigScalarFieldEnum = {
+  id: 'id',
+  wid: 'wid',
+  departments: 'departments',
+  designations: 'designations',
+  officeBranches: 'officeBranches',
+  workLocations: 'workLocations',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProfileScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
   role: 'role',
   department: 'department',
+  designation: 'designation',
+  officeBranch: 'officeBranch',
+  workLocation: 'workLocation',
   avatarInitials: 'avatarInitials',
   status: 'status',
   phoneNumber: 'phoneNumber',
+  personalEmail: 'personalEmail',
+  bloodGroup: 'bloodGroup',
+  dob: 'dob',
+  code: 'code',
+  joiningDate: 'joiningDate',
+  reportingManager: 'reportingManager',
+  reportingHR: 'reportingHR',
+  emergencyName: 'emergencyName',
+  emergencyPhone: 'emergencyPhone',
   createdAt: 'createdAt',
   wid: 'wid'
 };
@@ -158,6 +180,8 @@ exports.Prisma.VisitorScalarFieldEnum = {
   idProofNumber: 'idProofNumber',
   badgeNumber: 'badgeNumber',
   qrCode: 'qrCode',
+  qrValidUntil: 'qrValidUntil',
+  walkIn: 'walkIn',
   notes: 'notes',
   wid: 'wid'
 };
@@ -180,6 +204,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   Workspace: 'Workspace',
+  WorkspaceConfig: 'WorkspaceConfig',
   Profile: 'Profile',
   Visitor: 'Visitor'
 };

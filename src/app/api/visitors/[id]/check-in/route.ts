@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { isQrValid } from "@/lib/qr-validity";
 
 // ─── PATCH /api/visitors/[id]/check-in ───────────────────────────────
 // Atomically updates status → CheckedIn, assigns badge, records ID proof.
+// Supports re-check-in with the same QR while the pass is still valid.
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -15,30 +17,58 @@ export async function PATCH(
       idProofNumber?: string;
     };
 
+    const existing = await prisma.visitor.findUnique({
+      where: { id },
+      select: { status: true, qrValidUntil: true },
+    });
+
+    if (!existing) {
+      return NextResponse.json({ error: "Visitor not found" }, { status: 404 });
+    }
+
+    if (!isQrValid(existing.qrValidUntil)) {
+      return NextResponse.json(
+        { error: "This QR pass has expired" },
+        { status: 410 }
+      );
+    }
+
+    if (existing.status === "CheckedIn") {
+      return NextResponse.json(
+        { error: "Guest is already checked in" },
+        { status: 409 }
+      );
+    }
+
+    if (existing.status !== "Expected" && existing.status !== "CheckedOut") {
+      return NextResponse.json(
+        { error: "Guest cannot be checked in" },
+        { status: 400 }
+      );
+    }
+
     const badgeNumber = `BADGE-${Math.floor(100 + Math.random() * 900)}`;
 
-    // Use $transaction to guarantee atomic update — if badge write fails,
-    // the status change is also rolled back.
-    const [visitor] = await prisma.$transaction([
-      prisma.visitor.update({
-        where: { id },
-        data: {
-          status: "CheckedIn",
-          checkedInAt: new Date(),
-          badgeNumber,
-          idProofType: idProofType || undefined,
-          idProofNumber: idProofNumber || undefined,
-        },
-        select: {
-          id: true,
-          status: true,
-          checkedInAt: true,
-          badgeNumber: true,
-          idProofType: true,
-          idProofNumber: true,
-        },
-      }),
-    ]);
+    const visitor = await prisma.visitor.update({
+      where: { id },
+      data: {
+        status: "CheckedIn",
+        checkedInAt: new Date(),
+        checkedOutAt: null,
+        badgeNumber,
+        idProofType: idProofType || undefined,
+        idProofNumber: idProofNumber || undefined,
+      },
+      select: {
+        id: true,
+        status: true,
+        checkedInAt: true,
+        checkedOutAt: true,
+        badgeNumber: true,
+        idProofType: true,
+        idProofNumber: true,
+      },
+    });
 
     return NextResponse.json({ visitor }, { status: 200 });
   } catch (err) {

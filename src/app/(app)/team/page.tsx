@@ -46,18 +46,19 @@ import {
   EyeOff,
   Check,
   FileText,
-  Loader2,
   MapPin,
   Heart,
   CalendarDays,
-  UserCheck
+  UserCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
 
 export default function TeamDirectoryPage() {
   const router = useRouter();
   const {
     hosts,
+    visitors,
     addHost,
     updateHost,
     deleteHost,
@@ -75,6 +76,7 @@ export default function TeamDirectoryPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedTeammate, setSelectedTeammate] = useState<Host | null>(null);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [activeTab, setActiveTab] = useState<"profile" | "activities">("profile");
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   // Teammate Wizard States
@@ -385,6 +387,7 @@ export default function TeamDirectoryPage() {
                 onClick={() => {
                   setSelectedTeammate(teammate);
                   setOpenDrawer(true);
+                  setActiveTab("profile");
                 }}
               >
                 <CardContent className="p-6 space-y-4">
@@ -859,9 +862,11 @@ export default function TeamDirectoryPage() {
                         onChange={(e) => setAccessRole(e.target.value)}
                         className="mt-2 bg-card border-input text-foreground"
                       >
-                        <option value="Employee">Employee</option>
-                        <option value="Manager">Manager</option>
+                        <option value="Owner">Owner</option>
                         <option value="Admin">Admin</option>
+                        <option value="Manager">Manager</option>
+                        <option value="HR">HR</option>
+                        <option value="Employee">Employee</option>
                         <option value="Security">Security</option>
                       </Select>
                     </div>
@@ -1089,10 +1094,7 @@ export default function TeamDirectoryPage() {
                   className="w-full sm:w-44 h-11 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white border-0 cursor-pointer rounded-2xl flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Saving...
-                    </>
+                    <ButtonLoadingSkeleton />
                   ) : (
                     wizardMode === "edit" ? "Update Details" : "Add Teammate"
                   )}
@@ -1105,11 +1107,11 @@ export default function TeamDirectoryPage() {
 
       {/* TEAMMATE DETAILS SIDEBAR DRAWER */}
       <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
-        <SheetContent className="sm:max-w-md p-0 overflow-hidden flex flex-col h-full text-slate-800 dark:text-slate-100">
+        <SheetContent className="sm:max-w-lg p-0 overflow-hidden flex flex-col h-full text-slate-800 dark:text-slate-100">
           {selectedTeammate && (
             <>
               {/* Drawer Header */}
-              <SheetHeader className="px-6 py-6 border-b border-border/50 bg-slate-50/50 dark:bg-slate-900/50 flex flex-row items-center gap-4">
+              <SheetHeader className="px-6 py-6 border-b border-border/50 bg-slate-50/50 dark:bg-slate-900/50 flex flex-row items-center gap-4 pb-4">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/20 font-black text-lg">
                   {selectedTeammate.avatarInitials}
                 </div>
@@ -1136,140 +1138,249 @@ export default function TeamDirectoryPage() {
                 </div>
               </SheetHeader>
 
+              {/* Drawer Tabs Header */}
+              <div className="px-6 border-b border-border/50 flex gap-4 text-xs font-bold uppercase tracking-wider bg-slate-50/20 dark:bg-slate-900/10">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("profile")}
+                  className={cn(
+                    "py-3 border-b-2 transition-all cursor-pointer",
+                    activeTab === "profile" 
+                      ? "border-primary text-primary" 
+                      : "border-transparent text-slate-400 hover:text-slate-200"
+                  )}
+                >
+                  Profile Details
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("activities")}
+                  className={cn(
+                    "py-3 border-b-2 transition-all cursor-pointer",
+                    activeTab === "activities" 
+                      ? "border-primary text-primary" 
+                      : "border-transparent text-slate-400 hover:text-slate-200"
+                  )}
+                >
+                  Recent Activities
+                </button>
+              </div>
+
               {/* Drawer Details Content */}
-              <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
-                
-                {/* Contact Information */}
-                <div className="space-y-3">
-                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                    <Mail className="h-3.5 w-3.5" />
-                    Contact details
-                  </h4>
-                  <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Work Email</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.email}</span>
-                    </div>
-                    {selectedTeammate.phone && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-400 font-medium">Phone Number</span>
-                        <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.phone}</span>
-                      </div>
-                    )}
-                    {selectedTeammate.personalEmail && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-400 font-medium">Personal Email</span>
-                        <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.personalEmail}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Job / Office Details */}
-                <div className="space-y-3">
-                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                    <Briefcase className="h-3.5 w-3.5" />
-                    Employment &amp; job
-                  </h4>
-                  <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Employee Code</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.code || "N/A"}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Role Access</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.role}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Work Location</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.workLocation || "Remote"}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Office Branch</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.officeBranch || "N/A"}</span>
-                    </div>
-                    {selectedTeammate.joiningDate && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-400 font-medium">Joining Date</span>
-                        <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1">
-                          <CalendarDays className="h-3.5 w-3.5 text-slate-400" />
-                          {selectedTeammate.joiningDate}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Relationships & Hierarchy */}
-                <div className="space-y-3">
-                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                    <UserCheck className="h-3.5 w-3.5" />
-                    Reporting lines
-                  </h4>
-                  <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Reporting Manager</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200">
-                        {hosts.find((h) => h.id === selectedTeammate.reportingManager)?.name || "None Specified"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Reporting HR</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200">
-                        {hosts.find((h) => h.id === selectedTeammate.reportingHR)?.name || "None Specified"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Additional Information */}
-                {(selectedTeammate.dob || selectedTeammate.bloodGroup) && (
-                  <div className="space-y-3">
-                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                      <FileText className="h-3.5 w-3.5" />
-                      Additional Details
-                    </h4>
-                    <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
-                      {selectedTeammate.dob && (
+              <div className="flex-1 overflow-y-auto px-6 py-6">
+                {activeTab === "profile" ? (
+                  <div className="space-y-6 animate-in fade-in duration-200">
+                    {/* Contact Information */}
+                    <div className="space-y-3">
+                      <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <Mail className="h-3.5 w-3.5" />
+                        Contact details
+                      </h4>
+                      <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-slate-400 font-medium">Date of Birth</span>
-                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.dob}</span>
+                          <span className="text-slate-400 font-medium">Work Email</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.email}</span>
                         </div>
-                      )}
-                      {selectedTeammate.bloodGroup && (
-                        <div className="flex justify-between">
-                          <span className="text-slate-400 font-medium">Blood Group</span>
-                          <span className="font-semibold text-rose-500 font-bold">{selectedTeammate.bloodGroup}</span>
-                        </div>
-                      )}
+                        {selectedTeammate.phone && (
+                          <div className="flex justify-between">
+                            <span className="text-slate-400 font-medium">Phone Number</span>
+                            <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.phone}</span>
+                          </div>
+                        )}
+                        {selectedTeammate.personalEmail && (
+                          <div className="flex justify-between">
+                            <span className="text-slate-400 font-medium">Personal Email</span>
+                            <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.personalEmail}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
+
+                    {/* Job / Office Details */}
+                    <div className="space-y-3">
+                      <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <Briefcase className="h-3.5 w-3.5" />
+                        Employment &amp; job
+                      </h4>
+                      <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Department</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.department || "N/A"}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Designation</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.designation || "N/A"}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Employee Code</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.code || "N/A"}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Role Access</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.role}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Work Location</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.workLocation || "Remote"}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Office Branch</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.officeBranch || "N/A"}</span>
+                        </div>
+                        {selectedTeammate.joiningDate && (
+                          <div className="flex justify-between">
+                            <span className="text-slate-400 font-medium">Joining Date</span>
+                            <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1">
+                              <CalendarDays className="h-3.5 w-3.5 text-slate-400" />
+                              {selectedTeammate.joiningDate}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Relationships & Hierarchy */}
+                    <div className="space-y-3">
+                      <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <UserCheck className="h-3.5 w-3.5" />
+                        Reporting lines
+                      </h4>
+                      <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Reporting Manager</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">
+                            {hosts.find((h) => h.id === selectedTeammate.reportingManager)?.name || "None Specified"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Reporting HR</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">
+                            {hosts.find((h) => h.id === selectedTeammate.reportingHR)?.name || "None Specified"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Additional Information */}
+                    {(selectedTeammate.dob || selectedTeammate.bloodGroup) && (
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                          <FileText className="h-3.5 w-3.5" />
+                          Additional Details
+                        </h4>
+                        <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                          {selectedTeammate.dob && (
+                            <div className="flex justify-between">
+                              <span className="text-slate-400 font-medium">Date of Birth</span>
+                              <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.dob}</span>
+                            </div>
+                          )}
+                          {selectedTeammate.bloodGroup && (
+                            <div className="flex justify-between">
+                              <span className="text-slate-400 font-medium">Blood Group</span>
+                              <span className="font-semibold text-rose-500 font-bold">{selectedTeammate.bloodGroup}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Emergency Contact */}
+                    {(selectedTeammate.emergencyName || selectedTeammate.emergencyPhone) && (
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                          <Heart className="h-3.5 w-3.5 text-rose-500" />
+                          Emergency contact
+                        </h4>
+                        <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                          {selectedTeammate.emergencyName && (
+                            <div className="flex justify-between">
+                              <span className="text-slate-400 font-medium">Contact Name</span>
+                              <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.emergencyName}</span>
+                            </div>
+                          )}
+                          {selectedTeammate.emergencyPhone && (
+                            <div className="flex justify-between">
+                              <span className="text-slate-400 font-medium">Contact Phone</span>
+                              <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.emergencyPhone}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-6 animate-in fade-in duration-200">
+                    {/* Filter and display visitor log activities */}
+                    {(() => {
+                      const teammateVisitors = visitors
+                        .filter(v => v.hostId === selectedTeammate.id)
+                        .sort((a, b) => new Date(b.preRegisteredAt).getTime() - new Date(a.preRegisteredAt).getTime());
+
+                      const formatActivityTime = (dateStr?: string) => {
+                        if (!dateStr) return "";
+                        try {
+                          const d = new Date(dateStr);
+                          return d.toLocaleString("en-IN", {
+                            day: "2-digit",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true
+                          });
+                        } catch {
+                          return dateStr;
+                        }
+                      };
+
+                      return teammateVisitors.length > 0 ? (
+                        <div className="space-y-6 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-[2px] before:bg-border/60">
+                          {teammateVisitors.map((vis) => (
+                            <div key={vis.id} className="relative flex gap-4 pl-1">
+                              <div className="relative flex-shrink-0 mt-0.5">
+                                <div className={cn(
+                                  "flex h-8 w-8 items-center justify-center rounded-full text-[10px] font-bold border",
+                                  vis.status === "CheckedIn" 
+                                    ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                                    : vis.status === "CheckedOut"
+                                    ? "bg-slate-500/10 text-slate-400 border-slate-500/20"
+                                    : "bg-blue-500/10 text-blue-500 border-blue-500/20"
+                                )}>
+                                  {vis.status === "CheckedIn" ? "IN" : vis.status === "CheckedOut" ? "OUT" : "EXP"}
+                                </div>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">
+                                  {vis.name}
+                                </p>
+                                {vis.company && (
+                                  <p className="text-xs text-slate-400 font-semibold truncate mt-0.5">
+                                    from {vis.company}
+                                  </p>
+                                )}
+                                <p className="text-[11px] text-slate-400 mt-1 flex flex-col gap-0.5 font-medium">
+                                  {vis.checkedInAt && (
+                                    <span>Check-in: {formatActivityTime(vis.checkedInAt)}</span>
+                                  )}
+                                  {vis.checkedOutAt && (
+                                    <span>Check-out: {formatActivityTime(vis.checkedOutAt)}</span>
+                                  )}
+                                  {!vis.checkedInAt && (
+                                    <span>Pre-registered: {formatActivityTime(vis.preRegisteredAt)}</span>
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-16 text-slate-400 italic">
+                          No recent visitor activities recorded for this teammate.
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
-
-                {/* Emergency Contact */}
-                {(selectedTeammate.emergencyName || selectedTeammate.emergencyPhone) && (
-                  <div className="space-y-3">
-                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                      <Heart className="h-3.5 w-3.5 text-rose-500" />
-                      Emergency contact
-                    </h4>
-                    <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
-                      {selectedTeammate.emergencyName && (
-                        <div className="flex justify-between">
-                          <span className="text-slate-400 font-medium">Contact Name</span>
-                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.emergencyName}</span>
-                        </div>
-                      )}
-                      {selectedTeammate.emergencyPhone && (
-                        <div className="flex justify-between">
-                          <span className="text-slate-400 font-medium">Contact Phone</span>
-                          <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.emergencyPhone}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
               </div>
 
               {/* Drawer Footer Actions */}
@@ -1339,10 +1450,7 @@ export default function TeamDirectoryPage() {
               className="flex-1 h-11 text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white border-0 rounded-2xl cursor-pointer flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Deleting...
-                </>
+                <ButtonLoadingSkeleton className="bg-white/30" />
               ) : (
                 "Yes, Delete"
               )}
