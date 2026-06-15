@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { AuthMarketingPanel } from "@/components/auth/auth-marketing-panel";
 import { createSupabaseClient } from "@/lib/supabase";
+import { toast } from "@/components/ui/toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,13 +15,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg("");
-    setSuccessMsg("");
     setLoading(true);
 
     try {
@@ -34,27 +31,25 @@ export default function LoginPage() {
       if (error) {
         if (
           error.message.includes("Invalid login") ||
-          error.message.includes("invalid_credentials") ||
-          error.message.includes("Email not confirmed")
+          error.message.includes("invalid_credentials")
         ) {
-          setErrorMsg("Invalid email or password. Please try again.");
+          toast.error("Invalid credentials", "Email or password is incorrect.");
         } else if (error.message.includes("Email not confirmed")) {
-          setErrorMsg("Please confirm your email address first. Check your inbox.");
+          toast.warning("Email not confirmed", "Please click the link in your confirmation email.");
         } else {
-          setErrorMsg(error.message);
+          toast.error("Login failed", error.message);
         }
         setLoading(false);
         return;
       }
 
       if (data.session) {
-        setSuccessMsg(`Welcome back! Redirecting to your workspace...`);
-        // Let middleware handle the redirect — router.push triggers re-validation
+        toast.success("Welcome back!", "Redirecting to your workspace...");
         router.push("/dashboard");
         router.refresh();
       }
     } catch {
-      setErrorMsg("Something went wrong. Please try again.");
+      toast.error("Network error", "Something went wrong. Please try again.");
       setLoading(false);
     }
   };
@@ -78,18 +73,6 @@ export default function LoginPage() {
               Log in to your Ansh Visitor workspace.
             </p>
           </div>
-
-          {errorMsg && (
-            <div className="rounded-xl bg-rose-50 border border-rose-100 p-4 text-xs font-bold text-rose-600 animate-in fade-in duration-200">
-              {errorMsg}
-            </div>
-          )}
-
-          {successMsg && (
-            <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-4 text-xs font-bold text-emerald-600 animate-in fade-in duration-200">
-              {successMsg}
-            </div>
-          )}
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>

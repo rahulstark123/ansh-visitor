@@ -2,13 +2,27 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Building2, User, Phone, Briefcase, MapPin } from "lucide-react";
+import { Loader2, Building2, User, Phone, Briefcase, MapPin, ChevronDown } from "lucide-react";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import { createSupabaseClient } from "@/lib/supabase";
 
 const STEPS = [
-  { id: 1, label: "Your Profile" },
-  { id: 2, label: "Workspace" },
-  { id: 3, label: "Done" },
+  { 
+    id: 1, 
+    label: "Your Profile", 
+    desc: "Tell us who you are, your contact info, and role within the company." 
+  },
+  { 
+    id: 2, 
+    label: "Workspace Setup", 
+    desc: "Configure your company's workspace name and primary office branch." 
+  },
+  { 
+    id: 3, 
+    label: "Ready to go", 
+    desc: "Finalizing your dashboard setup and initializing secure systems." 
+  },
 ];
 
 export default function OnboardingPage() {
@@ -24,6 +38,7 @@ export default function OnboardingPage() {
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("Admin");
   const [department, setDepartment] = useState("HR & Operations");
+  const [customDepartment, setCustomDepartment] = useState("");
 
   // Step 2 — Workspace info
   const [companyName, setCompanyName] = useState("");
@@ -49,6 +64,7 @@ export default function OnboardingPage() {
   const handleStep1 = (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName.trim() || !phone.trim()) return;
+    if (department === "Other" && !customDepartment.trim()) return;
     setStep(2);
   };
 
@@ -91,6 +107,8 @@ export default function OnboardingPage() {
         .toUpperCase()
         .substring(0, 2);
 
+      const finalDepartment = department === "Other" ? customDepartment.trim() : department;
+
       await fetch("/api/profiles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -99,7 +117,7 @@ export default function OnboardingPage() {
           name: fullName.trim(),
           email: user.email,
           role,
-          department,
+          department: finalDepartment,
           officeBranch: officeBranch.trim(),
           phoneNumber: phone.trim(),
           avatarInitials,
@@ -150,205 +168,293 @@ export default function OnboardingPage() {
     );
   }
 
-  // ── Step progress indicator ──────────────────────────────────────────
-  const StepIndicator = () => (
-    <div className="flex items-center gap-2 mb-8">
-      {STEPS.slice(0, 2).map((s, i) => (
-        <div key={s.id} className="flex items-center gap-2">
-          <div className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all ${
-            step >= s.id
-              ? "bg-emerald-500 text-white"
-              : "bg-white/5 text-slate-500"
-          }`}>
-            {s.id}
-          </div>
-          <span className={`text-xs font-semibold ${step >= s.id ? "text-white" : "text-slate-500"}`}>
-            {s.label}
-          </span>
-          {i < 1 && (
-            <div className={`h-px w-8 mx-1 transition-all ${step > s.id ? "bg-emerald-500" : "bg-white/10"}`} />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#070809] px-6 py-12 select-none">
+    <div className="flex min-h-screen bg-[#070809] text-slate-200 select-none overflow-x-hidden font-sans">
       <title>Onboarding | Ansh Visitor</title>
-      <div className="w-full max-w-[480px] rounded-[2rem] border border-white/5 bg-slate-950/80 p-8 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-500 text-slate-200">
+      
+      {/* ── LEFT SIDEBAR (Desktop split layout) ────────────────── */}
+      <div className="hidden md:flex w-[380px] lg:w-[440px] bg-[#090b10] border-r border-white/5 flex-col justify-between p-12 relative overflow-hidden flex-shrink-0">
+        {/* Glow Effects */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,oklch(0.72_0.17_160_/_0.08),transparent_50%)] animate-pulse duration-10000" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,oklch(0.65_0.18_190_/_0.08),transparent_50%)]" />
 
-        <StepIndicator />
+        {/* Branding */}
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 font-extrabold text-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.15)]">
+            A
+          </div>
+          <div>
+            <span className="text-sm font-extrabold tracking-wider text-white uppercase block">Ansh Visitor</span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">Lobby & Kiosk CRM</span>
+          </div>
+        </div>
 
-        {/* ── STEP 1 — Personal Profile ─────────────────────────────── */}
-        {step === 1 && (
-          <form onSubmit={handleStep1} className="space-y-6">
-            <div className="mb-2">
-              <div className="flex items-center gap-3 mb-1">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">
-                  <User className="h-5 w-5" />
+        {/* Step List stepper */}
+        <div className="relative z-10 my-auto py-12 space-y-10">
+          {STEPS.map((s, idx) => {
+            const isActive = step === s.id;
+            const isCompleted = step > s.id;
+            
+            return (
+              <div key={s.id} className="relative flex gap-6">
+                {/* Line */}
+                {idx < STEPS.length - 1 && (
+                  <div className={`absolute left-[18px] top-9 bottom-[-32px] w-[2px] transition-all duration-500 ${
+                    isCompleted ? "bg-emerald-500" : "bg-white/10"
+                  }`} />
+                )}
+
+                {/* Circle Icon */}
+                <div className="relative flex-shrink-0">
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
+                    isCompleted 
+                      ? "bg-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.35)]"
+                      : isActive
+                      ? "bg-slate-950 text-emerald-400 border-2 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                      : "bg-white/5 text-slate-600 border border-white/10"
+                  }`}>
+                    {isCompleted ? "✓" : s.id}
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-lg font-extrabold tracking-tight text-white">Your Profile</h2>
-                  <p className="text-xs text-slate-400">Tell us a bit about yourself</p>
+
+                {/* Info Text */}
+                <div className="flex flex-col justify-center">
+                  <span className={`text-sm font-bold tracking-wide transition-all ${
+                    isActive ? "text-white" : isCompleted ? "text-slate-300" : "text-slate-500"
+                  }`}>
+                    {s.label}
+                  </span>
+                  <span className={`text-xs mt-1 transition-all max-w-[280px] leading-relaxed ${
+                    isActive ? "text-slate-400" : "text-slate-600"
+                  }`}>
+                    {s.desc}
+                  </span>
                 </div>
               </div>
-            </div>
+            );
+          })}
+        </div>
 
-            <div>
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                Full Name
-              </label>
-              <input
-                type="text"
-                required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Vikram Raj"
-                className="mt-2 block w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+        {/* Footer */}
+        <div className="relative z-10">
+          <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">
+            🛡️ Enterprise Grade Security
+          </p>
+        </div>
+      </div>
+
+      {/* ── RIGHT CONTENT CONTAINER ───────────────────────────────────── */}
+      <div className="flex-1 flex flex-col justify-center items-center px-6 py-12 md:px-16 lg:px-24 min-h-screen relative overflow-y-auto">
+        
+        {/* Mobile Stepper Header (Only shown on small screens) */}
+        <div className="md:hidden w-full max-w-[480px] mb-8">
+          <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-4">
+            <span className="text-sm font-extrabold tracking-wider text-white uppercase">Ansh Visitor</span>
+            <span className="text-xs font-bold text-slate-500">Step {step} of 2</span>
+          </div>
+          <div className="flex gap-2">
+            {STEPS.slice(0, 2).map((s) => (
+              <div 
+                key={s.id} 
+                className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                  step >= s.id ? "bg-emerald-500" : "bg-white/10"
+                }`}
               />
-            </div>
+            ))}
+          </div>
+        </div>
 
-            <div>
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                Phone Number
-              </label>
-              <div className="relative mt-2">
-                <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
-                <input
-                  type="tel"
-                  required
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+91 98765 43210"
-                  className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-10 pr-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
+        {/* Form area wrapper */}
+        <div className="w-full max-w-[480px] space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          
+          {step === 1 && (
+            <form onSubmit={handleStep1} className="space-y-6">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                  Your Role
-                </label>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="mt-2 block w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer"
-                >
-                  <option value="Admin">Admin</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Employee">Employee</option>
-                </select>
+                <h2 className="text-2xl font-extrabold tracking-tight text-white mb-1">Set Up Your Profile</h2>
+                <p className="text-sm text-slate-400">Tell us a bit about yourself so your team knows who is host.</p>
               </div>
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                  Department
-                </label>
-                <select
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  className="mt-2 block w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer"
-                >
-                  <option value="HR & Operations">HR &amp; Operations</option>
-                  <option value="Engineering">Engineering</option>
-                  <option value="Product Management">Product Management</option>
-                  <option value="Enterprise Sales">Enterprise Sales</option>
-                  <option value="Security & Operations">Security &amp; Operations</option>
-                  <option value="Finance">Finance</option>
-                </select>
-              </div>
-            </div>
 
-            <button
-              type="submit"
-              className="flex w-full justify-center items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-[0.98] cursor-pointer mt-2"
-            >
-              Continue →
-            </button>
-          </form>
-        )}
-
-        {/* ── STEP 2 — Workspace Setup ──────────────────────────────── */}
-        {step === 2 && (
-          <form onSubmit={handleStep2} className="space-y-6">
-            <div className="mb-2">
-              <div className="flex items-center gap-3 mb-1">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">
-                  <Building2 className="h-5 w-5" />
-                </div>
+              <div className="space-y-5">
                 <div>
-                  <h2 className="text-lg font-extrabold tracking-tight text-white">Workspace Setup</h2>
-                  <p className="text-xs text-slate-400">Configure your organization details</p>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Vikram Raj"
+                    className="mt-2 block w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  />
                 </div>
-              </div>
-            </div>
 
-            {errorMsg && (
-              <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs font-semibold text-amber-400">
-                {errorMsg}
-              </div>
-            )}
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+                    Phone Number
+                  </label>
+                  <PhoneInput
+                    placeholder="Enter phone number"
+                    value={phone}
+                    onChange={(val) => setPhone(val || "")}
+                    defaultCountry="IN"
+                    required
+                  />
+                </div>
 
-            <div>
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                Organization / Company Name
-              </label>
-              <div className="relative mt-2">
-                <Briefcase className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
-                <input
-                  type="text"
-                  required
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Acme Technologies Pvt. Ltd."
-                  className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-10 pr-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                />
-              </div>
-            </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                      Your Role
+                    </label>
+                    <div className="relative mt-2">
+                      <select
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-4 pr-10 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer appearance-none"
+                      >
+                        <option value="Owner">Owner</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Manager">Manager</option>
+                        <option value="HR">HR</option>
+                        <option value="Employee">Employee</option>
+                      </select>
+                      {/* Premium Custom Dropdown Arrow */}
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                        <ChevronDown className="h-4 w-4 text-slate-500" />
+                      </div>
+                    </div>
+                  </div>
 
-            <div>
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                Primary Office Location
-              </label>
-              <div className="relative mt-2">
-                <MapPin className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
-                <input
-                  type="text"
-                  required
-                  value={officeBranch}
-                  onChange={(e) => setOfficeBranch(e.target.value)}
-                  placeholder="Corporate Headquarters, Bangalore"
-                  className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-10 pr-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                />
-              </div>
-            </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                      Department
+                    </label>
+                    <div className="relative mt-2">
+                      <select
+                        value={department}
+                        onChange={(e) => setDepartment(e.target.value)}
+                        className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-4 pr-10 py-3 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer appearance-none"
+                      >
+                        <option value="HR & Operations">HR &amp; Operations</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Product Management">Product Management</option>
+                        <option value="Enterprise Sales">Enterprise Sales</option>
+                        <option value="Security & Operations">Security &amp; Operations</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Other">Other (Write Custom)</option>
+                      </select>
+                      {/* Premium Custom Dropdown Arrow */}
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                        <ChevronDown className="h-4 w-4 text-slate-500" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <div className="flex gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="flex-1 rounded-xl border border-white/10 px-4 py-3.5 text-sm font-bold text-slate-400 transition-all hover:border-white/20 hover:text-white cursor-pointer"
-              >
-                ← Back
-              </button>
+                {/* Conditional Custom Department Field */}
+                {department === "Other" && (
+                  <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                      Custom Department Name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={customDepartment}
+                      onChange={(e) => setCustomDepartment(e.target.value)}
+                      placeholder="e.g., Marketing, Research & Development"
+                      className="mt-2 block w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    />
+                  </div>
+                )}
+              </div>
+
               <button
                 type="submit"
-                disabled={loading}
-                className="flex-1 flex justify-center items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="flex w-full justify-center items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-[0.98] cursor-pointer mt-4"
               >
-                {loading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Setting up...
-                  </>
-                ) : (
-                  "Complete Setup 🚀"
-                )}
+                Continue →
               </button>
-            </div>
-          </form>
-        )}
+            </form>
+          )}
+
+          {step === 2 && (
+            <form onSubmit={handleStep2} className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-extrabold tracking-tight text-white mb-1">Configure Your Workspace</h2>
+                <p className="text-sm text-slate-400">Set up organizational details for guest check-ins.</p>
+              </div>
+
+              {errorMsg && (
+                <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs font-semibold text-amber-400">
+                  {errorMsg}
+                </div>
+              )}
+
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    Organization / Company Name
+                  </label>
+                  <div className="relative mt-2">
+                    <Briefcase className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+                    <input
+                      type="text"
+                      required
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="Acme Technologies Pvt. Ltd."
+                      className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-10 pr-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    Primary Office Location
+                  </label>
+                  <div className="relative mt-2">
+                    <MapPin className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
+                    <input
+                      type="text"
+                      required
+                      value={officeBranch}
+                      onChange={(e) => setOfficeBranch(e.target.value)}
+                      placeholder="Corporate Headquarters, Bangalore"
+                      className="block w-full rounded-xl border border-white/10 bg-slate-900 pl-10 pr-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="flex-1 rounded-xl border border-white/10 px-4 py-3.5 text-sm font-bold text-slate-400 transition-all hover:border-white/20 hover:text-white cursor-pointer"
+                >
+                  ← Back
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 flex justify-center items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Setting up...
+                    </>
+                  ) : (
+                    "Complete Setup 🚀"
+                  )}
+                </button>
+              </div>
+            </form>
+          )}
+
+        </div>
       </div>
     </div>
   );

@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
         setAll(cookiesToSet) {
           // Write cookies to the request for downstream middleware
           cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value, options)
+            request.cookies.set({ name, value, ...options })
           );
           // Re-create the response so cookies are propagated to the browser
           response = NextResponse.next({ request: { headers: request.headers } });
