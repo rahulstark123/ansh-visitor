@@ -50,6 +50,7 @@ export default function TeamDirectoryPage() {
   const [editingHostId, setEditingHostId] = useState<string | null>(null);
 
   const [step, setStep] = useState(1);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Form Fields - Step 1: IDENTITY
   const [fullName, setFullName] = useState("");
@@ -87,6 +88,7 @@ export default function TeamDirectoryPage() {
     setWizardMode("edit");
     setEditingHostId(host.id);
     setStep(1);
+    setErrors({});
 
     // Step 1
     setFullName(host.name);
@@ -121,6 +123,7 @@ export default function TeamDirectoryPage() {
     setWizardMode("add");
     setEditingHostId(null);
     setStep(1);
+    setErrors({});
 
     // Reset Form Fields
     setFullName("");
@@ -148,26 +151,81 @@ export default function TeamDirectoryPage() {
   };
 
   const handleNextStep = () => {
-    // Basic Step Validation
+    const newErrors: Record<string, string> = {};
+
     if (step === 1) {
-      if (!fullName.trim() || !workEmail.trim()) {
-        alert("Please fill in teammate full name and work email.");
-        return;
+      if (!fullName.trim()) {
+        newErrors.fullName = "Teammate full name is required.";
       }
-      if (wizardMode === "add" && password !== confirmPassword) {
-        alert("Passwords do not match.");
-        return;
+      if (!workEmail.trim()) {
+        newErrors.workEmail = "Work email address is required.";
+      } else if (!/\S+@\S+\.\S+/.test(workEmail)) {
+        newErrors.workEmail = "Please enter a valid email address.";
+      }
+      if (wizardMode === "add") {
+        if (!password) {
+          newErrors.password = "Password is required.";
+        } else if (password.length < 6) {
+          newErrors.password = "Password must be at least 6 characters.";
+        }
+        if (password !== confirmPassword) {
+          newErrors.confirmPassword = "Passwords do not match.";
+        }
       }
     }
+
+    if (step === 2) {
+      if (!teammateCode.trim()) {
+        newErrors.teammateCode = "Teammate code is required.";
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     setStep((s) => s + 1);
   };
 
   const handleBackStep = () => {
+    setErrors({});
     setStep((s) => s - 1);
   };
 
   const handleSubmitTeammate = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate all fields before submit
+    const newErrors: Record<string, string> = {};
+    if (!fullName.trim()) newErrors.fullName = "Teammate full name is required.";
+    if (!workEmail.trim()) {
+      newErrors.workEmail = "Work email address is required.";
+    } else if (!/\S+@\S+\.\S+/.test(workEmail)) {
+      newErrors.workEmail = "Please enter a valid email address.";
+    }
+    if (wizardMode === "add") {
+      if (!password) {
+        newErrors.password = "Password is required.";
+      } else if (password.length < 6) {
+        newErrors.password = "Password must be at least 6 characters.";
+      }
+      if (password !== confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match.";
+      }
+    }
+    if (!teammateCode.trim()) newErrors.teammateCode = "Teammate code is required.";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      if (newErrors.fullName || newErrors.workEmail || newErrors.password || newErrors.confirmPassword) {
+        setStep(1);
+      } else if (newErrors.teammateCode) {
+        setStep(2);
+      }
+      return;
+    }
 
     const hostPayload = {
       name: fullName,
@@ -480,10 +538,24 @@ export default function TeamDirectoryPage() {
                     <Input
                       required
                       value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
+                      onChange={(e) => {
+                        setFullName(e.target.value);
+                        if (errors.fullName) {
+                          setErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.fullName;
+                            return next;
+                          });
+                        }
+                      }}
                       placeholder="Rahul Raj"
-                      className="mt-2"
+                      className={cn("mt-2", errors.fullName && "border-rose-500 focus-visible:ring-rose-500/20")}
                     />
+                    {errors.fullName && (
+                      <p className="text-[10px] text-rose-550 dark:text-rose-400 font-semibold mt-1 animate-in slide-in-from-top-1 duration-150">
+                        {errors.fullName}
+                      </p>
+                    )}
                   </div>
 
                   {/* Work Email */}
@@ -495,10 +567,27 @@ export default function TeamDirectoryPage() {
                       required
                       type="email"
                       value={workEmail}
-                      onChange={(e) => setWorkEmail(e.target.value)}
+                      onChange={(e) => {
+                        setWorkEmail(e.target.value);
+                        if (errors.workEmail) {
+                          setErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.workEmail;
+                            return next;
+                          });
+                        }
+                      }}
                       placeholder="rahulraj9835045@gmail.com"
-                      className="mt-2 bg-slate-100 dark:bg-slate-900 border-border/50 text-slate-800 dark:text-slate-100"
+                      className={cn(
+                        "mt-2 bg-slate-100 dark:bg-slate-900 border-border/50 text-slate-800 dark:text-slate-100",
+                        errors.workEmail && "border-rose-500 focus-visible:ring-rose-500/20"
+                      )}
                     />
+                    {errors.workEmail && (
+                      <p className="text-[10px] text-rose-550 dark:text-rose-400 font-semibold mt-1 animate-in slide-in-from-top-1 duration-150">
+                        {errors.workEmail}
+                      </p>
+                    )}
                   </div>
 
                   {/* Passwords */}
@@ -512,9 +601,18 @@ export default function TeamDirectoryPage() {
                           required={wizardMode === "add"}
                           type={showPassword ? "text" : "password"}
                           value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                            if (errors.password) {
+                              setErrors((prev) => {
+                                const next = { ...prev };
+                                delete next.password;
+                                return next;
+                              });
+                            }
+                          }}
                           placeholder="•••••••••"
-                          className="pr-9"
+                          className={cn("pr-9", errors.password && "border-rose-500 focus-visible:ring-rose-500/20")}
                         />
                         <button
                           type="button"
@@ -524,6 +622,11 @@ export default function TeamDirectoryPage() {
                           {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
+                      {errors.password && (
+                        <p className="text-[10px] text-rose-555 dark:text-rose-400 font-semibold mt-1 animate-in slide-in-from-top-1 duration-150">
+                          {errors.password}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
@@ -534,9 +637,18 @@ export default function TeamDirectoryPage() {
                           required={wizardMode === "add"}
                           type={showConfirmPassword ? "text" : "password"}
                           value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          onChange={(e) => {
+                            setConfirmPassword(e.target.value);
+                            if (errors.confirmPassword) {
+                              setErrors((prev) => {
+                                const next = { ...prev };
+                                delete next.confirmPassword;
+                                return next;
+                              });
+                            }
+                          }}
                           placeholder="Repeat password"
-                          className="pr-9"
+                          className={cn("pr-9", errors.confirmPassword && "border-rose-500 focus-visible:ring-rose-500/20")}
                         />
                         <button
                           type="button"
@@ -546,6 +658,11 @@ export default function TeamDirectoryPage() {
                           {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                       </div>
+                      {errors.confirmPassword && (
+                        <p className="text-[10px] text-rose-555 dark:text-rose-400 font-semibold mt-1 animate-in slide-in-from-top-1 duration-150">
+                          {errors.confirmPassword}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -598,10 +715,24 @@ export default function TeamDirectoryPage() {
                       <Input
                         required
                         value={teammateCode}
-                        onChange={(e) => setTeammateCode(e.target.value)}
+                        onChange={(e) => {
+                          setTeammateCode(e.target.value);
+                          if (errors.teammateCode) {
+                            setErrors((prev) => {
+                              const next = { ...prev };
+                              delete next.teammateCode;
+                              return next;
+                            });
+                          }
+                        }}
                         placeholder="e.g. ANSH-005"
-                        className="mt-2"
+                        className={cn("mt-2", errors.teammateCode && "border-rose-500 focus-visible:ring-rose-500/20")}
                       />
+                      {errors.teammateCode && (
+                        <p className="text-[10px] text-rose-550 dark:text-rose-400 font-semibold mt-1 animate-in slide-in-from-top-1 duration-150">
+                          {errors.teammateCode}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
