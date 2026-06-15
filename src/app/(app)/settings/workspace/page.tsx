@@ -2,11 +2,24 @@
 
 import { useState } from "react";
 import { useVisitorStore } from "@/stores/visitor-store";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/crm/page-header";
-import { Briefcase, Building, MapPin, Trash2, Plus, Sliders } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Briefcase, Building, MapPin, Trash2, Plus, Sliders, AlertTriangle } from "lucide-react";
+
+type DeleteTarget = {
+  type: "department" | "designation" | "officeBranch";
+  value: string;
+} | null;
 
 export default function WorkspaceSettingsPage() {
   const {
@@ -18,7 +31,7 @@ export default function WorkspaceSettingsPage() {
     addDesignation,
     deleteDesignation,
     addOfficeBranch,
-    deleteOfficeBranch
+    deleteOfficeBranch,
   } = useVisitorStore();
 
   // Input States
@@ -26,25 +39,42 @@ export default function WorkspaceSettingsPage() {
   const [newDesig, setNewDesig] = useState("");
   const [newBranch, setNewBranch] = useState("");
 
+  // Delete Confirmation Modal State
+  const [deleteConfirm, setDeleteConfirm] = useState<DeleteTarget>(null);
+
   const handleAddDept = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newDept.trim()) return;
-    addDepartment(newDept);
+    addDepartment(newDept.trim());
     setNewDept("");
   };
 
   const handleAddDesig = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newDesig.trim()) return;
-    addDesignation(newDesig);
+    addDesignation(newDesig.trim());
     setNewDesig("");
   };
 
   const handleAddBranch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newBranch.trim()) return;
-    addOfficeBranch(newBranch);
+    addOfficeBranch(newBranch.trim());
     setNewBranch("");
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deleteConfirm) return;
+    if (deleteConfirm.type === "department") deleteDepartment(deleteConfirm.value);
+    else if (deleteConfirm.type === "designation") deleteDesignation(deleteConfirm.value);
+    else if (deleteConfirm.type === "officeBranch") deleteOfficeBranch(deleteConfirm.value);
+    setDeleteConfirm(null);
+  };
+
+  const typeLabel: Record<NonNullable<DeleteTarget>["type"], string> = {
+    department: "Department",
+    designation: "Designation",
+    officeBranch: "Office Branch",
   };
 
   return (
@@ -57,11 +87,11 @@ export default function WorkspaceSettingsPage() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
+
         {/* DEPARTMENTS CARD */}
         <Card className="crm-card h-[500px] flex flex-col">
           <CardHeader className="border-b border-border/40 pb-4 flex flex-row items-center gap-2 space-y-0">
-            <Briefcase className="h-4.5 w-4.5 text-blue-600 shrink-0" />
+            <Briefcase className="h-4.5 w-4.5 text-primary shrink-0" />
             <CardTitle className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-350">
               Departments
             </CardTitle>
@@ -75,7 +105,11 @@ export default function WorkspaceSettingsPage() {
                 placeholder="e.g. Sales, Operations"
                 className="h-9 text-xs"
               />
-              <Button type="submit" size="sm" className="h-9 w-9 shrink-0 bg-blue-500 hover:bg-blue-600 text-white rounded-xl border-0 p-0 flex items-center justify-center cursor-pointer">
+              <Button
+                type="submit"
+                size="icon-sm"
+                className="h-9 w-9 shrink-0 cursor-pointer rounded-xl"
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </form>
@@ -93,7 +127,7 @@ export default function WorkspaceSettingsPage() {
                     </span>
                     <button
                       type="button"
-                      onClick={() => deleteDepartment(dept)}
+                      onClick={() => setDeleteConfirm({ type: "department", value: dept })}
                       className="text-slate-400 hover:text-rose-500 cursor-pointer p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors"
                       title="Delete Department"
                     >
@@ -113,7 +147,7 @@ export default function WorkspaceSettingsPage() {
         {/* DESIGNATIONS CARD */}
         <Card className="crm-card h-[500px] flex flex-col">
           <CardHeader className="border-b border-border/40 pb-4 flex flex-row items-center gap-2 space-y-0">
-            <Sliders className="h-4.5 w-4.5 text-blue-600 shrink-0" />
+            <Sliders className="h-4.5 w-4.5 text-primary shrink-0" />
             <CardTitle className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-350">
               Designations
             </CardTitle>
@@ -127,7 +161,11 @@ export default function WorkspaceSettingsPage() {
                 placeholder="e.g. Project Manager"
                 className="h-9 text-xs"
               />
-              <Button type="submit" size="sm" className="h-9 w-9 shrink-0 bg-blue-500 hover:bg-blue-600 text-white rounded-xl border-0 p-0 flex items-center justify-center cursor-pointer">
+              <Button
+                type="submit"
+                size="icon-sm"
+                className="h-9 w-9 shrink-0 cursor-pointer rounded-xl"
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </form>
@@ -145,7 +183,7 @@ export default function WorkspaceSettingsPage() {
                     </span>
                     <button
                       type="button"
-                      onClick={() => deleteDesignation(desig)}
+                      onClick={() => setDeleteConfirm({ type: "designation", value: desig })}
                       className="text-slate-400 hover:text-rose-500 cursor-pointer p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors"
                       title="Delete Designation"
                     >
@@ -165,7 +203,7 @@ export default function WorkspaceSettingsPage() {
         {/* OFFICE BRANCHES CARD */}
         <Card className="crm-card h-[500px] flex flex-col">
           <CardHeader className="border-b border-border/40 pb-4 flex flex-row items-center gap-2 space-y-0">
-            <MapPin className="h-4.5 w-4.5 text-blue-600 shrink-0" />
+            <MapPin className="h-4.5 w-4.5 text-primary shrink-0" />
             <CardTitle className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-350">
               Office Branches
             </CardTitle>
@@ -179,7 +217,11 @@ export default function WorkspaceSettingsPage() {
                 placeholder="e.g. Bangalore Branch, HQ-2"
                 className="h-9 text-xs"
               />
-              <Button type="submit" size="sm" className="h-9 w-9 shrink-0 bg-blue-500 hover:bg-blue-600 text-white rounded-xl border-0 p-0 flex items-center justify-center cursor-pointer">
+              <Button
+                type="submit"
+                size="icon-sm"
+                className="h-9 w-9 shrink-0 cursor-pointer rounded-xl"
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </form>
@@ -197,7 +239,7 @@ export default function WorkspaceSettingsPage() {
                     </span>
                     <button
                       type="button"
-                      onClick={() => deleteOfficeBranch(branch)}
+                      onClick={() => setDeleteConfirm({ type: "officeBranch", value: branch })}
                       className="text-slate-400 hover:text-rose-500 cursor-pointer p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors"
                       title="Delete Branch"
                     >
@@ -215,6 +257,58 @@ export default function WorkspaceSettingsPage() {
         </Card>
 
       </div>
+
+      {/* ── DELETE CONFIRMATION DIALOG ── */}
+      <Dialog
+        open={deleteConfirm !== null}
+        onOpenChange={(open) => { if (!open) setDeleteConfirm(null); }}
+      >
+        <DialogContent className="sm:max-w-[420px]" showCloseButton={false}>
+          <DialogHeader>
+            <div className="flex items-center gap-3 mb-1">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-rose-500/10 text-rose-500">
+                <AlertTriangle className="h-5 w-5" />
+              </span>
+              <DialogTitle className="text-base font-bold text-slate-900 dark:text-white leading-snug">
+                Delete {deleteConfirm ? typeLabel[deleteConfirm.type] : ""}?
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-sm text-muted-foreground leading-relaxed pl-[52px]">
+              You are about to remove{" "}
+              <span className="font-bold text-slate-800 dark:text-slate-200">
+                &ldquo;{deleteConfirm?.value}&rdquo;
+              </span>{" "}
+              from the workspace {deleteConfirm ? typeLabel[deleteConfirm.type].toLowerCase() : ""} list.
+              <br />
+              <br />
+              <span className="text-amber-600 dark:text-amber-400 font-semibold">
+                ⚠ Team members currently assigned to this {deleteConfirm ? typeLabel[deleteConfirm.type].toLowerCase() : ""} will need to be manually updated to a new option.
+              </span>
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter className="mt-2">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => setDeleteConfirm(null)}
+              className="w-full sm:w-28 h-10 text-sm font-semibold cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleConfirmDelete}
+              className="w-full sm:w-36 h-10 text-sm font-semibold cursor-pointer gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              Yes, Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
     </div>
   );
 }
