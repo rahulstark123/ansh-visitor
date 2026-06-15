@@ -16,13 +16,25 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose,
+} from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { useVisitorStore, Host } from "@/stores/visitor-store";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import {
   Users,
   Search,
   Plus,
   Edit2,
+  Trash2,
   Phone,
   Mail,
   Calendar,
@@ -33,18 +45,37 @@ import {
   Eye,
   EyeOff,
   Check,
-  FileText
+  FileText,
+  Loader2,
+  MapPin,
+  Heart,
+  CalendarDays,
+  UserCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function TeamDirectoryPage() {
   const router = useRouter();
-  const { hosts, addHost, switchUser, currentUser, departments, designations, officeBranches } = useVisitorStore();
+  const {
+    hosts,
+    addHost,
+    updateHost,
+    deleteHost,
+    switchUser,
+    currentUser,
+    departments,
+    designations,
+    officeBranches
+  } = useVisitorStore();
 
   // Directory UI states
   const [searchQuery, setSearchQuery] = useState("");
   const [deptFilter, setDeptFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedTeammate, setSelectedTeammate] = useState<Host | null>(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   // Teammate Wizard States
   const [openWizard, setOpenWizard] = useState(false);
@@ -196,7 +227,11 @@ export default function TeamDirectoryPage() {
     setStep((s) => s - 1);
   };
 
-  const handleSubmitTeammate = (e: React.FormEvent) => {
+  const handleDeleteTeammate = (hostId: string) => {
+    setDeleteConfirmId(hostId);
+  };
+
+  const handleSubmitTeammate = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate all fields before submit
@@ -229,6 +264,8 @@ export default function TeamDirectoryPage() {
       return;
     }
 
+    setIsSubmitting(true);
+
     const hostPayload = {
       name: fullName,
       email: workEmail,
@@ -249,32 +286,21 @@ export default function TeamDirectoryPage() {
       emergencyPhone
     };
 
-    if (wizardMode === "edit" && editingHostId) {
-      // In edit mode, we replace/update the host inside store
-      // Since it's client-side state, we will update the state directly
-      useVisitorStore.setState((state) => ({
-        hosts: state.hosts.map((h) =>
-          h.id === editingHostId
-            ? {
-                ...h,
-                ...hostPayload,
-                avatarInitials: fullName
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .toUpperCase()
-                  .substring(0, 2),
-                status: employmentStatus
-              }
-            : h
-        )
-      }));
-    } else {
-      // Create new teammate
-      addHost(hostPayload);
+    try {
+      if (wizardMode === "edit" && editingHostId) {
+        await updateHost(editingHostId, {
+          ...hostPayload,
+          status: employmentStatus
+        });
+      } else {
+        await addHost(hostPayload);
+      }
+      setOpenWizard(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setOpenWizard(false);
   };
 
   // Filter hosts based on search query
@@ -353,7 +379,14 @@ export default function TeamDirectoryPage() {
           filteredTeammates.map((teammate) => {
             const isSelf = teammate.id === currentUser.id;
             return (
-              <Card key={teammate.id} className="crm-card relative overflow-hidden group">
+              <Card 
+                key={teammate.id} 
+                className="crm-card relative overflow-hidden group cursor-pointer"
+                onClick={() => {
+                  setSelectedTeammate(teammate);
+                  setOpenDrawer(true);
+                }}
+              >
                 <CardContent className="p-6 space-y-4">
                   {/* Top Header Card Info */}
                   <div className="flex items-start justify-between">
@@ -380,12 +413,29 @@ export default function TeamDirectoryPage() {
                       <Button
                         variant="ghost"
                         size="icon-xs"
-                        onClick={() => handleEditTeammate(teammate)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditTeammate(teammate);
+                        }}
                         title="Edit Teammate Details"
                         className="text-slate-400 hover:text-primary cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50"
                       >
                         <Edit2 className="h-3.5 w-3.5" />
                       </Button>
+                      {!isSelf && (
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteTeammate(teammate.id);
+                          }}
+                          title="Delete Teammate"
+                          className="text-slate-400 hover:text-rose-500 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      )}
                     </div>
                   </div>
 
@@ -671,23 +721,16 @@ export default function TeamDirectoryPage() {
                   {/* Phone & Date of Birth */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                      <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">
                         Phone Number
                       </label>
-                      <div className="flex gap-2 mt-2">
-                        {/* Country code prefix card */}
-                        <div className="flex items-center gap-1 px-3 border border-input bg-card rounded-lg text-sm shrink-0 select-none">
-                          <span>🇮🇳</span>
-                          <span className="text-slate-400 text-xs">▼</span>
-                        </div>
-                        <Input
-                          type="tel"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          placeholder="+91 98765 43210"
-                          className="flex-1"
-                        />
-                      </div>
+                      <PhoneInput
+                        placeholder="Enter phone number"
+                        value={phone}
+                        onChange={(val) => setPhone(val || "")}
+                        defaultCountry="IN"
+                        required
+                      />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
@@ -987,22 +1030,15 @@ export default function TeamDirectoryPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">
                           Contact Phone
                         </label>
-                        <div className="flex gap-2 mt-2">
-                          <div className="flex items-center gap-1 px-3 border border-input bg-card rounded-lg text-sm shrink-0 select-none">
-                            <span>🇮🇳</span>
-                            <span className="text-slate-400 text-xs">▼</span>
-                          </div>
-                          <Input
-                            type="tel"
-                            value={emergencyPhone}
-                            onChange={(e) => setEmergencyPhone(e.target.value)}
-                            placeholder="+91 98765 43210"
-                            className="flex-1"
-                          />
-                        </div>
+                        <PhoneInput
+                          placeholder="Enter emergency phone"
+                          value={emergencyPhone}
+                          onChange={(val) => setEmergencyPhone(val || "")}
+                          defaultCountry="IN"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1039,6 +1075,7 @@ export default function TeamDirectoryPage() {
                   key="next-btn"
                   type="button"
                   onClick={handleNextStep}
+                  disabled={isSubmitting}
                   className="w-full sm:w-44 h-11 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white border-0 cursor-pointer rounded-2xl flex items-center justify-center gap-2"
                 >
                   Next Step
@@ -1048,13 +1085,269 @@ export default function TeamDirectoryPage() {
                 <Button
                   key="submit-btn"
                   type="submit"
-                  className="w-full sm:w-44 h-11 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white border-0 cursor-pointer rounded-2xl"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-44 h-11 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white border-0 cursor-pointer rounded-2xl flex items-center justify-center gap-2"
                 >
-                  {wizardMode === "edit" ? "Update Details" : "Add Teammate"}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    wizardMode === "edit" ? "Update Details" : "Add Teammate"
+                  )}
                 </Button>
               )}
             </DialogFooter>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* TEAMMATE DETAILS SIDEBAR DRAWER */}
+      <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
+        <SheetContent className="sm:max-w-md p-0 overflow-hidden flex flex-col h-full text-slate-800 dark:text-slate-100">
+          {selectedTeammate && (
+            <>
+              {/* Drawer Header */}
+              <SheetHeader className="px-6 py-6 border-b border-border/50 bg-slate-50/50 dark:bg-slate-900/50 flex flex-row items-center gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/20 font-black text-lg">
+                  {selectedTeammate.avatarInitials}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <SheetTitle className="text-lg font-extrabold truncate leading-tight">
+                    {selectedTeammate.name}
+                  </SheetTitle>
+                  <p className="text-xs text-slate-400 font-semibold mt-1 flex items-center gap-1.5">
+                    <span>{selectedTeammate.designation || selectedTeammate.role}</span>
+                    <span>·</span>
+                    <span>{selectedTeammate.department}</span>
+                  </p>
+                </div>
+                <div className="mr-6">
+                  {selectedTeammate.status === "Active" ? (
+                    <Badge className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/15 border-0 font-bold text-[10px]">
+                      Active
+                    </Badge>
+                  ) : (
+                    <Badge className="bg-slate-500/10 text-slate-400 hover:bg-slate-500/15 border-0 font-bold text-[10px]">
+                      Inactive
+                    </Badge>
+                  )}
+                </div>
+              </SheetHeader>
+
+              {/* Drawer Details Content */}
+              <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+                
+                {/* Contact Information */}
+                <div className="space-y-3">
+                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <Mail className="h-3.5 w-3.5" />
+                    Contact details
+                  </h4>
+                  <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Work Email</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.email}</span>
+                    </div>
+                    {selectedTeammate.phone && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-400 font-medium">Phone Number</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.phone}</span>
+                      </div>
+                    )}
+                    {selectedTeammate.personalEmail && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-400 font-medium">Personal Email</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.personalEmail}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Job / Office Details */}
+                <div className="space-y-3">
+                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <Briefcase className="h-3.5 w-3.5" />
+                    Employment &amp; job
+                  </h4>
+                  <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Employee Code</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.code || "N/A"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Role Access</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.role}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Work Location</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.workLocation || "Remote"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Office Branch</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.officeBranch || "N/A"}</span>
+                    </div>
+                    {selectedTeammate.joiningDate && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-400 font-medium">Joining Date</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1">
+                          <CalendarDays className="h-3.5 w-3.5 text-slate-400" />
+                          {selectedTeammate.joiningDate}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Relationships & Hierarchy */}
+                <div className="space-y-3">
+                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <UserCheck className="h-3.5 w-3.5" />
+                    Reporting lines
+                  </h4>
+                  <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Reporting Manager</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">
+                        {hosts.find((h) => h.id === selectedTeammate.reportingManager)?.name || "None Specified"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Reporting HR</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">
+                        {hosts.find((h) => h.id === selectedTeammate.reportingHR)?.name || "None Specified"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Information */}
+                {(selectedTeammate.dob || selectedTeammate.bloodGroup) && (
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <FileText className="h-3.5 w-3.5" />
+                      Additional Details
+                    </h4>
+                    <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                      {selectedTeammate.dob && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Date of Birth</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.dob}</span>
+                        </div>
+                      )}
+                      {selectedTeammate.bloodGroup && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Blood Group</span>
+                          <span className="font-semibold text-rose-500 font-bold">{selectedTeammate.bloodGroup}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Emergency Contact */}
+                {(selectedTeammate.emergencyName || selectedTeammate.emergencyPhone) && (
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <Heart className="h-3.5 w-3.5 text-rose-500" />
+                      Emergency contact
+                    </h4>
+                    <div className="rounded-xl border border-border/50 bg-slate-50/30 dark:bg-slate-900/20 p-4 space-y-3 text-sm">
+                      {selectedTeammate.emergencyName && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Contact Name</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedTeammate.emergencyName}</span>
+                        </div>
+                      )}
+                      {selectedTeammate.emergencyPhone && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-400 font-medium">Contact Phone</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200 select-all">{selectedTeammate.emergencyPhone}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+              </div>
+
+              {/* Drawer Footer Actions */}
+              <SheetFooter className="px-6 py-6 border-t border-border/50 bg-slate-50/50 dark:bg-slate-900/50 flex flex-row gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => setOpenDrawer(false)}
+                  className="flex-1 h-11 text-sm font-semibold rounded-2xl cursor-pointer"
+                >
+                  Close Panel
+                </Button>
+                <Button
+                  onClick={() => {
+                    setOpenDrawer(false);
+                    handleEditTeammate(selectedTeammate);
+                  }}
+                  className="flex-1 h-11 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white border-0 rounded-2xl cursor-pointer"
+                >
+                  Edit Details
+                </Button>
+              </SheetFooter>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
+
+      {/* CUSTOM TEAMMATE DELETION CONFIRMATION DIALOG MODAL */}
+      <Dialog open={!!deleteConfirmId} onOpenChange={(open) => !open && setDeleteConfirmId(null)}>
+        <DialogContent className="sm:max-w-[440px] text-slate-800 dark:text-slate-100 p-6 rounded-3xl border border-border/50 shadow-2xl backdrop-blur-xl">
+          <DialogHeader className="flex flex-col items-center text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-500/10 text-rose-500 border border-rose-500/20 mb-4">
+              <Trash2 className="h-6 w-6 animate-pulse" />
+            </div>
+            <DialogTitle className="text-lg font-extrabold uppercase tracking-wide">
+              Delete Teammate Record?
+            </DialogTitle>
+            <DialogDescription className="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-xs leading-relaxed">
+              Are you sure you want to delete this teammate? This action is permanent and cannot be undone. Visitor logs hosted by them will remain but will be unlinked.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-6 flex flex-row gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setDeleteConfirmId(null)}
+              disabled={isSubmitting}
+              className="flex-1 h-11 text-sm font-semibold rounded-2xl cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={async () => {
+                if (!deleteConfirmId) return;
+                setIsSubmitting(true);
+                try {
+                  await deleteHost(deleteConfirmId);
+                  setDeleteConfirmId(null);
+                  if (selectedTeammate?.id === deleteConfirmId) {
+                    setOpenDrawer(false);
+                  }
+                } catch (err) {
+                  console.error(err);
+                } finally {
+                  setIsSubmitting(false);
+                }
+              }}
+              disabled={isSubmitting}
+              className="flex-1 h-11 text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white border-0 rounded-2xl cursor-pointer flex items-center justify-center gap-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Yes, Delete"
+              )}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
