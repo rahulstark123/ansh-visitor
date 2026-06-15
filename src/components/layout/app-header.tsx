@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Search, ChevronDown, LogOut, User, UsersRound, UserCheck, Settings, Loader2, BarChart3 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { createSupabaseClient } from "@/lib/supabase";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -52,9 +53,8 @@ export function AppHeader() {
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    sessionStorage.removeItem("ansh_auth_session");
-    sessionStorage.removeItem("ansh_auth_token");
+    const supabase = createSupabaseClient();
+    await supabase.auth.signOut();
     window.location.href = "/login";
   };
 

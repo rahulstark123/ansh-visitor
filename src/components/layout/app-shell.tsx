@@ -6,6 +6,7 @@ import { SubSidebar } from "./sub-sidebar";
 import { MainSidebar } from "./main-sidebar";
 import { AppHeader } from "./app-header";
 import { useVisitorStore } from "@/stores/visitor-store";
+import { createSupabaseClient } from "@/lib/supabase";
 import { Loader2, Monitor } from "lucide-react";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -21,19 +22,26 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     hasChecked.current = true;
 
     const checkAuth = async () => {
-      const session = sessionStorage.getItem("ansh_auth_session");
-      const token = sessionStorage.getItem("ansh_auth_token");
-
-      if (!session || !token) {
-        router.push("/login");
-        return;
-      }
-
-      setCheckingAuth(false);
       try {
-        await initialize();
-      } catch (err) {
-        console.error("Store initialization failed:", err);
+        const supabase = createSupabaseClient();
+
+        // getUser() validates the JWT on the server — safer than getSession()
+        const { data: { user }, error } = await supabase.auth.getUser();
+
+        if (error || !user) {
+          router.push("/login");
+          return;
+        }
+
+        // Session valid — initialize local store and show app
+        setCheckingAuth(false);
+        try {
+          await initialize();
+        } catch (err) {
+          console.error("Store initialization failed:", err);
+        }
+      } catch {
+        router.push("/login");
       }
     };
 
@@ -67,6 +75,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     mobileQuery.addEventListener("change", handleMobileChange);
     return () => mobileQuery.removeEventListener("change", handleMobileChange);
   }, []);
+
+  // Suppress unused variable warning
+  void pathname;
 
   if (checkingAuth) {
     return (
