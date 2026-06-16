@@ -81,17 +81,21 @@ export const mainNav: MainNavItem[] = [
   },
 ];
 
-export function getSectionFromPath(pathname: string): NavSectionId {
+export function getSectionFromPath(pathname: string): NavSectionId | null {
   if (pathname === "/dashboard" || pathname === "/") return "dashboard";
+  if (pathname === "/our-apps" || pathname.startsWith("/our-apps/")) return null;
+  if (pathname === "/help" || pathname.startsWith("/help/")) return null;
   const segment = pathname.split("/")[1] as NavSectionId;
   const match = mainNav.find((item) => item.id === segment);
-  return match?.id ?? "dashboard";
+  return match?.id ?? null;
 }
 
-export function getSubNavForSection(sectionId: NavSectionId): SubNavItem[] | undefined {
+export function getSubNavForSection(sectionId: NavSectionId | null): SubNavItem[] | undefined {
+  if (!sectionId) return undefined;
   return mainNav.find((item) => item.id === sectionId)?.subNav;
 }
 
-export function getSectionMeta(sectionId: NavSectionId) {
+export function getSectionMeta(sectionId: NavSectionId | null) {
+  if (!sectionId) return undefined;
   return mainNav.find((item) => item.id === sectionId);
 }

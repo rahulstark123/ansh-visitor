@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { PanelLeftClose, PanelLeft, HelpCircle } from "lucide-react";
+import { PanelLeftClose, PanelLeft, HelpCircle, Boxes } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { mainNav, getSectionFromPath } from "@/config/navigation";
 import { useUiStore } from "@/stores/ui-store";
@@ -14,6 +14,7 @@ export function MainSidebar() {
   const pathname = usePathname();
   const activeSection = getSectionFromPath(pathname);
   const isHelpActive = pathname === "/help" || pathname.startsWith("/help/");
+  const isOurAppsActive = pathname === "/our-apps" || pathname.startsWith("/our-apps/");
   const { mainSidebarCollapsed, setMainSidebarCollapsed, toggleMainSidebar } = useUiStore();
 
   useEffect(() => {
@@ -86,6 +87,27 @@ export function MainSidebar() {
       </nav>
 
       <div className="space-y-2 border-t border-border/50 p-3">
+        <Link
+          href="/our-apps"
+          className={cn(
+            "group inline-flex h-10 w-full items-center justify-start gap-3 rounded-xl px-3 transition-all outline-none",
+            isOurAppsActive
+              ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+              : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800",
+            mainSidebarCollapsed && "justify-center px-0"
+          )}
+        >
+          <Boxes
+            className={cn(
+              "h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-110",
+              isOurAppsActive ? "text-white" : "text-slate-500"
+            )}
+          />
+          {!mainSidebarCollapsed && (
+            <span className="text-xs font-bold uppercase tracking-widest">Ansh Apps</span>
+          )}
+        </Link>
+
         <Link
           href="/help"
           className={cn(

@@ -72,6 +72,7 @@ export function AppHeader() {
     if (pathname.startsWith("/reports")) return "Audits & Log Reports";
     if (pathname.startsWith("/settings")) return "Workspace Customizer";
     if (pathname.startsWith("/help")) return "Help Center";
+    if (pathname.startsWith("/our-apps")) return "Ansh Apps";
     return "Workspace";
   };
 
