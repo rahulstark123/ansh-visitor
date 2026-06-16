@@ -14,6 +14,11 @@ import {
   type RegistrationDesignTheme,
 } from "@/config/registration-link-designs";
 import { getFieldStyles } from "@/components/public/registration-form-styles";
+import {
+  EmployeeRegistrationFields,
+  applyEmployeeSelection,
+  type EmployeeOption,
+} from "@/components/crm/employee-registration-fields";
 
 export interface RegistrationFormValues {
   name: string;
@@ -40,6 +45,12 @@ interface RegistrationFormFieldsProps {
   error: string | null;
   buttonClass: string;
   submitLabel?: string;
+  workspaceName?: string;
+  employees?: EmployeeOption[];
+  isEmployee?: boolean;
+  onIsEmployeeChange?: (value: boolean) => void;
+  selectedEmployeeId?: string;
+  onEmployeeSelect?: (employeeId: string) => void;
 }
 
 export function RegistrationFormFields({
@@ -53,6 +64,12 @@ export function RegistrationFormFields({
   error,
   buttonClass,
   submitLabel = "Pre-register Visit",
+  workspaceName,
+  employees = [],
+  isEmployee = false,
+  onIsEmployeeChange,
+  selectedEmployeeId = "",
+  onEmployeeSelect,
 }: RegistrationFormFieldsProps) {
   const variant = (themeId as RegistrationDesignTheme) || "classic";
   const styles = getFieldStyles(variant);
@@ -118,11 +135,26 @@ export function RegistrationFormFields({
           <Input
             value={values.company}
             onChange={(e) => onChange("company", e.target.value)}
-            placeholder="Acme Corp"
+            placeholder={workspaceName ? workspaceName : "Acme Corp"}
             required={fieldConfig.companyRequired}
             className={styles.input}
           />
         </div>
+      )}
+
+      {workspaceName && onIsEmployeeChange && onEmployeeSelect && (
+        <EmployeeRegistrationFields
+          workspaceName={workspaceName}
+          company={values.company}
+          employees={employees}
+          isEmployee={isEmployee}
+          onIsEmployeeChange={onIsEmployeeChange}
+          selectedEmployeeId={selectedEmployeeId}
+          onEmployeeSelect={onEmployeeSelect}
+          alwaysVisible
+          labelClassName={styles.label}
+          selectClassName={styles.select}
+        />
       )}
 
       <div>

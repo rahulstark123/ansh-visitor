@@ -74,7 +74,7 @@ function fieldStateFromLink(link: SavedLink): RegistrationFieldConfig {
 }
 
 export default function MyLinkPage() {
-  const { currentUser } = useVisitorStore();
+  const { currentUser, hosts } = useVisitorStore();
   const wid = currentUser.wid ?? 1;
 
   const [loading, setLoading] = useState(true);
@@ -148,6 +148,19 @@ export default function MyLinkPage() {
     };
   }, [wid, currentUser.id, currentUser.officeBranch]);
 
+  const previewEmployees = useMemo(
+    () =>
+      hosts
+        .filter((h) => h.status === "Active")
+        .map((h) => ({
+          id: h.id,
+          name: h.name,
+          email: h.email,
+          phone: h.phone,
+        })),
+    [hosts]
+  );
+
   const previewData = useMemo(
     () => ({
       slug: displaySlug || "preview",
@@ -161,6 +174,7 @@ export default function MyLinkPage() {
       hostName: currentUser.name,
       hostDepartment: currentUser.department,
       workspaceName,
+      employees: previewEmployees,
     }),
     [
       displaySlug,
@@ -172,6 +186,7 @@ export default function MyLinkPage() {
       currentUser.name,
       currentUser.department,
       workspaceName,
+      previewEmployees,
     ]
   );
 

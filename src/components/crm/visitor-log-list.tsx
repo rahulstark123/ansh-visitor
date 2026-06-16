@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useVisitorStore, Visitor } from "@/stores/visitor-store";
-import { cn } from "@/lib/utils";
 import { QRCodeSVG } from "qrcode.react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -33,9 +32,7 @@ import {
   QrCode
 } from "lucide-react";
 import { PageHeader } from "./page-header";
-import { formatQrValidUntil, QR_VALIDITY_OPTIONS, type QrValidityPeriod, isQrValid } from "@/lib/qr-validity";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
+import { formatQrValidUntil, isQrValid } from "@/lib/qr-validity";
 import {
   GuestVerifyModal,
   type GuestVerifyMode,
@@ -46,7 +43,7 @@ interface VisitorLogListProps {
 }
 
 export function VisitorLogList({ filterType }: VisitorLogListProps) {
-  const { visitors, addVisitor, checkInVisitor, registerWalkIn, hosts, currentUser } = useVisitorStore();
+  const { visitors, checkInVisitor, hosts, openRegisterGuest } = useVisitorStore();
   const [verifyOpen, setVerifyOpen] = useState(false);
   const [verifyMode, setVerifyMode] = useState<GuestVerifyMode>("check-in");
   
@@ -54,20 +51,6 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [purposeFilter, setPurposeFilter] = useState("All");
   const [regTypeFilter, setRegTypeFilter] = useState<"All" | "Pre-registered" | "Walk-in">("All");
-
-  // Dialog State
-  const [openRegister, setOpenRegister] = useState(false);
-  const [regMode, setRegMode] = useState<"pre-register" | "walk-in">("pre-register");
-  const [newGuestName, setNewGuestName] = useState("");
-  const [newGuestEmail, setNewGuestEmail] = useState("");
-  const [newGuestPhone, setNewGuestPhone] = useState("");
-  const [newGuestCompany, setNewGuestCompany] = useState("");
-  const [newGuestPurpose, setNewGuestPurpose] = useState<any>("Meeting");
-  const [newGuestHostId, setNewGuestHostId] = useState(currentUser.id);
-  const [newGuestNotes, setNewGuestNotes] = useState("");
-  const [newGuestIdProofType, setNewGuestIdProofType] = useState("");
-  const [newGuestIdProofNumber, setNewGuestIdProofNumber] = useState("");
-  const [newGuestQrValidity, setNewGuestQrValidity] = useState<QrValidityPeriod>("24h");
 
   // Check In Confirm State
   const [confirmCheckInVisitor, setConfirmCheckInVisitor] = useState<Visitor | null>(null);
@@ -118,58 +101,6 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
 
   const filteredList = getFilteredVisitors();
 
-  const handleCreateInvitation = (e: React.FormEvent) => {
-    e.preventDefault();
-    const hasIdentity =
-      Boolean(newGuestName.trim()) ||
-      Boolean(newGuestEmail.trim()) ||
-      Boolean(newGuestPhone.trim());
-    if (!hasIdentity) return;
-
-    const host = currentUser;
-
-    if (regMode === "walk-in") {
-      registerWalkIn({
-        name: newGuestName,
-        email: newGuestEmail,
-        phone: newGuestPhone,
-        company: newGuestCompany || undefined,
-        purpose: newGuestPurpose,
-        hostId: host.id,
-        hostName: host.name,
-        notes: newGuestNotes || undefined,
-        idProofType: newGuestIdProofType || undefined,
-        idProofNumber: newGuestIdProofNumber || undefined
-      });
-    } else {
-      addVisitor({
-        name: newGuestName,
-        email: newGuestEmail,
-        phone: newGuestPhone,
-        company: newGuestCompany || undefined,
-        purpose: newGuestPurpose,
-        hostId: host.id,
-        hostName: host.name,
-        notes: newGuestNotes || undefined,
-        idProofType: newGuestIdProofType || undefined,
-        idProofNumber: newGuestIdProofNumber || undefined,
-        qrValidityPeriod: newGuestQrValidity,
-      });
-    }
-
-    // Reset Form
-    setNewGuestName("");
-    setNewGuestEmail("");
-    setNewGuestPhone("");
-    setNewGuestCompany("");
-    setNewGuestPurpose("Meeting");
-    setNewGuestNotes("");
-    setNewGuestIdProofType("");
-    setNewGuestIdProofNumber("");
-    setNewGuestQrValidity("24h");
-    setOpenRegister(false);
-  };
-
   const handleConfirmCheckIn = (e: React.FormEvent) => {
     e.preventDefault();
     if (!confirmCheckInVisitor) return;
@@ -210,7 +141,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
         action={{
           label: "Register Guest",
           icon: Plus,
-          onClick: () => setOpenRegister(true)
+          onClick: () => openRegisterGuest(),
         }}
       />
 
@@ -394,201 +325,6 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* PRE-REGISTER / WALK-IN DIALOG MODAL */}
-      <Dialog open={openRegister} onOpenChange={setOpenRegister}>
-        <DialogContent className="sm:max-w-[540px]">
-          <form onSubmit={handleCreateInvitation} className="space-y-4">
-            <DialogHeader>
-              <DialogTitle>Register Guest</DialogTitle>
-              <DialogDescription>
-                Schedule a pre-registered entry pass, or perform an immediate desk walk-in check-in.
-              </DialogDescription>
-            </DialogHeader>
-
-            {/* Mode Tabs */}
-            <div className="flex border-b border-border/60 mb-2">
-              <button
-                type="button"
-                className={cn(
-                  "flex-1 pb-2 text-xs font-bold uppercase tracking-wider border-b-2 transition-all cursor-pointer",
-                  regMode === "pre-register"
-                    ? "border-primary text-primary"
-                    : "border-transparent text-slate-400 dark:text-slate-550 hover:text-slate-600 dark:hover:text-slate-300"
-                )}
-                onClick={() => setRegMode("pre-register")}
-              >
-                Pre-register (Expected)
-              </button>
-              <button
-                type="button"
-                className={cn(
-                  "flex-1 pb-2 text-xs font-bold uppercase tracking-wider border-b-2 transition-all cursor-pointer",
-                  regMode === "walk-in"
-                    ? "border-primary text-primary"
-                    : "border-transparent text-slate-400 dark:text-slate-550 hover:text-slate-600 dark:hover:text-slate-300"
-                )}
-                onClick={() => setRegMode("walk-in")}
-              >
-                Walk-in Entry (Check In)
-              </button>
-            </div>
-
-            <div className="space-y-4 py-2 text-slate-800 dark:text-slate-100">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Guest Full Name (Optional)
-                  </label>
-                  <Input
-                    value={newGuestName}
-                    onChange={(e) => setNewGuestName(e.target.value)}
-                    placeholder="Jane Doe"
-                    className="mt-2"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Guest Company Name
-                  </label>
-                  <Input
-                    value={newGuestCompany}
-                    onChange={(e) => setNewGuestCompany(e.target.value)}
-                    placeholder="Acme Corp"
-                    className="mt-2"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">
-                    Guest Phone Number (Optional)
-                  </label>
-                  <PhoneInput
-                    placeholder="Enter phone number"
-                    value={newGuestPhone}
-                    onChange={(val) => setNewGuestPhone(val || "")}
-                    defaultCountry="IN"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Guest Email (Optional)
-                  </label>
-                  <Input
-                    type="email"
-                    value={newGuestEmail}
-                    onChange={(e) => setNewGuestEmail(e.target.value)}
-                    placeholder="jane@company.com"
-                    className="mt-2"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                  Visit Purpose (Optional)
-                </label>
-                <Select
-                  value={newGuestPurpose}
-                  onChange={(e) => setNewGuestPurpose(e.target.value as any)}
-                  className="mt-2 bg-card border-input text-foreground"
-                >
-                  <option value="Meeting">Meeting</option>
-                  <option value="Interview">Interview</option>
-                  <option value="Vendor">Vendor</option>
-                  <option value="Delivery">Delivery</option>
-                  <option value="Other">Other</option>
-                </Select>
-              </div>
-
-              {regMode === "pre-register" && (
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    QR Pass Validity
-                  </label>
-                  <Select
-                    value={newGuestQrValidity}
-                    onChange={(e) =>
-                      setNewGuestQrValidity(e.target.value as QrValidityPeriod)
-                    }
-                    className="mt-2 bg-card border-input text-foreground"
-                  >
-                    {QR_VALIDITY_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label} — {opt.description}
-                      </option>
-                    ))}
-                  </Select>
-                  <p className="mt-1.5 text-[10px] text-slate-400 leading-relaxed">
-                    The same QR pass can be scanned on multiple days until this period ends.
-                  </p>
-                </div>
-              )}
-
-              {/* Optional Govt ID Card */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Govt ID Card Type (Optional)
-                  </label>
-                  <Select
-                    value={newGuestIdProofType}
-                    onChange={(e) => setNewGuestIdProofType(e.target.value)}
-                    className="mt-2 bg-card border-input text-foreground"
-                  >
-                    <option value="">No ID Card Provided</option>
-                    <option value="Aadhaar Card">Aadhaar Card</option>
-                    <option value="PAN Card">PAN Card</option>
-                    <option value="Driving License">Driving License</option>
-                    <option value="Passport">Passport</option>
-                    <option value="Voter ID">Voter ID</option>
-                  </Select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                    Govt ID Number (Optional)
-                  </label>
-                  <Input
-                    value={newGuestIdProofNumber}
-                    onChange={(e) => setNewGuestIdProofNumber(e.target.value)}
-                    placeholder="e.g. ABCD1234E"
-                    disabled={!newGuestIdProofType}
-                    className="mt-2"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                  Special Notes
-                </label>
-                <textarea
-                  value={newGuestNotes}
-                  onChange={(e) => setNewGuestNotes(e.target.value)}
-                  placeholder="Need visual board access or parking slot..."
-                  className="mt-2 block w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm text-foreground outline-none focus-visible:border-primary focus-visible:ring-3 focus-visible:ring-primary/20 dark:bg-slate-900/30 min-h-16"
-                />
-              </div>
-            </div>
-
-            <DialogFooter>
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => setOpenRegister(false)}
-                className="w-full sm:w-36 h-11 text-sm font-semibold cursor-pointer"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" className="w-full sm:w-36 h-11 text-sm font-semibold btn-primary border-0 cursor-pointer">
-                {regMode === "walk-in" ? "Check In Now" : "Issue QR Pass"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
 
       {/* CHECK-IN CONFIRMATION DIALOG MODAL */}
       <Dialog open={confirmCheckInVisitor !== null} onOpenChange={(open) => { if (!open) setConfirmCheckInVisitor(null); }}>

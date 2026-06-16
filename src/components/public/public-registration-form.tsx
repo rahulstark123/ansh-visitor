@@ -15,6 +15,10 @@ import {
   type RegistrationFormValues,
 } from "@/components/public/registration-form-fields";
 import { RegistrationThemeShell } from "@/components/public/registration-theme-shell";
+import {
+  applyEmployeeSelection,
+  type EmployeeOption,
+} from "@/components/crm/employee-registration-fields";
 
 export interface PublicRegistrationPageData {
   slug: string;
@@ -26,6 +30,7 @@ export interface PublicRegistrationPageData {
   hostName: string;
   hostDepartment?: string;
   workspaceName: string;
+  employees?: EmployeeOption[];
 }
 
 interface SuccessPass {
@@ -64,6 +69,8 @@ export function PublicRegistrationForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successPass, setSuccessPass] = useState<SuccessPass | null>(null);
+  const [isEmployee, setIsEmployee] = useState(false);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
 
   const title = pageData.pageTitle || `Visit ${pageData.workspaceName}`;
   const subtitle =
@@ -77,6 +84,31 @@ export function PublicRegistrationForm({
     value: RegistrationFormValues[K]
   ) => {
     setValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleEmployeeToggle = (enabled: boolean) => {
+    setIsEmployee(enabled);
+    if (enabled && !values.company.trim()) {
+      updateField("company", pageData.workspaceName);
+    }
+    if (!enabled) {
+      setSelectedEmployeeId("");
+    }
+  };
+
+  const handleEmployeeSelect = (employeeId: string) => {
+    setSelectedEmployeeId(employeeId);
+    const employee = (pageData.employees ?? []).find((e) => e.id === employeeId);
+    const filled = applyEmployeeSelection(employee, pageData.workspaceName);
+    if (filled) {
+      setValues((prev) => ({
+        ...prev,
+        name: filled.name,
+        email: filled.email,
+        phone: filled.phone,
+        company: filled.company,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -221,6 +253,12 @@ export function PublicRegistrationForm({
       preview={preview}
       error={error}
       buttonClass={theme.preview.button}
+      workspaceName={pageData.workspaceName}
+      employees={pageData.employees}
+      isEmployee={isEmployee}
+      onIsEmployeeChange={handleEmployeeToggle}
+      selectedEmployeeId={selectedEmployeeId}
+      onEmployeeSelect={handleEmployeeSelect}
     />
   );
 

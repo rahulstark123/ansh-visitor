@@ -74,6 +74,7 @@ interface VisitorState {
   };
   workspacePlan: WorkspacePlanTier;
   workspaceCreatedAt: string | null;
+  workspaceName: string;
   setWorkspacePlan: (plan: WorkspacePlanTier, createdAt?: string | null) => void;
   initialize: () => Promise<void>;
   switchUser: (hostId: string) => void;
@@ -81,7 +82,7 @@ interface VisitorState {
     visitorData: Omit<Visitor, "id" | "status" | "preRegisteredAt" | "qrCode" | "badgeNumber" | "qrValidUntil"> & {
       qrValidityPeriod?: QrValidityPeriod;
     }
-  ) => Promise<void>;
+  ) => Promise<Visitor | undefined>;
   checkInVisitor: (visitorId: string, idProofType?: string, idProofNumber?: string) => Promise<void>;
   checkOutVisitor: (visitorId: string) => Promise<void>;
   registerWalkIn: (walkInData: Omit<Visitor, "id" | "status" | "preRegisteredAt" | "qrCode" | "checkedInAt">) => Promise<void>;
@@ -102,6 +103,21 @@ interface VisitorState {
   deleteOfficeBranch: (branch: string) => void;
   addWorkLocation: (loc: string) => void;
   deleteWorkLocation: (loc: string) => void;
+  registerGuestOpen: boolean;
+  registerGuestPrefill: RegisterGuestPrefill | null;
+  registerGuestRequestId: number;
+  openRegisterGuest: (prefill?: RegisterGuestPrefill) => void;
+  closeRegisterGuest: () => void;
+}
+
+export interface RegisterGuestPrefill {
+  mode?: "pre-register" | "walk-in";
+  isEmployee?: boolean;
+  employeeId?: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  company?: string;
 }
 
 const SEEDED_HOSTS: Host[] = [
@@ -227,6 +243,7 @@ export const useVisitorStore = create<VisitorState>()(
       },
       workspacePlan: "pro_trial",
       workspaceCreatedAt: new Date().toISOString(),
+      workspaceName: "Workspace",
       departments: ["Engineering", "HR & Operations", "Product Management", "Enterprise Sales"],
       designations: ["Software Engineer", "Senior Developer", "Product Manager", "HR Manager", "Operations Admin", "Security Officer", "Sales Director"],
       officeBranches: ["HQ - Bangalore", "Delhi Branch", "Mumbai Office"],
@@ -257,6 +274,24 @@ export const useVisitorStore = create<VisitorState>()(
         },
       },
       workLocations: ["Remote", "On-site", "Hybrid"],
+      registerGuestOpen: false,
+      registerGuestPrefill: null,
+      registerGuestRequestId: 0,
+
+      openRegisterGuest: (prefill) => {
+        set((state) => ({
+          registerGuestOpen: true,
+          registerGuestPrefill: prefill ?? null,
+          registerGuestRequestId: state.registerGuestRequestId + 1,
+        }));
+      },
+
+      closeRegisterGuest: () => {
+        set({
+          registerGuestOpen: false,
+          registerGuestPrefill: null,
+        });
+      },
 
       initialize: async () => {
         try {
@@ -275,9 +310,11 @@ export const useVisitorStore = create<VisitorState>()(
           const workspaceRes = await fetch(`/api/workspace?wid=${wid}`);
           let workspacePlan: WorkspacePlanTier = "pro_trial";
           let workspaceCreatedAt: string | null = get().workspaceCreatedAt;
+          let workspaceName = get().workspaceName;
           if (workspaceRes.ok) {
             const { workspace } = await workspaceRes.json();
             workspaceCreatedAt = workspace.createdAt;
+            workspaceName = workspace.name ?? "Workspace";
             if (workspace.plan === "pro") {
               workspacePlan = "pro";
             } else if (workspace.plan === "pro_trial") {
@@ -331,6 +368,7 @@ export const useVisitorStore = create<VisitorState>()(
             visitors: visitorsData,
             workspacePlan,
             workspaceCreatedAt,
+            workspaceName,
             plan: {
               name: planName,
               visitorsCount,
@@ -387,7 +425,7 @@ export const useVisitorStore = create<VisitorState>()(
               "Visitor pass issued",
               `${visitor.name} · Passcode ${visitor.qrCode} · Valid for ${periodLabel}`
             );
-            return;
+            return visitor;
           }
           const data = await res.json().catch(() => ({}));
           toast.error(
@@ -398,6 +436,7 @@ export const useVisitorStore = create<VisitorState>()(
           console.error("Failed to add visitor:", err);
           toast.error("Could not issue pass", "Network error. Please try again.");
         }
+        return undefined;
       },
 
       checkInVisitor: async (visitorId, idProofType, idProofNumber) => {

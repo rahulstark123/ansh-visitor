@@ -9,6 +9,7 @@ import { ProTrialBanner } from "./pro-trial-banner";
 import { useVisitorStore } from "@/stores/visitor-store";
 import { createSupabaseClient } from "@/lib/supabase";
 import { AppContentSkeleton } from "@/components/ui/page-skeletons";
+import { RegisterGuestDialog } from "@/components/crm/register-guest-dialog";
 import { Monitor } from "lucide-react";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -125,6 +126,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </main>
       </div>
+      <RegisterGuestDialog />
     </div>
   );
 }

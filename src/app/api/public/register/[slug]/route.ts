@@ -38,6 +38,17 @@ export async function GET(_req: NextRequest, context: RouteContext) {
       );
     }
 
+    const employees = await prisma.profile.findMany({
+      where: { wid: link.wid, status: "Active" },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phoneNumber: true,
+      },
+      orderBy: { name: "asc" },
+    });
+
     return NextResponse.json(
       {
         link: {
@@ -51,6 +62,12 @@ export async function GET(_req: NextRequest, context: RouteContext) {
           hostName: link.host.name,
           hostDepartment: link.host.department,
           workspaceName: link.workspace.name ?? "Workspace",
+          employees: employees.map((profile) => ({
+            id: profile.id,
+            name: profile.name,
+            email: profile.email,
+            phone: profile.phoneNumber || undefined,
+          })),
         },
       },
       { status: 200 }

@@ -50,9 +50,18 @@ import {
   Heart,
   CalendarDays,
   UserCheck,
+  MoreVertical,
+  QrCode,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function TeamDirectoryPage() {
   const router = useRouter();
@@ -60,10 +69,12 @@ export default function TeamDirectoryPage() {
     hosts,
     visitors,
     addHost,
+    openRegisterGuest,
     updateHost,
     deleteHost,
     switchUser,
     currentUser,
+    workspaceName,
     departments,
     designations,
     officeBranches
@@ -231,6 +242,18 @@ export default function TeamDirectoryPage() {
 
   const handleDeleteTeammate = (hostId: string) => {
     setDeleteConfirmId(hostId);
+  };
+
+  const handleGenerateQr = (teammate: Host) => {
+    openRegisterGuest({
+      mode: "pre-register",
+      isEmployee: true,
+      employeeId: teammate.id,
+      name: teammate.name,
+      email: teammate.email,
+      phone: teammate.phone || "",
+      company: workspaceName,
+    });
   };
 
   const handleSubmitTeammate = async (e: React.FormEvent) => {
@@ -412,34 +435,48 @@ export default function TeamDirectoryPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditTeammate(teammate);
-                        }}
-                        title="Edit Teammate Details"
-                        className="text-slate-400 hover:text-primary cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                    <DropdownMenu>
+                      <DropdownMenuTrigger
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800/50 dark:hover:text-slate-200 outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+                        title="Teammate actions"
                       >
-                        <Edit2 className="h-3.5 w-3.5" />
-                      </Button>
-                      {!isSelf && (
-                        <Button
-                          variant="ghost"
-                          size="icon-xs"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteTeammate(teammate.id);
-                          }}
-                          title="Delete Teammate"
-                          className="text-slate-400 hover:text-rose-500 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                        <MoreVertical className="h-4 w-4" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="w-44 bg-card/95 dark:bg-slate-950/95 shadow-xl backdrop-blur-md border border-border dark:border-slate-800 p-1"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <DropdownMenuItem
+                          className="cursor-pointer gap-2 text-sm font-medium"
+                          onClick={() => handleEditTeammate(teammate)}
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      )}
-                    </div>
+                          <Edit2 className="h-3.5 w-3.5" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="cursor-pointer gap-2 text-sm font-medium"
+                          onClick={() => handleGenerateQr(teammate)}
+                        >
+                          <QrCode className="h-3.5 w-3.5" />
+                          Generate QR
+                        </DropdownMenuItem>
+                        {!isSelf && (
+                          <>
+                            <DropdownMenuSeparator className="bg-border/40" />
+                            <DropdownMenuItem
+                              variant="destructive"
+                              className="cursor-pointer gap-2 text-sm font-medium"
+                              onClick={() => handleDeleteTeammate(teammate.id)}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                              Delete
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
 
                   <Separator className="opacity-40" />
