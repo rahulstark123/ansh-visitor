@@ -23,6 +23,11 @@ const PROFILE_SELECT = {
   reportingHR: true,
   emergencyName: true,
   emergencyPhone: true,
+  acceptedTerms: true,
+  acceptedPrivacy: true,
+  consentAt: true,
+  termsVersion: true,
+  privacyVersion: true,
   wid: true,
 } as const;
 

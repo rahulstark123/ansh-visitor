@@ -64,6 +64,11 @@ model Profile {
   reportingHR       String?
   emergencyName     String?
   emergencyPhone    String?
+  acceptedTerms     Boolean                  @default(false)
+  acceptedPrivacy   Boolean                  @default(false)
+  consentAt         DateTime?
+  termsVersion      String?
+  privacyVersion    String?
   createdAt         DateTime                 @default(now())
   wid               Int?
   workspace         Workspace?               @relation(fields: [wid], references: [id], onDelete: Cascade)

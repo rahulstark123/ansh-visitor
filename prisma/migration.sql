@@ -212,3 +212,10 @@ CREATE INDEX "Transaction_wid_status_idx" ON "Transaction"("wid", "status");
 ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_wid_fkey" FOREIGN KEY ("wid") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_wid_fkey" FOREIGN KEY ("wid") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "Subscription"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ── Legal consent tracking on profiles ─────────────────────────
+ALTER TABLE "Profile" ADD COLUMN IF NOT EXISTS "acceptedTerms" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "Profile" ADD COLUMN IF NOT EXISTS "acceptedPrivacy" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "Profile" ADD COLUMN IF NOT EXISTS "consentAt" TIMESTAMP(3);
+ALTER TABLE "Profile" ADD COLUMN IF NOT EXISTS "termsVersion" TEXT;
+ALTER TABLE "Profile" ADD COLUMN IF NOT EXISTS "privacyVersion" TEXT;

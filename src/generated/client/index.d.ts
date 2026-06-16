@@ -3917,6 +3917,11 @@ export namespace Prisma {
     reportingHR: string | null
     emergencyName: string | null
     emergencyPhone: string | null
+    acceptedTerms: boolean | null
+    acceptedPrivacy: boolean | null
+    consentAt: Date | null
+    termsVersion: string | null
+    privacyVersion: string | null
     createdAt: Date | null
     wid: number | null
   }
@@ -3942,6 +3947,11 @@ export namespace Prisma {
     reportingHR: string | null
     emergencyName: string | null
     emergencyPhone: string | null
+    acceptedTerms: boolean | null
+    acceptedPrivacy: boolean | null
+    consentAt: Date | null
+    termsVersion: string | null
+    privacyVersion: string | null
     createdAt: Date | null
     wid: number | null
   }
@@ -3967,6 +3977,11 @@ export namespace Prisma {
     reportingHR: number
     emergencyName: number
     emergencyPhone: number
+    acceptedTerms: number
+    acceptedPrivacy: number
+    consentAt: number
+    termsVersion: number
+    privacyVersion: number
     createdAt: number
     wid: number
     _all: number
@@ -4002,6 +4017,11 @@ export namespace Prisma {
     reportingHR?: true
     emergencyName?: true
     emergencyPhone?: true
+    acceptedTerms?: true
+    acceptedPrivacy?: true
+    consentAt?: true
+    termsVersion?: true
+    privacyVersion?: true
     createdAt?: true
     wid?: true
   }
@@ -4027,6 +4047,11 @@ export namespace Prisma {
     reportingHR?: true
     emergencyName?: true
     emergencyPhone?: true
+    acceptedTerms?: true
+    acceptedPrivacy?: true
+    consentAt?: true
+    termsVersion?: true
+    privacyVersion?: true
     createdAt?: true
     wid?: true
   }
@@ -4052,6 +4077,11 @@ export namespace Prisma {
     reportingHR?: true
     emergencyName?: true
     emergencyPhone?: true
+    acceptedTerms?: true
+    acceptedPrivacy?: true
+    consentAt?: true
+    termsVersion?: true
+    privacyVersion?: true
     createdAt?: true
     wid?: true
     _all?: true
@@ -4164,6 +4194,11 @@ export namespace Prisma {
     reportingHR: string | null
     emergencyName: string | null
     emergencyPhone: string | null
+    acceptedTerms: boolean
+    acceptedPrivacy: boolean
+    consentAt: Date | null
+    termsVersion: string | null
+    privacyVersion: string | null
     createdAt: Date
     wid: number | null
     _count: ProfileCountAggregateOutputType | null
@@ -4208,6 +4243,11 @@ export namespace Prisma {
     reportingHR?: boolean
     emergencyName?: boolean
     emergencyPhone?: boolean
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: boolean
+    termsVersion?: boolean
+    privacyVersion?: boolean
     createdAt?: boolean
     wid?: boolean
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
@@ -4237,6 +4277,11 @@ export namespace Prisma {
     reportingHR?: boolean
     emergencyName?: boolean
     emergencyPhone?: boolean
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: boolean
+    termsVersion?: boolean
+    privacyVersion?: boolean
     createdAt?: boolean
     wid?: boolean
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
@@ -4263,6 +4308,11 @@ export namespace Prisma {
     reportingHR?: boolean
     emergencyName?: boolean
     emergencyPhone?: boolean
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: boolean
+    termsVersion?: boolean
+    privacyVersion?: boolean
     createdAt?: boolean
     wid?: boolean
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
@@ -4289,11 +4339,16 @@ export namespace Prisma {
     reportingHR?: boolean
     emergencyName?: boolean
     emergencyPhone?: boolean
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: boolean
+    termsVersion?: boolean
+    privacyVersion?: boolean
     createdAt?: boolean
     wid?: boolean
   }
 
-  export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "role" | "department" | "designation" | "officeBranch" | "workLocation" | "avatarInitials" | "status" | "phoneNumber" | "personalEmail" | "bloodGroup" | "dob" | "code" | "joiningDate" | "reportingManager" | "reportingHR" | "emergencyName" | "emergencyPhone" | "createdAt" | "wid", ExtArgs["result"]["profile"]>
+  export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "role" | "department" | "designation" | "officeBranch" | "workLocation" | "avatarInitials" | "status" | "phoneNumber" | "personalEmail" | "bloodGroup" | "dob" | "code" | "joiningDate" | "reportingManager" | "reportingHR" | "emergencyName" | "emergencyPhone" | "acceptedTerms" | "acceptedPrivacy" | "consentAt" | "termsVersion" | "privacyVersion" | "createdAt" | "wid", ExtArgs["result"]["profile"]>
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | Profile$workspaceArgs<ExtArgs>
     visitors?: boolean | Profile$visitorsArgs<ExtArgs>
@@ -4335,6 +4390,11 @@ export namespace Prisma {
       reportingHR: string | null
       emergencyName: string | null
       emergencyPhone: string | null
+      acceptedTerms: boolean
+      acceptedPrivacy: boolean
+      consentAt: Date | null
+      termsVersion: string | null
+      privacyVersion: string | null
       createdAt: Date
       wid: number | null
     }, ExtArgs["result"]["profile"]>
@@ -4783,6 +4843,11 @@ export namespace Prisma {
     readonly reportingHR: FieldRef<"Profile", 'String'>
     readonly emergencyName: FieldRef<"Profile", 'String'>
     readonly emergencyPhone: FieldRef<"Profile", 'String'>
+    readonly acceptedTerms: FieldRef<"Profile", 'Boolean'>
+    readonly acceptedPrivacy: FieldRef<"Profile", 'Boolean'>
+    readonly consentAt: FieldRef<"Profile", 'DateTime'>
+    readonly termsVersion: FieldRef<"Profile", 'String'>
+    readonly privacyVersion: FieldRef<"Profile", 'String'>
     readonly createdAt: FieldRef<"Profile", 'DateTime'>
     readonly wid: FieldRef<"Profile", 'Int'>
   }
@@ -10339,6 +10404,11 @@ export namespace Prisma {
     reportingHR: 'reportingHR',
     emergencyName: 'emergencyName',
     emergencyPhone: 'emergencyPhone',
+    acceptedTerms: 'acceptedTerms',
+    acceptedPrivacy: 'acceptedPrivacy',
+    consentAt: 'consentAt',
+    termsVersion: 'termsVersion',
+    privacyVersion: 'privacyVersion',
     createdAt: 'createdAt',
     wid: 'wid'
   };
@@ -10688,6 +10758,11 @@ export namespace Prisma {
     reportingHR?: StringNullableFilter<"Profile"> | string | null
     emergencyName?: StringNullableFilter<"Profile"> | string | null
     emergencyPhone?: StringNullableFilter<"Profile"> | string | null
+    acceptedTerms?: BoolFilter<"Profile"> | boolean
+    acceptedPrivacy?: BoolFilter<"Profile"> | boolean
+    consentAt?: DateTimeNullableFilter<"Profile"> | Date | string | null
+    termsVersion?: StringNullableFilter<"Profile"> | string | null
+    privacyVersion?: StringNullableFilter<"Profile"> | string | null
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     wid?: IntNullableFilter<"Profile"> | number | null
     workspace?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
@@ -10716,6 +10791,11 @@ export namespace Prisma {
     reportingHR?: SortOrderInput | SortOrder
     emergencyName?: SortOrderInput | SortOrder
     emergencyPhone?: SortOrderInput | SortOrder
+    acceptedTerms?: SortOrder
+    acceptedPrivacy?: SortOrder
+    consentAt?: SortOrderInput | SortOrder
+    termsVersion?: SortOrderInput | SortOrder
+    privacyVersion?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     wid?: SortOrderInput | SortOrder
     workspace?: WorkspaceOrderByWithRelationInput
@@ -10747,6 +10827,11 @@ export namespace Prisma {
     reportingHR?: StringNullableFilter<"Profile"> | string | null
     emergencyName?: StringNullableFilter<"Profile"> | string | null
     emergencyPhone?: StringNullableFilter<"Profile"> | string | null
+    acceptedTerms?: BoolFilter<"Profile"> | boolean
+    acceptedPrivacy?: BoolFilter<"Profile"> | boolean
+    consentAt?: DateTimeNullableFilter<"Profile"> | Date | string | null
+    termsVersion?: StringNullableFilter<"Profile"> | string | null
+    privacyVersion?: StringNullableFilter<"Profile"> | string | null
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     wid?: IntNullableFilter<"Profile"> | number | null
     workspace?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
@@ -10775,6 +10860,11 @@ export namespace Prisma {
     reportingHR?: SortOrderInput | SortOrder
     emergencyName?: SortOrderInput | SortOrder
     emergencyPhone?: SortOrderInput | SortOrder
+    acceptedTerms?: SortOrder
+    acceptedPrivacy?: SortOrder
+    consentAt?: SortOrderInput | SortOrder
+    termsVersion?: SortOrderInput | SortOrder
+    privacyVersion?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     wid?: SortOrderInput | SortOrder
     _count?: ProfileCountOrderByAggregateInput
@@ -10808,6 +10898,11 @@ export namespace Prisma {
     reportingHR?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     emergencyName?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     emergencyPhone?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    acceptedTerms?: BoolWithAggregatesFilter<"Profile"> | boolean
+    acceptedPrivacy?: BoolWithAggregatesFilter<"Profile"> | boolean
+    consentAt?: DateTimeNullableWithAggregatesFilter<"Profile"> | Date | string | null
+    termsVersion?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    privacyVersion?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Profile"> | Date | string
     wid?: IntNullableWithAggregatesFilter<"Profile"> | number | null
   }
@@ -11435,6 +11530,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     workspace?: WorkspaceCreateNestedOneWithoutProfilesInput
     visitors?: VisitorCreateNestedManyWithoutHostInput
@@ -11462,6 +11562,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     wid?: number | null
     visitors?: VisitorUncheckedCreateNestedManyWithoutHostInput
@@ -11489,6 +11594,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneWithoutProfilesNestedInput
     visitors?: VisitorUpdateManyWithoutHostNestedInput
@@ -11516,6 +11626,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
     visitors?: VisitorUncheckedUpdateManyWithoutHostNestedInput
@@ -11543,6 +11658,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     wid?: number | null
   }
@@ -11568,6 +11688,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -11592,6 +11717,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -12384,6 +12514,22 @@ export namespace Prisma {
     wid?: SortOrder
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -12421,6 +12567,11 @@ export namespace Prisma {
     reportingHR?: SortOrder
     emergencyName?: SortOrder
     emergencyPhone?: SortOrder
+    acceptedTerms?: SortOrder
+    acceptedPrivacy?: SortOrder
+    consentAt?: SortOrder
+    termsVersion?: SortOrder
+    privacyVersion?: SortOrder
     createdAt?: SortOrder
     wid?: SortOrder
   }
@@ -12450,6 +12601,11 @@ export namespace Prisma {
     reportingHR?: SortOrder
     emergencyName?: SortOrder
     emergencyPhone?: SortOrder
+    acceptedTerms?: SortOrder
+    acceptedPrivacy?: SortOrder
+    consentAt?: SortOrder
+    termsVersion?: SortOrder
+    privacyVersion?: SortOrder
     createdAt?: SortOrder
     wid?: SortOrder
   }
@@ -12475,12 +12631,39 @@ export namespace Prisma {
     reportingHR?: SortOrder
     emergencyName?: SortOrder
     emergencyPhone?: SortOrder
+    acceptedTerms?: SortOrder
+    acceptedPrivacy?: SortOrder
+    consentAt?: SortOrder
+    termsVersion?: SortOrder
+    privacyVersion?: SortOrder
     createdAt?: SortOrder
     wid?: SortOrder
   }
 
   export type ProfileSumOrderByAggregateInput = {
     wid?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12497,22 +12680,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type ProfileScalarRelationFilter = {
@@ -12595,28 +12762,6 @@ export namespace Prisma {
 
   export type VisitorSumOrderByAggregateInput = {
     wid?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type SubscriptionCountOrderByAggregateInput = {
@@ -13165,6 +13310,14 @@ export namespace Prisma {
     connect?: PublicRegistrationLinkWhereUniqueInput | PublicRegistrationLinkWhereUniqueInput[]
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type WorkspaceUpdateOneWithoutProfilesNestedInput = {
     create?: XOR<WorkspaceCreateWithoutProfilesInput, WorkspaceUncheckedCreateWithoutProfilesInput>
     connectOrCreate?: WorkspaceCreateOrConnectWithoutProfilesInput
@@ -13249,14 +13402,6 @@ export namespace Prisma {
     create?: XOR<WorkspaceCreateWithoutVisitorsInput, WorkspaceUncheckedCreateWithoutVisitorsInput>
     connectOrCreate?: WorkspaceCreateOrConnectWithoutVisitorsInput
     connect?: WorkspaceWhereUniqueInput
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type ProfileUpdateOneRequiredWithoutVisitorsNestedInput = {
@@ -13523,6 +13668,44 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -13550,44 +13733,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type ProfileCreateWithoutWorkspaceInput = {
     id: string
     name: string
@@ -13609,6 +13754,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     visitors?: VisitorCreateNestedManyWithoutHostInput
     registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutHostInput
@@ -13635,6 +13785,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     visitors?: VisitorUncheckedCreateNestedManyWithoutHostInput
     registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutHostInput
@@ -13900,6 +14055,11 @@ export namespace Prisma {
     reportingHR?: StringNullableFilter<"Profile"> | string | null
     emergencyName?: StringNullableFilter<"Profile"> | string | null
     emergencyPhone?: StringNullableFilter<"Profile"> | string | null
+    acceptedTerms?: BoolFilter<"Profile"> | boolean
+    acceptedPrivacy?: BoolFilter<"Profile"> | boolean
+    consentAt?: DateTimeNullableFilter<"Profile"> | Date | string | null
+    termsVersion?: StringNullableFilter<"Profile"> | string | null
+    privacyVersion?: StringNullableFilter<"Profile"> | string | null
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     wid?: IntNullableFilter<"Profile"> | number | null
   }
@@ -14372,6 +14532,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     workspace?: WorkspaceCreateNestedOneWithoutProfilesInput
     registrationLinks?: PublicRegistrationLinkCreateNestedManyWithoutHostInput
@@ -14398,6 +14563,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     wid?: number | null
     registrationLinks?: PublicRegistrationLinkUncheckedCreateNestedManyWithoutHostInput
@@ -14468,6 +14638,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneWithoutProfilesNestedInput
     registrationLinks?: PublicRegistrationLinkUpdateManyWithoutHostNestedInput
@@ -14494,6 +14669,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
     registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutHostNestedInput
@@ -14836,6 +15016,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     workspace?: WorkspaceCreateNestedOneWithoutProfilesInput
     visitors?: VisitorCreateNestedManyWithoutHostInput
@@ -14862,6 +15047,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
     wid?: number | null
     visitors?: VisitorUncheckedCreateNestedManyWithoutHostInput
@@ -14938,6 +15128,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneWithoutProfilesNestedInput
     visitors?: VisitorUpdateManyWithoutHostNestedInput
@@ -14964,6 +15159,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     wid?: NullableIntFieldUpdateOperationsInput | number | null
     visitors?: VisitorUncheckedUpdateManyWithoutHostNestedInput
@@ -14990,6 +15190,11 @@ export namespace Prisma {
     reportingHR?: string | null
     emergencyName?: string | null
     emergencyPhone?: string | null
+    acceptedTerms?: boolean
+    acceptedPrivacy?: boolean
+    consentAt?: Date | string | null
+    termsVersion?: string | null
+    privacyVersion?: string | null
     createdAt?: Date | string
   }
 
@@ -15087,6 +15292,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUpdateManyWithoutHostNestedInput
     registrationLinks?: PublicRegistrationLinkUpdateManyWithoutHostNestedInput
@@ -15113,6 +15323,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     visitors?: VisitorUncheckedUpdateManyWithoutHostNestedInput
     registrationLinks?: PublicRegistrationLinkUncheckedUpdateManyWithoutHostNestedInput
@@ -15139,6 +15354,11 @@ export namespace Prisma {
     reportingHR?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyName?: NullableStringFieldUpdateOperationsInput | string | null
     emergencyPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    acceptedTerms?: BoolFieldUpdateOperationsInput | boolean
+    acceptedPrivacy?: BoolFieldUpdateOperationsInput | boolean
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    termsVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    privacyVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

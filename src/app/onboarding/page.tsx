@@ -114,6 +114,11 @@ export default function OnboardingPage() {
         .substring(0, 2);
 
       const finalDepartment = department === "Other" ? customDepartment.trim() : department;
+      const acceptedTerms = Boolean(user.user_metadata?.accepted_terms);
+      const acceptedPrivacy = Boolean(user.user_metadata?.accepted_privacy);
+      const consentAt = user.user_metadata?.consent_at;
+      const termsVersion = user.user_metadata?.terms_version;
+      const privacyVersion = user.user_metadata?.privacy_version;
 
       await fetch("/api/profiles", {
         method: "POST",
@@ -127,6 +132,11 @@ export default function OnboardingPage() {
           officeBranch: officeBranch.trim(),
           phoneNumber: phone.trim(),
           avatarInitials,
+          acceptedTerms,
+          acceptedPrivacy,
+          consentAt,
+          termsVersion,
+          privacyVersion,
           wid,
         }),
       });

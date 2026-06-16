@@ -19,8 +19,8 @@ const ACCOUNT_LINKS = [
 ];
 
 const LEGAL_LINKS = [
-  { label: "Privacy Policy", href: "#" },
-  { label: "Terms of Service", href: "#" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
   { label: "Contact Us", href: "mailto:hello@anshapps.com" },
 ];
 
@@ -114,15 +114,25 @@ export function LandingFooter() {
             © 2026 ANSH Visitor. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-6">
-            {LEGAL_LINKS.map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                className="text-xs text-slate-600 font-medium hover:text-slate-400 transition-colors"
-              >
-                {label}
-              </a>
-            ))}
+            {LEGAL_LINKS.map(({ label, href }) =>
+              href.startsWith("mailto:") ? (
+                <a
+                  key={label}
+                  href={href}
+                  className="text-xs text-slate-600 font-medium hover:text-slate-400 transition-colors"
+                >
+                  {label}
+                </a>
+              ) : (
+                <Link
+                  key={label}
+                  href={href}
+                  className="text-xs text-slate-600 font-medium hover:text-slate-400 transition-colors"
+                >
+                  {label}
+                </Link>
+              ),
+            )}
           </div>
         </div>
       </div>

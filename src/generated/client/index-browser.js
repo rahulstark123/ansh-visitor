@@ -159,6 +159,11 @@ exports.Prisma.ProfileScalarFieldEnum = {
   reportingHR: 'reportingHR',
   emergencyName: 'emergencyName',
   emergencyPhone: 'emergencyPhone',
+  acceptedTerms: 'acceptedTerms',
+  acceptedPrivacy: 'acceptedPrivacy',
+  consentAt: 'consentAt',
+  termsVersion: 'termsVersion',
+  privacyVersion: 'privacyVersion',
   createdAt: 'createdAt',
   wid: 'wid'
 };

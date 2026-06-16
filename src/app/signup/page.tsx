@@ -10,6 +10,8 @@ import { GoogleAuthButton, AuthDivider } from "@/components/auth/google-auth-but
 import { createSupabaseClient } from "@/lib/supabase";
 import { toast } from "@/components/ui/toast";
 
+const LEGAL_VERSION = "2026-04-16";
+
 // ─── Password strength calculator ─────────────────────────────────────────────
 function getPasswordStrength(pw: string): {
   score: number;        // 0–4
@@ -83,12 +85,15 @@ export default function SignupPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
 
   const strength = useMemo(() => getPasswordStrength(password), [password]);
 
   // ── Password match indicator ─────────────────────────────────────────────────
   const passwordMismatch = confirmPassword.length > 0 && confirmPassword !== password;
   const passwordMatch    = confirmPassword.length > 0 && confirmPassword === password;
+  const allLegalAccepted = acceptedTerms && acceptedPrivacy;
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,6 +101,10 @@ export default function SignupPage() {
     // Client-side validation → show toasts
     if (!fullName.trim()) {
       toast.error("Name required", "Please enter your full name.");
+      return;
+    }
+    if (!allLegalAccepted) {
+      toast.warning("Please accept legal terms", "Accept the Terms & Conditions and Privacy Policy to continue.");
       return;
     }
     if (password !== confirmPassword) {
@@ -119,6 +128,11 @@ export default function SignupPage() {
           data: {
             full_name: fullName.trim(),
             company_name: "",
+            accepted_terms: acceptedTerms,
+            accepted_privacy: acceptedPrivacy,
+            consent_at: new Date().toISOString(),
+            terms_version: LEGAL_VERSION,
+            privacy_version: LEGAL_VERSION,
           },
           emailRedirectTo: `${window.location.origin}/onboarding`,
         },
@@ -327,11 +341,44 @@ export default function SignupPage() {
               )}
             </div>
 
+            {/* Legal acceptance */}
+            <div className="pt-2 space-y-3">
+              <label className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  className="mt-1 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                />
+                <span className="text-[12px] leading-5 text-slate-500">
+                  I agree to the{" "}
+                  <Link href="/terms" className="font-bold text-emerald-600 hover:text-emerald-500 underline underline-offset-2">
+                    Terms &amp; Conditions
+                  </Link>
+                </span>
+              </label>
+
+              <label className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={acceptedPrivacy}
+                  onChange={(e) => setAcceptedPrivacy(e.target.checked)}
+                  className="mt-1 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                />
+                <span className="text-[12px] leading-5 text-slate-500">
+                  I agree to the{" "}
+                  <Link href="/privacy" className="font-bold text-emerald-600 hover:text-emerald-500 underline underline-offset-2">
+                    Privacy Policy
+                  </Link>
+                </span>
+              </label>
+            </div>
+
             {/* Submit */}
             <div className="pt-2">
               <button
                 type="submit"
-                disabled={loading || passwordMismatch}
+                disabled={loading || passwordMismatch || !allLegalAccepted}
                 className="flex w-full justify-center items-center gap-2 rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-slate-800 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
