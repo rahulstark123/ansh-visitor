@@ -227,12 +227,6 @@ export default function TeamDirectoryPage() {
       }
     }
 
-    if (step === 2) {
-      if (!teammateCode.trim()) {
-        newErrors.teammateCode = "Teammate code is required.";
-      }
-    }
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -284,14 +278,10 @@ export default function TeamDirectoryPage() {
         newErrors.confirmPassword = "Passwords do not match.";
       }
     }
-    if (!teammateCode.trim()) newErrors.teammateCode = "Teammate code is required.";
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       if (newErrors.fullName || newErrors.workEmail || newErrors.password || newErrors.confirmPassword) {
         setStep(1);
-      } else if (newErrors.teammateCode) {
-        setStep(2);
       }
       return;
     }
@@ -305,7 +295,7 @@ export default function TeamDirectoryPage() {
       department: department,
       phone,
       dob,
-      code: teammateCode,
+      code: teammateCode.trim() || undefined,
       joiningDate,
       designation,
       officeBranch,
@@ -823,10 +813,9 @@ export default function TeamDirectoryPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                        Teammate Code
+                        Teammate Code <span className="text-slate-400 font-semibold normal-case">(optional)</span>
                       </label>
                       <Input
-                        required
                         value={teammateCode}
                         onChange={(e) => {
                           setTeammateCode(e.target.value);

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { ButtonLoadingSkeleton, ProcessingOverlaySkeleton } from "@/components/ui/page-skeletons";
 import { AuthMarketingPanel } from "@/components/auth/auth-marketing-panel";
@@ -11,8 +11,9 @@ import { GoogleAuthButton, AuthDivider } from "@/components/auth/google-auth-but
 import { createSupabaseClient } from "@/lib/supabase";
 import { toast } from "@/components/ui/toast";
 
-export default function LoginPage() {
+function LoginPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +24,13 @@ export default function LoginPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("reset") === "success") {
+      toast.success("Password updated", "Sign in with your new password.");
+      router.replace("/login");
+    }
+  }, [searchParams, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,10 +122,12 @@ export default function LoginPage() {
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
                   Password
                 </label>
-                {/* Forgot password — can be wired to supabase.auth.resetPasswordForEmail later */}
-                <span className="text-[10px] font-bold text-slate-400 cursor-not-allowed">
+                <Link
+                  href={email.trim() ? `/forgot-password?email=${encodeURIComponent(email.trim())}` : "/forgot-password"}
+                  className="text-[10px] font-bold text-emerald-600 hover:text-emerald-500 hover:underline"
+                >
                   Forgot password?
-                </span>
+                </Link>
               </div>
               <div className="relative">
                 <input
@@ -182,5 +192,13 @@ export default function LoginPage() {
           document.body
         )}
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageContent />
+    </Suspense>
   );
 }

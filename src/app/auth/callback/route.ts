@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
+  const next = searchParams.get("next");
   const errorParam = searchParams.get("error_description");
 
   if (errorParam) {
@@ -32,6 +33,10 @@ export async function GET(request: Request) {
 
   if (!user) {
     return NextResponse.redirect(`${origin}/login?error=no_user`);
+  }
+
+  if (next && next.startsWith("/") && !next.startsWith("//")) {
+    return NextResponse.redirect(`${origin}${next}`);
   }
 
   let destination = "/dashboard";

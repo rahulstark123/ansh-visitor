@@ -7,73 +7,12 @@ import { Eye, EyeOff, Mail, CheckCircle2, ShieldCheck } from "lucide-react";
 import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
 import { AuthMarketingPanel } from "@/components/auth/auth-marketing-panel";
 import { GoogleAuthButton, AuthDivider } from "@/components/auth/google-auth-button";
+import { PasswordRules } from "@/components/auth/password-rules";
 import { createSupabaseClient } from "@/lib/supabase";
+import { getPasswordStrength } from "@/lib/password-strength";
 import { toast } from "@/components/ui/toast";
 
 const LEGAL_VERSION = "2026-04-16";
-
-// ─── Password strength calculator ─────────────────────────────────────────────
-function getPasswordStrength(pw: string): {
-  score: number;        // 0–4
-  label: string;
-  color: string;
-  bars: string[];
-} {
-  if (!pw) return { score: 0, label: "", color: "", bars: Array(4).fill("bg-slate-200") };
-
-  let score = 0;
-  if (pw.length >= 8)                    score++;
-  if (/[A-Z]/.test(pw))                  score++;
-  if (/[0-9]/.test(pw))                  score++;
-  if (/[^A-Za-z0-9]/.test(pw))          score++;
-
-  const map = [
-    { label: "Too weak",  color: "text-rose-500" },
-    { label: "Weak",      color: "text-orange-500" },
-    { label: "Fair",      color: "text-amber-500" },
-    { label: "Strong",    color: "text-emerald-500" },
-    { label: "Very strong", color: "text-emerald-600" },
-  ];
-
-  const barColors = [
-    "bg-slate-200 dark:bg-slate-700",
-    "bg-rose-400",
-    "bg-orange-400",
-    "bg-amber-400",
-    "bg-emerald-400",
-  ];
-
-  const bars = Array(4).fill("").map((_, i) =>
-    i < score ? barColors[score] : "bg-slate-200 dark:bg-slate-700"
-  );
-
-  return { score, label: map[score].label, color: map[score].color, bars };
-}
-
-// ─── Password rule checklist ───────────────────────────────────────────────────
-function PasswordRules({ pw }: { pw: string }) {
-  const rules = [
-    { label: "At least 8 characters",      ok: pw.length >= 8 },
-    { label: "One uppercase letter (A–Z)",  ok: /[A-Z]/.test(pw) },
-    { label: "One number (0–9)",            ok: /[0-9]/.test(pw) },
-    { label: "One special character",       ok: /[^A-Za-z0-9]/.test(pw) },
-  ];
-
-  if (!pw) return null;
-
-  return (
-    <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1">
-      {rules.map((r) => (
-        <div key={r.label} className={`flex items-center gap-1.5 text-[10px] font-semibold transition-colors ${r.ok ? "text-emerald-600" : "text-slate-400"}`}>
-          <span className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ${r.ok ? "bg-emerald-100 text-emerald-600" : "bg-slate-100 text-slate-300"}`}>
-            {r.ok ? "✓" : "·"}
-          </span>
-          {r.label}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function SignupPage() {
   const router = useRouter();

@@ -21,7 +21,7 @@ const PROTECTED = [
 ];
 
 // Auth routes — authenticated users should not see these
-const AUTH_ROUTES = ["/login", "/signup"];
+const AUTH_ROUTES = ["/login", "/signup", "/forgot-password"];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
