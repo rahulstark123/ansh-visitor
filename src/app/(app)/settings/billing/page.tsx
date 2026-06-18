@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { format } from "date-fns";
 import { PageHeader } from "@/components/crm/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlansModal } from "@/components/billing/plans-modal";
+import { BillingCycleToggle } from "@/components/billing/billing-cycle-toggle";
 import { useVisitorStore } from "@/stores/visitor-store";
 import { useBillingRegion } from "@/hooks/use-billing-region";
 import { startProCheckout } from "@/lib/start-pro-checkout";
@@ -15,7 +17,8 @@ import {
   getPlanDisplayName,
   getTrialDaysLeft,
   getTrialEndDate,
-  formatProPrice,
+  getProPricing,
+  type BillingCycle,
 } from "@/config/billing";
 import {
   ArrowUpRight,
@@ -38,9 +41,13 @@ export default function BillingPage() {
     plan,
   } = useVisitorStore();
 
-  const { region, proPriceDisplay, loading: regionLoading } = useBillingRegion();
+  const { region, loading: regionLoading } = useBillingRegion();
   const [plansOpen, setPlansOpen] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>("monthly");
+
+  const pricing = getProPricing(region, billingCycle);
+  const isYearly = billingCycle === "yearly";
 
   const teamSize = Math.max(hosts.length, 1);
   const wid = currentUser.wid ?? 1;
@@ -60,13 +67,13 @@ export default function BillingPage() {
   );
 
   const renewalDate = format(
-    new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    new Date(
+      Date.now() + (isYearly ? 365 : 30) * 24 * 60 * 60 * 1000
+    ),
     "d MMMM yyyy"
   );
 
-  const proPriceLabel = formatProPrice(region);
-
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (cycle: BillingCycle = billingCycle) => {
     if (isPro || subscribing) return;
     setSubscribing(true);
     try {
@@ -74,6 +81,7 @@ export default function BillingPage() {
         wid,
         userName: currentUser.name,
         userEmail: currentUser.email,
+        billingCycle: cycle,
         onSuccess: () => setWorkspacePlan("pro", workspaceCreatedAt),
         onDismiss: () => setSubscribing(false),
       });
@@ -93,20 +101,24 @@ export default function BillingPage() {
       <PageHeader
         eyebrow="Financial Settings"
         title="Billing Page"
-        description="Review your active ANSH Visitor subscription plan and view payment invoices. Pro is a flat monthly price for your entire workspace."
+        description="Review your active ANSH Visitor subscription plan and view payment invoices. Pro is a flat price for your entire workspace — monthly or yearly with 19% off."
         toolbar={
           <div className="flex flex-wrap items-center gap-2">
+            <BillingCycleToggle
+              value={billingCycle}
+              onChange={setBillingCycle}
+            />
             <Button
               type="button"
               disabled={isPro || subscribing}
               className="btn-primary rounded-full h-10 px-5 gap-2 border-0 text-xs font-bold uppercase tracking-wider"
-              onClick={handleUpgrade}
+              onClick={() => handleUpgrade()}
             >
               {subscribing ? (
                 <ButtonLoadingSkeleton />
               ) : (
                 <>
-                  Subscribe to Pro
+                  Subscribe {isYearly ? "Yearly" : "Monthly"}
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </>
               )}
@@ -159,12 +171,19 @@ export default function BillingPage() {
                     {isPro
                       ? regionLoading
                         ? <InlineTextSkeleton className="inline-block h-8 w-24 rounded-lg align-middle" />
-                        : proPriceDisplay
+                        : pricing.display
                       : "₹0"}
                     <span className="text-sm font-semibold text-muted-foreground">
-                      /mo
+                      {isPro ? (isYearly ? "/yr" : "/mo") : ""}
                     </span>
                   </p>
+                  {!isPro && !regionLoading && (
+                    <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
+                      {isYearly
+                        ? `${pricing.yearlyMonthlyEquivalentDisplay}/mo effective · save ${pricing.savingsAmountDisplay}`
+                        : `Yearly ${pricing.yearlyTotalDisplay} · save ${pricing.savingsPercent}%`}
+                    </p>
+                  )}
                   <p className="text-[10px] text-muted-foreground mt-1">
                     Flat price · entire app
                   </p>
@@ -174,8 +193,14 @@ export default function BillingPage() {
                     Billing Cycle
                   </p>
                   <p className="text-lg font-bold text-slate-800 dark:text-slate-100">
-                    Monthly
+                    {isYearly ? "Yearly" : "Monthly"}
                   </p>
+                  {!isPro && isYearly && !regionLoading && (
+                    <p className="text-[10px] text-muted-foreground mt-0.5">
+                      {pricing.fullYearListPriceDisplay} list · you pay{" "}
+                      {pricing.yearlyTotalDisplay}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">
@@ -279,20 +304,27 @@ export default function BillingPage() {
                     {regionLoading ? (
                       <InlineTextSkeleton className="inline-block h-5 w-20 rounded align-middle" />
                     ) : (
-                      proPriceLabel
+                      `${pricing.display}${isYearly ? "/yr" : "/mo"}`
                     )}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed mb-4">
-                  Flat monthly price for your entire workspace — unlimited
-                  visitors, branches, custom badges, and audit exports.
+                <p className="text-xs text-muted-foreground leading-relaxed mb-1">
+                  Flat price for your entire workspace — unlimited visitors,
+                  branches, custom badges, and audit exports.
                 </p>
+                {!regionLoading && (
+                  <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mb-4">
+                    {isYearly
+                      ? `Billed once at ${pricing.yearlyTotalDisplay} (${pricing.yearlyMonthlyEquivalentDisplay}/mo · ${pricing.savingsPercent}% off vs monthly)`
+                      : `Pay yearly ${pricing.yearlyTotalDisplay} and save ${pricing.savingsAmountDisplay} (${pricing.savingsPercent}%)`}
+                  </p>
+                )}
                 {!isPro && (
                   <Button
                     type="button"
                     disabled={subscribing}
                     className="btn-primary w-full rounded-full h-9 text-[10px] font-bold uppercase tracking-wider border-0 gap-1.5"
-                    onClick={handleUpgrade}
+                    onClick={() => handleUpgrade()}
                   >
                     {subscribing ? (
                       <ButtonLoadingSkeleton />
@@ -323,6 +355,7 @@ export default function BillingPage() {
                 type="button"
                 variant="outline"
                 className="w-full rounded-full h-10 text-[10px] font-bold uppercase tracking-wider"
+                render={<Link href="/help?tab=tickets" />}
               >
                 Contact Support
               </Button>
@@ -335,7 +368,10 @@ export default function BillingPage() {
         open={plansOpen}
         onOpenChange={setPlansOpen}
         currentTier={workspacePlan}
-        onSubscribe={handleUpgrade}
+        onSubscribe={(cycle) => {
+          setBillingCycle(cycle);
+          handleUpgrade(cycle);
+        }}
         subscribing={subscribing}
       />
     </div>

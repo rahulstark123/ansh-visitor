@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { isQrValid } from "@/lib/qr-validity";
 
 // ─── PATCH /api/visitors/[id]/check-in ───────────────────────────────
-// Atomically updates status → CheckedIn, assigns badge, records ID proof.
+// Atomically updates status → CheckedIn and records ID proof.
 // Supports re-check-in with the same QR while the pass is still valid.
 export async function PATCH(
   req: NextRequest,
@@ -47,15 +47,12 @@ export async function PATCH(
       );
     }
 
-    const badgeNumber = `BADGE-${Math.floor(100 + Math.random() * 900)}`;
-
     const visitor = await prisma.visitor.update({
       where: { id },
       data: {
         status: "CheckedIn",
         checkedInAt: new Date(),
         checkedOutAt: null,
-        badgeNumber,
         idProofType: idProofType || undefined,
         idProofNumber: idProofNumber || undefined,
       },
@@ -64,7 +61,6 @@ export async function PATCH(
         status: true,
         checkedInAt: true,
         checkedOutAt: true,
-        badgeNumber: true,
         idProofType: true,
         idProofNumber: true,
       },

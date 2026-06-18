@@ -5,17 +5,21 @@ import {
 } from "@/lib/razorpay-checkout";
 import { toast } from "@/components/ui/toast";
 
+import type { BillingCycle } from "@/config/billing";
+
 export async function startProCheckout(options: {
   wid: number;
   userName: string;
   userEmail: string;
+  billingCycle?: BillingCycle;
   onSuccess: () => void;
   onDismiss?: () => void;
 }): Promise<void> {
+  const billingCycle = options.billingCycle ?? "monthly";
   const orderRes = await fetch("/api/billing/create-order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ wid: options.wid }),
+    body: JSON.stringify({ wid: options.wid, billingCycle }),
   });
 
   if (!orderRes.ok) {

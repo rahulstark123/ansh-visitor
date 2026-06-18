@@ -35,7 +35,7 @@ model WorkspaceConfig {
   workspace      Workspace @relation(fields: [wid], references: [id], onDelete: Cascade)
   departments    String[]  @default(["Engineering", "HR & Operations", "Product Management", "Enterprise Sales"])
   designations   String[]  @default(["Software Engineer", "Senior Developer", "Product Manager", "HR Manager", "Operations Admin", "Sales Director"])
-  officeBranches String[]  @default(["HQ - Bangalore", "Delhi Branch", "Mumbai Office"])
+  officeBranches String[]  @default([])
   workLocations  String[]  @default(["Remote", "On-site", "Hybrid"])
   updatedAt      DateTime  @updatedAt
 }
@@ -121,6 +121,7 @@ model Subscription {
   wid                Int
   workspace          Workspace     @relation(fields: [wid], references: [id], onDelete: Cascade)
   plan               String        @default("pro") // "pro"
+  billingCycle       String        @default("monthly") // "monthly" | "yearly"
   status             String        @default("pending") // "pending" | "active" | "cancelled" | "expired" | "failed"
   amount             Int           // minor units (paisa / cents)
   currency           String

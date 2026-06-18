@@ -33,16 +33,21 @@ interface GoogleAuthButtonProps {
   label: string;
   disabled?: boolean;
   className?: string;
+  onAuthStart?: () => void;
+  onAuthEnd?: () => void;
 }
 
 export function GoogleAuthButton({
   label,
   disabled = false,
   className,
+  onAuthStart,
+  onAuthEnd,
 }: GoogleAuthButtonProps) {
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
+    onAuthStart?.();
     setLoading(true);
     try {
       await signInWithGoogle();
@@ -51,6 +56,7 @@ export function GoogleAuthButton({
         err instanceof Error ? err.message : "Could not start Google sign-in";
       toast.error("Google sign-in failed", message);
       setLoading(false);
+      onAuthEnd?.();
     }
   };
 

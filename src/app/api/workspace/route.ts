@@ -33,19 +33,13 @@ export async function POST(req: NextRequest) {
       plan?: string;
     };
 
-    // upsert id=1 so we always have a default workspace
-    const workspace = await prisma.workspace.upsert({
-      where: { id: 1 },
-      create: { id: 1, name, plan },
-      update: { name, plan },
+    const workspace = await prisma.workspace.create({
+      data: { name, plan },
       select: { id: true, name: true, plan: true, createdAt: true },
     });
 
-    // Also ensure the WorkspaceConfig row exists
-    await prisma.workspaceConfig.upsert({
-      where: { wid: workspace.id },
-      create: { wid: workspace.id },
-      update: {},
+    await prisma.workspaceConfig.create({
+      data: { wid: workspace.id },
     });
 
     return NextResponse.json({ workspace }, { status: 201 });

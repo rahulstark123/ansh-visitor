@@ -141,6 +141,15 @@ export default function OnboardingPage() {
         }),
       });
 
+      await fetch("/api/workspace/config", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          wid,
+          officeBranches: [officeBranch.trim()],
+        }),
+      });
+
       // 3️⃣  Update user metadata with full_name for display
       await supabase.auth.updateUser({
         data: { full_name: fullName.trim(), company_name: companyName.trim() },
@@ -148,6 +157,7 @@ export default function OnboardingPage() {
 
       // 4️⃣  Cleanup and advance to done state
       localStorage.removeItem("ansh_onboarding_name");
+      localStorage.removeItem("ansh-visitor-data");
       setStep(3);
 
       // Brief "Done" display then redirect
@@ -159,7 +169,7 @@ export default function OnboardingPage() {
       setErrorMsg("Workspace setup failed. Don't worry — you can configure it later in Settings.");
       setLoading(false);
 
-      // Still allow them in — app works with Zustand fallback
+      // Still allow them in — workspace data loads on next dashboard visit
       setTimeout(() => {
         localStorage.removeItem("ansh_onboarding_company");
         router.push("/dashboard");

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,13 +9,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { BillingCycleToggle } from "@/components/billing/billing-cycle-toggle";
 import {
   PLAN_COMPARISON_ROWS,
   FREE_PLAN_FEATURES,
   FREE_PLAN_LIMITATIONS,
   PRO_PLAN_FEATURES,
-  formatProPrice,
+  getProPricing,
   getRegionPricingLabel,
+  type BillingCycle,
   type WorkspacePlanTier,
 } from "@/config/billing";
 import { useBillingRegion } from "@/hooks/use-billing-region";
@@ -32,7 +35,7 @@ interface PlansModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentTier: WorkspacePlanTier;
-  onSubscribe: () => void;
+  onSubscribe: (billingCycle: BillingCycle) => void;
   subscribing?: boolean;
 }
 
@@ -44,8 +47,10 @@ export function PlansModal({
   subscribing = false,
 }: PlansModalProps) {
   const { region, loading: regionLoading } = useBillingRegion();
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>("monthly");
   const isPro = currentTier === "pro" || currentTier === "pro_trial";
-  const proPriceLabel = formatProPrice(region);
+  const pricing = getProPricing(region, billingCycle);
+  const isYearly = billingCycle === "yearly";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -67,13 +72,16 @@ export function PlansModal({
             </div>
           </div>
 
-          <p className="text-xs text-sky-600 dark:text-sky-400 font-medium">
-            {regionLoading ? (
-              <InlineTextSkeleton className="inline-block h-3.5 w-44 rounded align-middle" />
-            ) : (
-              getRegionPricingLabel(region)
-            )}
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <p className="text-xs text-sky-600 dark:text-sky-400 font-medium">
+              {regionLoading ? (
+                <InlineTextSkeleton className="inline-block h-3.5 w-44 rounded align-middle" />
+              ) : (
+                getRegionPricingLabel(region, billingCycle)
+              )}
+            </p>
+            <BillingCycleToggle value={billingCycle} onChange={setBillingCycle} />
+          </div>
         </DialogHeader>
 
         <div className="px-6 py-5 grid gap-4 sm:grid-cols-2">
@@ -163,11 +171,25 @@ export function PlansModal({
                   {regionLoading ? (
                     <InlineTextSkeleton className="inline-block h-10 w-24 rounded-lg align-middle" />
                   ) : (
-                    proPriceLabel.replace("/ month", "")
+                    pricing.display
                   )}
                 </span>
-                <span className="text-sm text-muted-foreground">/ month</span>
+                <span className="text-sm text-muted-foreground">
+                  {isYearly ? "/ year" : "/ month"}
+                </span>
               </div>
+              {isYearly && !regionLoading && (
+                <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
+                  {pricing.yearlyMonthlyEquivalentDisplay}/mo · save{" "}
+                  {pricing.savingsAmountDisplay} ({pricing.savingsPercent}% off)
+                </p>
+              )}
+              {!isYearly && !regionLoading && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Or {pricing.yearlyTotalDisplay}/year — save{" "}
+                  {pricing.savingsPercent}% ({pricing.savingsAmountDisplay})
+                </p>
+              )}
               <p className="text-xs text-muted-foreground mt-1">
                 Flat price for your entire workspace — unlimited teammates
               </p>
@@ -178,14 +200,14 @@ export function PlansModal({
               className="btn-primary w-full rounded-full h-10 text-[10px] font-bold uppercase tracking-wider mb-5 border-0 gap-1.5"
               onClick={() => {
                 onOpenChange(false);
-                onSubscribe();
+                onSubscribe(billingCycle);
               }}
             >
               {subscribing ? (
                 <ButtonLoadingSkeleton />
               ) : (
                 <>
-                  Subscribe to Pro
+                  Subscribe {isYearly ? "Yearly" : "Monthly"}
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </>
               )}
@@ -271,14 +293,14 @@ export function PlansModal({
                 className="btn-primary rounded-full h-9 px-5 text-[10px] font-bold uppercase tracking-wider border-0 gap-1.5 shrink-0"
                 onClick={() => {
                   onOpenChange(false);
-                  onSubscribe();
+                  onSubscribe(billingCycle);
                 }}
               >
                 {subscribing ? (
                   <ButtonLoadingSkeleton />
                 ) : (
                   <>
-                    Subscribe to Pro
+                    Subscribe {isYearly ? "Yearly" : "Monthly"}
                     <ArrowUpRight className="h-3.5 w-3.5" />
                   </>
                 )}

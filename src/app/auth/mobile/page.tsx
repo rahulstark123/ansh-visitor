@@ -14,6 +14,8 @@ function isAllowedRedirect(redirect: string) {
 
   return (
     redirect === "/" ||
+    redirect.startsWith("/onboarding") ||
+    redirect.startsWith("/settings/billing") ||
     redirect.startsWith("/settings") ||
     redirect.startsWith("/dashboard")
   );
@@ -69,6 +71,22 @@ function MobileAuthHandoff() {
         return;
       }
 
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setError("Could not read your account. Please sign in from the mobile app again.");
+        setIsSessionExpired(true);
+        return;
+      }
+
+      // Drop any cached demo/workspace data from a prior session on this device.
+      localStorage.removeItem("ansh-visitor-data");
+
+      const profileRes = await fetch(`/api/profiles/${user.id}`);
+      const destination = profileRes.ok ? redirectTo : "/onboarding";
+
       if (rawRedirect && redirectTo !== rawRedirect) {
         console.warn("[mobile-handoff] redirect blocked by allowlist", {
           rawRedirect,
@@ -76,8 +94,8 @@ function MobileAuthHandoff() {
         });
       }
 
-      console.info("[mobile-handoff] success", { redirectTo });
-      router.replace(redirectTo);
+      console.info("[mobile-handoff] success", { redirectTo: destination });
+      router.replace(destination);
     };
 
     run();

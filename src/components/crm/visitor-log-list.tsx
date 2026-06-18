@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useVisitorStore, Visitor } from "@/stores/visitor-store";
 import { QRCodeSVG } from "qrcode.react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -37,6 +37,12 @@ import {
   GuestVerifyModal,
   type GuestVerifyMode,
 } from "@/components/crm/guest-verify-modal";
+import {
+  ListPagination,
+  paginateList,
+} from "@/components/ui/list-pagination";
+
+const VISITOR_PAGE_SIZE = 10;
 
 interface VisitorLogListProps {
   filterType: "today" | "pre-registered" | "all";
@@ -51,6 +57,7 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [purposeFilter, setPurposeFilter] = useState("All");
   const [regTypeFilter, setRegTypeFilter] = useState<"All" | "Pre-registered" | "Walk-in">("All");
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Check In Confirm State
   const [confirmCheckInVisitor, setConfirmCheckInVisitor] = useState<Visitor | null>(null);
@@ -99,7 +106,22 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
     return list;
   };
 
-  const filteredList = getFilteredVisitors();
+  const filteredList = useMemo(() => getFilteredVisitors(), [
+    visitors,
+    filterType,
+    regTypeFilter,
+    searchQuery,
+    purposeFilter,
+  ]);
+
+  const paginatedList = useMemo(
+    () => paginateList(filteredList, currentPage, VISITOR_PAGE_SIZE),
+    [filteredList, currentPage]
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, purposeFilter, regTypeFilter, filterType]);
 
   const handleConfirmCheckIn = (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,8 +222,8 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/40">
-                {filteredList.length > 0 ? (
-                  filteredList.map((v) => (
+                {paginatedList.length > 0 ? (
+                  paginatedList.map((v) => (
                     <tr key={v.id} className="hover:bg-slate-50/40 dark:hover:bg-slate-800/10 transition-colors">
                       <td className="px-6 py-4">
                         <div>
@@ -322,6 +344,14 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
                 )}
               </tbody>
             </table>
+          </div>
+          <div className="px-6 pb-5">
+            <ListPagination
+              currentPage={currentPage}
+              totalItems={filteredList.length}
+              pageSize={VISITOR_PAGE_SIZE}
+              onPageChange={setCurrentPage}
+            />
           </div>
         </CardContent>
       </Card>
@@ -467,11 +497,6 @@ export function VisitorLogList({ filterType }: VisitorLogListProps) {
                     <p className="text-xs text-slate-400">
                       ID Proof: <strong className="text-slate-700 dark:text-slate-350">{selectedPass.idProofType} ({selectedPass.idProofNumber || "N/A"})</strong>
                     </p>
-                  )}
-                  {selectedPass.badgeNumber && (
-                    <div className="mt-2 text-xs font-bold text-slate-655 dark:text-slate-300">
-                      Assigned Badge: <span className="bg-slate-200 dark:bg-slate-850 px-2 py-0.5 rounded font-mono border border-slate-300/40">{selectedPass.badgeNumber}</span>
-                    </div>
                   )}
                 </div>
               </div>

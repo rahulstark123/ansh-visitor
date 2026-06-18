@@ -8,7 +8,7 @@ import { PlansModal } from "@/components/billing/plans-modal";
 import { useVisitorStore } from "@/stores/visitor-store";
 import { startProCheckout } from "@/lib/start-pro-checkout";
 import { toast } from "@/components/ui/toast";
-import type { WorkspacePlanTier } from "@/config/billing";
+import type { BillingCycle, WorkspacePlanTier } from "@/config/billing";
 import { hasProFeatureAccess } from "@/lib/workspace-plan-tier";
 
 interface ProFeatureGateProps {
@@ -35,7 +35,7 @@ export function ProFeatureGate({
     return <>{children}</>;
   }
 
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (cycle: BillingCycle = "monthly") => {
     if (subscribing) return;
     setSubscribing(true);
     try {
@@ -43,6 +43,7 @@ export function ProFeatureGate({
         wid: currentUser.wid ?? 1,
         userName: currentUser.name,
         userEmail: currentUser.email,
+        billingCycle: cycle,
         onSuccess: () => setWorkspacePlan("pro", workspaceCreatedAt),
         onDismiss: () => setSubscribing(false),
       });
@@ -89,7 +90,7 @@ export function ProFeatureGate({
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Button
                 className="btn-primary h-11 border-0 px-6"
-                onClick={handleUpgrade}
+                onClick={() => handleUpgrade()}
                 disabled={subscribing}
               >
                 <Zap className="mr-2 h-4 w-4" />

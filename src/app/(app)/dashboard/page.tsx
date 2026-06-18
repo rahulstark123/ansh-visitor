@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { PageHeader } from "@/components/crm/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useVisitorStore } from "@/stores/visitor-store";
 import {
@@ -21,6 +20,7 @@ import {
   type GuestVerifyMode,
 } from "@/components/crm/guest-verify-modal";
 import { ChartSkeleton } from "@/components/ui/page-skeletons";
+import { buildPurposeChartData } from "@/lib/purpose-chart";
 
 const LobbyTrafficChart = dynamic(
   () =>
@@ -47,24 +47,7 @@ export default function DashboardPage() {
   const checkedOutToday = visitors.filter((v) => v.status === "CheckedOut");
   const totalLogsCount = visitors.length;
 
-  const purposeTotals: Record<string, number> = {};
-  visitors.forEach((v) => {
-    purposeTotals[v.purpose] = (purposeTotals[v.purpose] || 0) + 1;
-  });
-  const purposeColors: Record<string, string> = {
-    Meeting: "#10b981",
-    Interview: "#0ea5e9",
-    Vendor: "#f59e0b",
-    Delivery: "#ec4899",
-    Other: "#64748b",
-  };
-  const purposesData = Object.entries(purposeTotals)
-    .map(([name, value]) => ({
-      name,
-      value,
-      color: purposeColors[name] || "#64748b",
-    }))
-    .sort((a, b) => b.value - a.value);
+  const purposesData = buildPurposeChartData(visitors);
   const totalVisitorsForChart = visitors.length || 1;
 
   return (
@@ -196,14 +179,14 @@ export default function DashboardPage() {
                     />
                     {(() => {
                       let accumulatedPercent = 0;
-                      return purposesData.map((purpose, idx) => {
-                        const percent = (purpose.value / totalVisitorsForChart) * 100;
+                      return purposesData.map((purpose) => {
+                        const percent = purpose.percent;
                         const strokeDasharray = `${percent} ${100 - percent}`;
                         const strokeDashoffset = 100 - accumulatedPercent + 25;
                         accumulatedPercent += percent;
                         return (
                           <circle
-                            key={idx}
+                            key={purpose.name}
                             cx="18"
                             cy="18"
                             r="15.915"
@@ -237,8 +220,8 @@ export default function DashboardPage() {
 
               <div className="flex-1 space-y-3">
                 {purposesData.length > 0 ? (
-                  purposesData.map((purpose, idx) => (
-                    <div key={idx} className="flex items-center justify-between text-xs">
+                  purposesData.map((purpose) => (
+                    <div key={purpose.name} className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2">
                         <div
                           className="h-2.5 w-2.5 rounded-full shrink-0"
@@ -253,7 +236,7 @@ export default function DashboardPage() {
                           {purpose.value} {purpose.value === 1 ? "visit" : "visits"}
                         </span>
                         <span className="text-[9px] text-slate-400 block -mt-0.5">
-                          {Math.round((purpose.value / totalVisitorsForChart) * 100)}%
+                          {Math.round(purpose.percent)}%
                         </span>
                       </div>
                     </div>
@@ -314,14 +297,6 @@ export default function DashboardPage() {
                         <span className="block text-sm font-bold text-slate-800 dark:text-white truncate">
                           {visitor.name}
                         </span>
-                        {visitor.badgeNumber && (
-                          <Badge
-                            variant="outline"
-                            className="text-[9px] font-bold border-emerald-500/20 text-emerald-600 bg-emerald-500/5"
-                          >
-                            {visitor.badgeNumber}
-                          </Badge>
-                        )}
                       </div>
                       <span className="block text-[11px] text-slate-450 dark:text-slate-400 font-medium truncate">
                         {visitor.company || "Individual"} · Host:{" "}

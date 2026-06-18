@@ -12,6 +12,10 @@ import { AppContentSkeleton } from "@/components/ui/page-skeletons";
 import { RegisterGuestDialog } from "@/components/crm/register-guest-dialog";
 import { Monitor } from "lucide-react";
 
+function isMobileBillingRoute(pathname: string) {
+  return pathname.startsWith("/settings/billing");
+}
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -53,6 +57,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const allowMobileBilling = isMobileBillingRoute(pathname);
+    if (isMobileSize && allowMobileBilling) {
+      return;
+    }
+
     const html = document.documentElement;
     const body = document.body;
     const prevHtmlOverflow = html.style.overflow;
@@ -65,7 +74,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       html.style.overflow = prevHtmlOverflow;
       body.style.overflow = prevBodyOverflow;
     };
-  }, []);
+  }, [isMobileSize, pathname]);
 
   useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 767px)");
@@ -79,15 +88,32 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => mobileQuery.removeEventListener("change", handleMobileChange);
   }, []);
 
-  // Suppress unused variable warning
-  void pathname;
+  const mobileBillingPage = isMobileBillingRoute(pathname);
 
   if (!appReady) {
+    if (isMobileSize && mobileBillingPage) {
+      return <AppContentSkeleton />;
+    }
+
     return (
       <div className="flex h-screen overflow-hidden bg-background">
         <MainSidebar />
         <SubSidebar />
         <AppContentSkeleton />
+      </div>
+    );
+  }
+
+  if (isMobileSize && mobileBillingPage) {
+    return (
+      <div className="flex min-h-dvh flex-col bg-background">
+        <ProTrialBanner />
+        <AppHeader />
+        <main className="mesh-gradient min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <div className="mx-auto w-full max-w-7xl p-4 sm:p-6">
+            {children}
+          </div>
+        </main>
       </div>
     );
   }

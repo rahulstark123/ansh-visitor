@@ -6652,6 +6652,7 @@ export namespace Prisma {
     id: string | null
     wid: number | null
     plan: string | null
+    billingCycle: string | null
     status: string | null
     amount: number | null
     currency: string | null
@@ -6667,6 +6668,7 @@ export namespace Prisma {
     id: string | null
     wid: number | null
     plan: string | null
+    billingCycle: string | null
     status: string | null
     amount: number | null
     currency: string | null
@@ -6682,6 +6684,7 @@ export namespace Prisma {
     id: number
     wid: number
     plan: number
+    billingCycle: number
     status: number
     amount: number
     currency: number
@@ -6709,6 +6712,7 @@ export namespace Prisma {
     id?: true
     wid?: true
     plan?: true
+    billingCycle?: true
     status?: true
     amount?: true
     currency?: true
@@ -6724,6 +6728,7 @@ export namespace Prisma {
     id?: true
     wid?: true
     plan?: true
+    billingCycle?: true
     status?: true
     amount?: true
     currency?: true
@@ -6739,6 +6744,7 @@ export namespace Prisma {
     id?: true
     wid?: true
     plan?: true
+    billingCycle?: true
     status?: true
     amount?: true
     currency?: true
@@ -6841,6 +6847,7 @@ export namespace Prisma {
     id: string
     wid: number
     plan: string
+    billingCycle: string
     status: string
     amount: number
     currency: string
@@ -6875,6 +6882,7 @@ export namespace Prisma {
     id?: boolean
     wid?: boolean
     plan?: boolean
+    billingCycle?: boolean
     status?: boolean
     amount?: boolean
     currency?: boolean
@@ -6893,6 +6901,7 @@ export namespace Prisma {
     id?: boolean
     wid?: boolean
     plan?: boolean
+    billingCycle?: boolean
     status?: boolean
     amount?: boolean
     currency?: boolean
@@ -6909,6 +6918,7 @@ export namespace Prisma {
     id?: boolean
     wid?: boolean
     plan?: boolean
+    billingCycle?: boolean
     status?: boolean
     amount?: boolean
     currency?: boolean
@@ -6925,6 +6935,7 @@ export namespace Prisma {
     id?: boolean
     wid?: boolean
     plan?: boolean
+    billingCycle?: boolean
     status?: boolean
     amount?: boolean
     currency?: boolean
@@ -6936,7 +6947,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "wid" | "plan" | "status" | "amount" | "currency" | "region" | "currentPeriodStart" | "currentPeriodEnd" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "wid" | "plan" | "billingCycle" | "status" | "amount" | "currency" | "region" | "currentPeriodStart" | "currentPeriodEnd" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
   export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     transactions?: boolean | Subscription$transactionsArgs<ExtArgs>
@@ -6959,6 +6970,7 @@ export namespace Prisma {
       id: string
       wid: number
       plan: string
+      billingCycle: string
       status: string
       amount: number
       currency: string
@@ -7396,6 +7408,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Subscription", 'String'>
     readonly wid: FieldRef<"Subscription", 'Int'>
     readonly plan: FieldRef<"Subscription", 'String'>
+    readonly billingCycle: FieldRef<"Subscription", 'String'>
     readonly status: FieldRef<"Subscription", 'String'>
     readonly amount: FieldRef<"Subscription", 'Int'>
     readonly currency: FieldRef<"Subscription", 'String'>
@@ -10446,6 +10459,7 @@ export namespace Prisma {
     id: 'id',
     wid: 'wid',
     plan: 'plan',
+    billingCycle: 'billingCycle',
     status: 'status',
     amount: 'amount',
     currency: 'currency',
@@ -11049,6 +11063,7 @@ export namespace Prisma {
     id?: StringFilter<"Subscription"> | string
     wid?: IntFilter<"Subscription"> | number
     plan?: StringFilter<"Subscription"> | string
+    billingCycle?: StringFilter<"Subscription"> | string
     status?: StringFilter<"Subscription"> | string
     amount?: IntFilter<"Subscription"> | number
     currency?: StringFilter<"Subscription"> | string
@@ -11066,6 +11081,7 @@ export namespace Prisma {
     id?: SortOrder
     wid?: SortOrder
     plan?: SortOrder
+    billingCycle?: SortOrder
     status?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -11086,6 +11102,7 @@ export namespace Prisma {
     NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
     wid?: IntFilter<"Subscription"> | number
     plan?: StringFilter<"Subscription"> | string
+    billingCycle?: StringFilter<"Subscription"> | string
     status?: StringFilter<"Subscription"> | string
     amount?: IntFilter<"Subscription"> | number
     currency?: StringFilter<"Subscription"> | string
@@ -11103,6 +11120,7 @@ export namespace Prisma {
     id?: SortOrder
     wid?: SortOrder
     plan?: SortOrder
+    billingCycle?: SortOrder
     status?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -11126,6 +11144,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Subscription"> | string
     wid?: IntWithAggregatesFilter<"Subscription"> | number
     plan?: StringWithAggregatesFilter<"Subscription"> | string
+    billingCycle?: StringWithAggregatesFilter<"Subscription"> | string
     status?: StringWithAggregatesFilter<"Subscription"> | string
     amount?: IntWithAggregatesFilter<"Subscription"> | number
     currency?: StringWithAggregatesFilter<"Subscription"> | string
@@ -11888,6 +11907,7 @@ export namespace Prisma {
   export type SubscriptionCreateInput = {
     id?: string
     plan?: string
+    billingCycle?: string
     status?: string
     amount: number
     currency: string
@@ -11905,6 +11925,7 @@ export namespace Prisma {
     id?: string
     wid: number
     plan?: string
+    billingCycle?: string
     status?: string
     amount: number
     currency: string
@@ -11920,6 +11941,7 @@ export namespace Prisma {
   export type SubscriptionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -11937,6 +11959,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     wid?: IntFieldUpdateOperationsInput | number
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -11953,6 +11976,7 @@ export namespace Prisma {
     id?: string
     wid: number
     plan?: string
+    billingCycle?: string
     status?: string
     amount: number
     currency: string
@@ -11967,6 +11991,7 @@ export namespace Prisma {
   export type SubscriptionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -11982,6 +12007,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     wid?: IntFieldUpdateOperationsInput | number
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -12768,6 +12794,7 @@ export namespace Prisma {
     id?: SortOrder
     wid?: SortOrder
     plan?: SortOrder
+    billingCycle?: SortOrder
     status?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -12788,6 +12815,7 @@ export namespace Prisma {
     id?: SortOrder
     wid?: SortOrder
     plan?: SortOrder
+    billingCycle?: SortOrder
     status?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -12803,6 +12831,7 @@ export namespace Prisma {
     id?: SortOrder
     wid?: SortOrder
     plan?: SortOrder
+    billingCycle?: SortOrder
     status?: SortOrder
     amount?: SortOrder
     currency?: SortOrder
@@ -13884,6 +13913,7 @@ export namespace Prisma {
   export type SubscriptionCreateWithoutWorkspaceInput = {
     id?: string
     plan?: string
+    billingCycle?: string
     status?: string
     amount: number
     currency: string
@@ -13899,6 +13929,7 @@ export namespace Prisma {
   export type SubscriptionUncheckedCreateWithoutWorkspaceInput = {
     id?: string
     plan?: string
+    billingCycle?: string
     status?: string
     amount: number
     currency: string
@@ -14157,6 +14188,7 @@ export namespace Prisma {
     id?: StringFilter<"Subscription"> | string
     wid?: IntFilter<"Subscription"> | number
     plan?: StringFilter<"Subscription"> | string
+    billingCycle?: StringFilter<"Subscription"> | string
     status?: StringFilter<"Subscription"> | string
     amount?: IntFilter<"Subscription"> | number
     currency?: StringFilter<"Subscription"> | string
@@ -14860,6 +14892,7 @@ export namespace Prisma {
   export type SubscriptionCreateWithoutTransactionsInput = {
     id?: string
     plan?: string
+    billingCycle?: string
     status?: string
     amount: number
     currency: string
@@ -14876,6 +14909,7 @@ export namespace Prisma {
     id?: string
     wid: number
     plan?: string
+    billingCycle?: string
     status?: string
     amount: number
     currency: string
@@ -14940,6 +14974,7 @@ export namespace Prisma {
   export type SubscriptionUpdateWithoutTransactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -14956,6 +14991,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     wid?: IntFieldUpdateOperationsInput | number
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -15223,6 +15259,7 @@ export namespace Prisma {
   export type SubscriptionCreateManyWorkspaceInput = {
     id?: string
     plan?: string
+    billingCycle?: string
     status?: string
     amount: number
     currency: string
@@ -15431,6 +15468,7 @@ export namespace Prisma {
   export type SubscriptionUpdateWithoutWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -15446,6 +15484,7 @@ export namespace Prisma {
   export type SubscriptionUncheckedUpdateWithoutWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string
@@ -15461,6 +15500,7 @@ export namespace Prisma {
   export type SubscriptionUncheckedUpdateManyWithoutWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     plan?: StringFieldUpdateOperationsInput | string
+    billingCycle?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     currency?: StringFieldUpdateOperationsInput | string

@@ -195,6 +195,7 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   id: 'id',
   wid: 'wid',
   plan: 'plan',
+  billingCycle: 'billingCycle',
   status: 'status',
   amount: 'amount',
   currency: 'currency',

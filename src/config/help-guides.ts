@@ -43,7 +43,7 @@ export const HELP_GUIDES: HelpGuide[] = [
       "Click Verify Guest to open the QR scanner or passcode entry.",
       "Scan the guest's QR pass or enter their 6-digit passcode.",
       "Confirm visitor details and complete ID proof if required.",
-      "A badge number is assigned and the host is notified automatically.",
+      "The host is notified automatically after check-in.",
     ],
   },
   {

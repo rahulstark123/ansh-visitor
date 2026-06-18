@@ -72,9 +72,6 @@ export async function createVisitorRecord(input: CreateVisitorInput) {
     : "24h";
 
   const qrCode = await generateUniqueQRCode(wid);
-  const badgeNumber = walkIn
-    ? `BADGE-${Math.floor(100 + Math.random() * 900)}`
-    : undefined;
   const qrValidUntil = walkIn ? undefined : computeQrValidUntil(period);
 
   return prisma.visitor.create({
@@ -93,7 +90,6 @@ export async function createVisitorRecord(input: CreateVisitorInput) {
       status: walkIn ? "CheckedIn" : "Expected",
       qrCode,
       qrValidUntil,
-      badgeNumber,
       checkedInAt: walkIn ? new Date() : undefined,
       walkIn,
     },

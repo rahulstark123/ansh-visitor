@@ -151,15 +151,10 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 w-full border-b border-slate-700/50" style={{ background: "rgba(10,15,25,0.92)", backdropFilter: "blur(16px)" }}>
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logoAnshapps.png" alt="Anshapps Logo" className="h-9 w-auto shrink-0 select-none" />
-            <div className="flex flex-col">
-              <span className="text-base font-extrabold leading-tight tracking-wider uppercase bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-                Ansh Visitor
-              </span>
-              <span className="text-[9px] font-bold tracking-widest text-slate-500 uppercase -mt-0.5">
-                Workspace Desk
-              </span>
-            </div>
+            <img src="/logoAnshapps.png" alt="Anshapps Logo" className="h-11 w-auto max-h-[44px] shrink-0 select-none object-contain" />
+            <span className="text-base font-extrabold leading-tight tracking-wider uppercase bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+              Ansh Visitor
+            </span>
           </div>
 
           <nav className="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-400">

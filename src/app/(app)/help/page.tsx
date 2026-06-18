@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { PageHeader } from "@/components/crm/page-header";
 import {
   HelpTabBar,
@@ -8,8 +9,15 @@ import {
 } from "@/components/help/interactive-guides";
 import { SupportTicketDesk } from "@/components/help/support-ticket-desk";
 
-export default function HelpCenterPage() {
+function HelpCenterContent() {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<"guides" | "tickets">("guides");
+
+  useEffect(() => {
+    if (searchParams.get("tab") === "tickets") {
+      setActiveTab("tickets");
+    }
+  }, [searchParams]);
 
   return (
     <div className="space-y-8 select-none animate-in fade-in duration-300">
@@ -27,5 +35,13 @@ export default function HelpCenterPage() {
         {activeTab === "guides" ? <InteractiveGuides /> : <SupportTicketDesk />}
       </div>
     </div>
+  );
+}
+
+export default function HelpCenterPage() {
+  return (
+    <Suspense fallback={null}>
+      <HelpCenterContent />
+    </Suspense>
   );
 }

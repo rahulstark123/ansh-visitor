@@ -120,121 +120,22 @@ export interface RegisterGuestPrefill {
   company?: string;
 }
 
-const SEEDED_HOSTS: Host[] = [
-  {
-    id: "host-1",
-    name: "Vikram Raj",
-    email: "vikram@ansh.com",
-    role: "Admin",
-    department: "HR & Operations",
-    avatarInitials: "VR",
-    status: "Active",
-  },
-  {
-    id: "host-2",
-    name: "Priya Sharma",
-    email: "priya.sharma@ansh.com",
-    role: "Manager",
-    department: "Engineering",
-    avatarInitials: "PS",
-    status: "Active",
-  },
-  {
-    id: "host-3",
-    name: "Amit Patel",
-    email: "amit.patel@ansh.com",
-    role: "Employee",
-    department: "Product Management",
-    avatarInitials: "AP",
-    status: "Active",
-  },
-  {
-    id: "host-4",
-    name: "Rohan Gupta",
-    email: "rohan.gupta@ansh.com",
-    role: "Employee",
-    department: "Enterprise Sales",
-    avatarInitials: "RG",
-    status: "Active",
-  },
-];
-
-const SEEDED_VISITORS: Visitor[] = [
-  {
-    id: "vis-1",
-    name: "Aarav Mehta",
-    email: "aarav.mehta@acme.com",
-    phone: "+91 98765 43210",
-    company: "Acme Corp",
-    purpose: "Meeting",
-    status: "CheckedIn",
-    hostId: "host-1",
-    hostName: "Vikram Raj",
-    checkedInAt: new Date(new Date().setHours(9, 30, 0)).toISOString(),
-    preRegisteredAt: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
-    badgeNumber: "BADGE-101",
-    qrCode: "729481",
-    walkIn: false,
-    notes: "Lobby meeting regarding payroll solutions."
-  },
-  {
-    id: "vis-2",
-    name: "Ananya Roy",
-    email: "ananya.roy@design.io",
-    phone: "+91 91234 56789",
-    company: "Pixel Studio",
-    purpose: "Interview",
-    status: "Expected",
-    hostId: "host-2",
-    hostName: "Priya Sharma",
-    preRegisteredAt: new Date().toISOString(),
-    qrCode: "839402",
-    walkIn: false,
-    notes: "Frontend Designer candidate round 2."
-  },
-  {
-    id: "vis-3",
-    name: "Kabir Singh",
-    email: "kabir.singh@techcorp.in",
-    phone: "+91 88888 77777",
-    company: "TechCorp India",
-    purpose: "Vendor",
-    status: "CheckedOut",
-    hostId: "host-3",
-    hostName: "Amit Patel",
-    checkedInAt: new Date(new Date().setHours(10, 0, 0)).toISOString(),
-    checkedOutAt: new Date(new Date().setHours(11, 45, 0)).toISOString(),
-    preRegisteredAt: new Date().toISOString(),
-    badgeNumber: "BADGE-102",
-    qrCode: "610293",
-    walkIn: false,
-    notes: "Consulting about server migrations."
-  },
-  {
-    id: "vis-4",
-    name: "Meera Nair",
-    email: "meera.nair@logistic.com",
-    phone: "+91 77777 66666",
-    company: "Swift Logistics",
-    purpose: "Delivery",
-    status: "CheckedIn",
-    hostId: "host-4",
-    hostName: "Rohan Gupta",
-    checkedInAt: new Date(new Date().setHours(11, 15, 0)).toISOString(),
-    preRegisteredAt: new Date().toISOString(),
-    badgeNumber: "BADGE-103",
-    qrCode: "492015",
-    walkIn: true,
-    notes: "Delivering sample marketing banners."
-  }
-];
+const EMPTY_CURRENT_USER: Host = {
+  id: "",
+  name: "",
+  email: "",
+  role: "Admin",
+  department: "",
+  avatarInitials: "",
+  status: "Active",
+};
 
 export const useVisitorStore = create<VisitorState>()(
   persist(
     (set, get) => ({
-      currentUser: SEEDED_HOSTS[0],
-      hosts: SEEDED_HOSTS,
-      visitors: SEEDED_VISITORS,
+      currentUser: EMPTY_CURRENT_USER,
+      hosts: [],
+      visitors: [],
       plan: {
         name: "Free Plan",
         visitorsCount: 15,
@@ -246,33 +147,8 @@ export const useVisitorStore = create<VisitorState>()(
       workspaceName: "Workspace",
       departments: ["Engineering", "HR & Operations", "Product Management", "Enterprise Sales"],
       designations: ["Software Engineer", "Senior Developer", "Product Manager", "HR Manager", "Operations Admin", "Security Officer", "Sales Director"],
-      officeBranches: ["HQ - Bangalore", "Delhi Branch", "Mumbai Office"],
-      officeBranchMeta: {
-        "HQ - Bangalore": {
-          name: "HQ - Bangalore",
-          address: "Electronic City Phase 1, Hosur Road",
-          city: "Bangalore",
-          state: "Karnataka",
-          pincode: "560100",
-          allowWfh: true,
-        },
-        "Delhi Branch": {
-          name: "Delhi Branch",
-          address: "Connaught Place, Block A",
-          city: "New Delhi",
-          state: "Delhi",
-          pincode: "110001",
-          allowWfh: false,
-        },
-        "Mumbai Office": {
-          name: "Mumbai Office",
-          address: "Bandra Kurla Complex, G Block",
-          city: "Mumbai",
-          state: "Maharashtra",
-          pincode: "400051",
-          allowWfh: true,
-        },
-      },
+      officeBranches: [],
+      officeBranchMeta: {},
       workLocations: ["Remote", "On-site", "Hybrid"],
       registerGuestOpen: false,
       registerGuestPrefill: null,
@@ -354,7 +230,7 @@ export const useVisitorStore = create<VisitorState>()(
             visitorsData = visitors;
           }
 
-          const visitorsCount = visitorsData.length || get().visitors.length;
+          const visitorsCount = visitorsData.length;
           const planName =
             workspacePlan === "pro"
               ? "Pro Plan"
@@ -364,7 +240,7 @@ export const useVisitorStore = create<VisitorState>()(
 
           set({
             currentUser: currentUserProfile,
-            hosts: hostsData.length > 0 ? hostsData : get().hosts,
+            hosts: hostsData,
             visitors: visitorsData,
             workspacePlan,
             workspaceCreatedAt,
@@ -476,10 +352,9 @@ export const useVisitorStore = create<VisitorState>()(
             }),
           }));
           const guestName = existing?.name ?? "Guest";
-          const badge = visitor.badgeNumber ? ` · Badge ${visitor.badgeNumber}` : "";
           toast.success(
             "Check-in complete",
-            `${guestName} is now checked in${badge}.`
+            `${guestName} is now checked in.`
           );
         } catch (err) {
           console.error("Failed to check in visitor:", err);
@@ -542,9 +417,7 @@ export const useVisitorStore = create<VisitorState>()(
             }));
             toast.success(
               "Walk-in checked in",
-              `${visitor.name} is checked in · Passcode ${visitor.qrCode}${
-                visitor.badgeNumber ? ` · Badge ${visitor.badgeNumber}` : ""
-              }`
+              `${visitor.name} is checked in · Passcode ${visitor.qrCode}`
             );
             return;
           }
@@ -684,7 +557,18 @@ export const useVisitorStore = create<VisitorState>()(
     }),
     {
       name: "ansh-visitor-data",
-      version: 3,
+      version: 5,
+      partialize: (state) => ({
+        plan: state.plan,
+        workspacePlan: state.workspacePlan,
+        workspaceCreatedAt: state.workspaceCreatedAt,
+        workspaceName: state.workspaceName,
+        departments: state.departments,
+        designations: state.designations,
+        officeBranches: state.officeBranches,
+        officeBranchMeta: state.officeBranchMeta,
+        workLocations: state.workLocations,
+      }),
       migrate: (persisted, version) => {
         const state = persisted as Record<string, unknown>;
         if (version < 2 && state.officeBranches && !state.officeBranchMeta) {
@@ -700,6 +584,22 @@ export const useVisitorStore = create<VisitorState>()(
           state.workspacePlan = state.workspacePlan ?? "pro_trial";
           state.workspaceCreatedAt =
             state.workspaceCreatedAt ?? new Date().toISOString();
+        }
+        if (version < 4) {
+          delete state.hosts;
+          delete state.visitors;
+          delete state.currentUser;
+        }
+        if (version < 5 && Array.isArray(state.officeBranches)) {
+          state.officeBranches = (state.officeBranches as string[]).filter(
+            (branch) => branch !== "Delhi Branch" && branch !== "Mumbai Office"
+          );
+          if (state.officeBranchMeta && typeof state.officeBranchMeta === "object") {
+            const meta = { ...(state.officeBranchMeta as Record<string, unknown>) };
+            delete meta["Delhi Branch"];
+            delete meta["Mumbai Office"];
+            state.officeBranchMeta = meta;
+          }
         }
         return state;
       },

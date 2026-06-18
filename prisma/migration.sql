@@ -22,7 +22,7 @@ CREATE TABLE "WorkspaceConfig" (
     "wid" INTEGER NOT NULL,
     "departments" TEXT[] DEFAULT ARRAY['Engineering', 'HR & Operations', 'Product Management', 'Enterprise Sales']::TEXT[],
     "designations" TEXT[] DEFAULT ARRAY['Software Engineer', 'Senior Developer', 'Product Manager', 'HR Manager', 'Operations Admin', 'Sales Director']::TEXT[],
-    "officeBranches" TEXT[] DEFAULT ARRAY['HQ - Bangalore', 'Delhi Branch', 'Mumbai Office']::TEXT[],
+    "officeBranches" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "workLocations" TEXT[] DEFAULT ARRAY['Remote', 'On-site', 'Hybrid']::TEXT[],
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -51,6 +51,11 @@ CREATE TABLE "Profile" (
     "reportingHR" TEXT,
     "emergencyName" TEXT,
     "emergencyPhone" TEXT,
+    "acceptedTerms" BOOLEAN NOT NULL DEFAULT false,
+    "acceptedPrivacy" BOOLEAN NOT NULL DEFAULT false,
+    "consentAt" TIMESTAMP(3),
+    "termsVersion" TEXT,
+    "privacyVersion" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "wid" INTEGER,
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   detectRegionFromCountry,
   getProPricing,
+  type BillingCycle,
 } from "@/config/billing";
 import { createPendingSubscriptionAndTransaction } from "@/lib/billing-records";
 import { getRazorpay } from "@/lib/razorpay";
@@ -18,11 +19,17 @@ function getCountryFromRequest(req: NextRequest): string | null {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { wid = 1 } = body as { wid?: number };
+    const { wid = 1, billingCycle = "monthly" } = body as {
+      wid?: number;
+      billingCycle?: BillingCycle;
+    };
+
+    const cycle: BillingCycle =
+      billingCycle === "yearly" ? "yearly" : "monthly";
 
     const country = getCountryFromRequest(req);
     const region = detectRegionFromCountry(country);
-    const pricing = getProPricing(region);
+    const pricing = getProPricing(region, cycle);
 
     const workspaceId = Number(wid) || 1;
     const razorpay = getRazorpay();
@@ -34,6 +41,7 @@ export async function POST(req: NextRequest) {
         wid: String(workspaceId),
         product: "ansh-visitor-pro",
         region,
+        billingCycle: cycle,
         pricingModel: "flat-workspace",
       },
     });
@@ -45,6 +53,7 @@ export async function POST(req: NextRequest) {
         amount: Number(order.amount),
         currency: order.currency ?? pricing.currency,
         region,
+        billingCycle: cycle,
       });
 
     return NextResponse.json(
@@ -53,8 +62,11 @@ export async function POST(req: NextRequest) {
         amount: order.amount,
         currency: order.currency,
         region,
+        billingCycle: cycle,
         proPrice: pricing.amount,
         proPriceDisplay: pricing.display,
+        monthlyEquivalent: pricing.yearlyMonthlyEquivalentDisplay,
+        savingsPercent: pricing.savingsPercent,
         subscriptionId: subscription.id,
         transactionId: transaction.id,
       },

@@ -9,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useVisitorStore, type Visitor } from "@/stores/visitor-store";
@@ -146,9 +145,6 @@ export function GuestVerifyModal({
             ...visitor,
             status: "CheckedIn",
             checkedInAt: new Date().toISOString(),
-            badgeNumber:
-              visitor.badgeNumber ||
-              `BADGE-${Math.floor(100 + Math.random() * 900)}`,
           });
           setPasscodeInput("");
           setCameraActive(false);
@@ -353,16 +349,6 @@ export function GuestVerifyModal({
                   {scannedVisitor.company || "Individual"} ·{" "}
                   {scannedVisitor.purpose}
                 </p>
-                {scannedVisitor.badgeNumber && (
-                  <Badge
-                    className={cn(
-                      "mt-2 font-bold text-[10px] border",
-                      accent.successBadge
-                    )}
-                  >
-                    {scannedVisitor.badgeNumber}
-                  </Badge>
-                )}
               </div>
               <p className="text-[10px] text-slate-400">{accent.successFooter}</p>
             </div>

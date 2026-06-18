@@ -193,7 +193,7 @@ export function AppHeader() {
           variant="ghost"
           size="icon"
           onClick={handleLogout}
-          className="h-10 w-10 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-rose-500/10 dark:text-slate-400 dark:hover:bg-rose-950/30 transition-colors"
+          className="h-10 w-10 rounded-xl text-rose-600 hover:text-rose-700 hover:bg-rose-500/15 dark:text-rose-400 dark:hover:text-rose-300 dark:hover:bg-rose-950/40 transition-colors"
           title="Log out"
         >
           <LogOut className="h-5 w-5" />

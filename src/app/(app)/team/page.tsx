@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/crm/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -62,6 +62,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  ListPagination,
+  paginateList,
+} from "@/components/ui/list-pagination";
+
+const TEAM_PAGE_SIZE = 12;
 
 export default function TeamDirectoryPage() {
   const router = useRouter();
@@ -84,6 +90,7 @@ export default function TeamDirectoryPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [deptFilter, setDeptFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedTeammate, setSelectedTeammate] = useState<Host | null>(null);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -115,7 +122,7 @@ export default function TeamDirectoryPage() {
   const [department, setDepartment] = useState(departments[0] || "Engineering");
   const [accessRole, setAccessRole] = useState("Employee");
   const [employmentStatus, setEmploymentStatus] = useState("Active");
-  const [officeBranch, setOfficeBranch] = useState(officeBranches[0] || "HQ - Bangalore");
+  const [officeBranch, setOfficeBranch] = useState(officeBranches[0] || "");
   const [workLocation, setWorkLocation] = useState("Remote");
   const [reportingManager, setReportingManager] = useState("");
   const [reportingHR, setReportingHR] = useState("");
@@ -145,13 +152,13 @@ export default function TeamDirectoryPage() {
     setDob(host.dob || "");
 
     // Step 2
-    setTeammateCode(host.code || `ANSH-${Math.floor(100 + Math.random() * 900)}`);
+    setTeammateCode(host.code || "");
     setJoiningDate(host.joiningDate || "");
     setDesignation(host.designation || "Software Engineer");
     setDepartment(host.department);
     setAccessRole(host.role);
     setEmploymentStatus(host.status);
-    setOfficeBranch(host.officeBranch || "HQ - Bangalore");
+    setOfficeBranch(host.officeBranch || officeBranches[0] || "");
     setWorkLocation(host.workLocation || "Remote");
     setReportingManager(host.reportingManager || "");
     setReportingHR(host.reportingHR || "");
@@ -178,13 +185,13 @@ export default function TeamDirectoryPage() {
     setConfirmPassword("");
     setPhone("+91");
     setDob("");
-    setTeammateCode(`ANSH-${Math.floor(100 + Math.random() * 900)}`);
+    setTeammateCode("");
     setJoiningDate("");
     setDesignation(designations[0] || "Software Engineer");
     setDepartment(departments[0] || "Engineering");
     setAccessRole("Employee");
     setEmploymentStatus("Active");
-    setOfficeBranch(officeBranches[0] || "HQ - Bangalore");
+    setOfficeBranch(officeBranches[0] || "");
     setWorkLocation("Remote");
     setReportingManager(hosts[0]?.id || "");
     setReportingHR(hosts.find(h => h.department.toLowerCase().includes("hr"))?.id || hosts[0]?.id || "");
@@ -354,7 +361,21 @@ export default function TeamDirectoryPage() {
     return list;
   };
 
-  const filteredTeammates = getFilteredTeammates();
+  const filteredTeammates = useMemo(() => getFilteredTeammates(), [
+    hosts,
+    searchQuery,
+    deptFilter,
+    statusFilter,
+  ]);
+
+  const paginatedTeammates = useMemo(
+    () => paginateList(filteredTeammates, currentPage, TEAM_PAGE_SIZE),
+    [filteredTeammates, currentPage]
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, deptFilter, statusFilter]);
 
   return (
     <div className="space-y-6 select-none animate-in fade-in duration-300">
@@ -400,8 +421,8 @@ export default function TeamDirectoryPage() {
 
       {/* TEAMMATES GRID */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredTeammates.length > 0 ? (
-          filteredTeammates.map((teammate) => {
+        {paginatedTeammates.length > 0 ? (
+          paginatedTeammates.map((teammate) => {
             const isSelf = teammate.id === currentUser.id;
             return (
               <Card 
@@ -495,7 +516,7 @@ export default function TeamDirectoryPage() {
                     )}
                     <div className="flex items-center gap-2 text-slate-500">
                       <Building className="h-3.5 w-3.5 text-slate-400" />
-                      <span>Branch: {teammate.officeBranch || "HQ - Bangalore"}</span>
+                      <span>Branch: {teammate.officeBranch || "—"}</span>
                     </div>
                   </div>
 
@@ -533,6 +554,13 @@ export default function TeamDirectoryPage() {
           </div>
         )}
       </div>
+
+      <ListPagination
+        currentPage={currentPage}
+        totalItems={filteredTeammates.length}
+        pageSize={TEAM_PAGE_SIZE}
+        onPageChange={setCurrentPage}
+      />
 
       {/* 3-STEP TEAMMATE WIZARD DIALOG MODAL */}
       <Dialog open={openWizard} onOpenChange={setOpenWizard}>
@@ -810,7 +838,7 @@ export default function TeamDirectoryPage() {
                             });
                           }
                         }}
-                        placeholder="e.g. ANSH-005"
+                        placeholder="e.g. EMP-005"
                         className={cn("mt-2", errors.teammateCode && "border-rose-500 focus-visible:ring-rose-500/20")}
                       />
                       {errors.teammateCode && (
@@ -931,7 +959,7 @@ export default function TeamDirectoryPage() {
                         <span
                           onClick={() => {
                             setOpenWizard(false);
-                            router.push("/settings/workspace");
+                            router.push("/settings/company");
                           }}
                           className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer"
                         >
@@ -943,28 +971,21 @@ export default function TeamDirectoryPage() {
                         onChange={(e) => setOfficeBranch(e.target.value)}
                         className="mt-2 bg-card border-input text-foreground"
                       >
-                        {officeBranches.map((ob) => (
-                          <option key={ob} value={ob}>
-                            {ob}
-                          </option>
-                        ))}
+                        {officeBranches.length === 0 ? (
+                          <option value="">Add a branch in Company Settings</option>
+                        ) : (
+                          officeBranches.map((ob) => (
+                            <option key={ob} value={ob}>
+                              {ob}
+                            </option>
+                          ))
+                        )}
                       </Select>
                     </div>
                     <div>
-                      <div className="flex justify-between items-center">
-                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                          Work Location
-                        </label>
-                        <span
-                          onClick={() => {
-                            setOpenWizard(false);
-                            router.push("/settings/workspace");
-                          }}
-                          className="text-primary text-[9px] font-extrabold uppercase hover:underline cursor-pointer"
-                        >
-                          + Add
-                        </span>
-                      </div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                        Work Location
+                      </label>
                       <Select
                         value={workLocation}
                         onChange={(e) => setWorkLocation(e.target.value)}

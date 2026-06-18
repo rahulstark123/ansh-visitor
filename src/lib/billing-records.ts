@@ -1,4 +1,5 @@
-import type { BillingRegion } from "@/config/billing";
+import type { BillingCycle, BillingRegion } from "@/config/billing";
+import { getSubscriptionPeriodDays } from "@/config/billing";
 import { prisma } from "@/lib/prisma";
 
 export type BillingRecordStatus =
@@ -17,6 +18,7 @@ export async function createPendingSubscriptionAndTransaction(options: {
   amount: number;
   currency: string;
   region: BillingRegion;
+  billingCycle?: BillingCycle;
 }) {
   const subscription = await prisma.subscription.create({
     data: {
@@ -26,6 +28,7 @@ export async function createPendingSubscriptionAndTransaction(options: {
       amount: options.amount,
       currency: options.currency,
       region: options.region,
+      billingCycle: options.billingCycle ?? "monthly",
     },
   });
 
@@ -48,19 +51,28 @@ export async function completeSuccessfulPayment(options: {
   wid: number;
   razorpayOrderId: string;
   razorpayPaymentId: string;
+  billingCycle?: BillingCycle;
 }) {
   const now = new Date();
   const periodEnd = new Date(now);
-  periodEnd.setDate(periodEnd.getDate() + SUBSCRIPTION_PERIOD_DAYS);
 
   return prisma.$transaction(async (tx) => {
     const transaction = await tx.transaction.findUnique({
       where: { razorpayOrderId: options.razorpayOrderId },
+      include: { subscription: true },
     });
 
     if (!transaction || transaction.wid !== options.wid) {
       throw new Error("Payment order not found for this workspace");
     }
+
+    const billingCycle =
+      options.billingCycle ??
+      (transaction.subscription.billingCycle as BillingCycle) ??
+      "monthly";
+    periodEnd.setDate(
+      periodEnd.getDate() + getSubscriptionPeriodDays(billingCycle)
+    );
 
     if (transaction.status === "success") {
       const workspace = await tx.workspace.findUniqueOrThrow({
@@ -84,6 +96,7 @@ export async function completeSuccessfulPayment(options: {
       where: { id: transaction.subscriptionId },
       data: {
         status: "active",
+        billingCycle,
         currentPeriodStart: now,
         currentPeriodEnd: periodEnd,
         cancelledAt: null,

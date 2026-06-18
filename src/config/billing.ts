@@ -1,9 +1,13 @@
 export type WorkspacePlanTier = "free" | "pro" | "pro_trial";
 export type BillingRegion = "IN" | "INTL";
+export type BillingCycle = "monthly" | "yearly";
 
 /** Flat Pro price for the entire workspace (not per user). */
 export const PRO_PRICE_INR = 299;
 export const PRO_PRICE_USD = 7;
+
+export const YEARLY_DISCOUNT_PERCENT = 19;
+export const MONTHS_PER_YEAR = 12;
 
 export const PRO_PRICE_INR_PAISA =
   Number(process.env.RAZORPAY_PRO_PLAN_AMOUNT_PAISA) || PRO_PRICE_INR * 100;
@@ -98,27 +102,77 @@ export function detectRegionFromCountry(country: string | null): BillingRegion {
   return country?.toUpperCase() === "IN" ? "IN" : "INTL";
 }
 
-export function getProPricing(region: BillingRegion) {
-  if (region === "IN") {
+export function getYearlyTotal(monthlyAmount: number): number {
+  return Math.round(
+    monthlyAmount * MONTHS_PER_YEAR * (1 - YEARLY_DISCOUNT_PERCENT / 100)
+  );
+}
+
+export function getYearlyMonthlyEquivalent(monthlyAmount: number): number {
+  return Math.round(getYearlyTotal(monthlyAmount) / MONTHS_PER_YEAR);
+}
+
+export function getYearlySavings(monthlyAmount: number): number {
+  return monthlyAmount * MONTHS_PER_YEAR - getYearlyTotal(monthlyAmount);
+}
+
+export function getProPricing(
+  region: BillingRegion,
+  cycle: BillingCycle = "monthly"
+) {
+  const monthlyAmount = region === "IN" ? PRO_PRICE_INR : PRO_PRICE_USD;
+  const format = region === "IN" ? formatINR : formatUSD;
+  const yearlyTotal = getYearlyTotal(monthlyAmount);
+  const yearlyMonthlyEq = getYearlyMonthlyEquivalent(monthlyAmount);
+  const fullYearList = monthlyAmount * MONTHS_PER_YEAR;
+  const savings = getYearlySavings(monthlyAmount);
+
+  const shared = {
+    region,
+    currency: (region === "IN" ? "INR" : "USD") as "INR" | "USD",
+    monthlyAmount,
+    monthlyDisplay: format(monthlyAmount),
+    yearlyTotal,
+    yearlyTotalDisplay: format(yearlyTotal),
+    yearlyMonthlyEquivalent: yearlyMonthlyEq,
+    yearlyMonthlyEquivalentDisplay: format(yearlyMonthlyEq),
+    fullYearListPrice: fullYearList,
+    fullYearListPriceDisplay: format(fullYearList),
+    savingsAmount: savings,
+    savingsAmountDisplay: format(savings),
+    savingsPercent: YEARLY_DISCOUNT_PERCENT,
+  };
+
+  if (cycle === "yearly") {
     return {
-      region,
-      currency: "INR" as const,
-      amount: PRO_PRICE_INR,
-      amountMinor: PRO_PRICE_INR_PAISA,
-      display: `₹${PRO_PRICE_INR}`,
-      period: "/ month",
-      label: `₹${PRO_PRICE_INR}/month for entire app`,
+      ...shared,
+      cycle,
+      amount: yearlyTotal,
+      amountMinor: yearlyTotal * 100,
+      display: format(yearlyTotal),
+      period: "/ year",
+      label: `${format(yearlyTotal)}/year for entire app (save ${YEARLY_DISCOUNT_PERCENT}%)`,
     };
   }
+
   return {
-    region,
-    currency: "USD" as const,
-    amount: PRO_PRICE_USD,
-    amountMinor: PRO_PRICE_USD_CENTS,
-    display: `$${PRO_PRICE_USD}`,
+    ...shared,
+    cycle,
+    amount: monthlyAmount,
+    amountMinor:
+      region === "IN" ? PRO_PRICE_INR_PAISA : PRO_PRICE_USD_CENTS,
+    display: format(monthlyAmount),
     period: "/ month",
-    label: `$${PRO_PRICE_USD}/month for entire app`,
+    label: `${format(monthlyAmount)}/month for entire app`,
   };
+}
+
+export function formatProPrice(
+  region: BillingRegion,
+  cycle: BillingCycle = "monthly"
+): string {
+  const pricing = getProPricing(region, cycle);
+  return `${pricing.display}${pricing.period}`;
 }
 
 export function formatINR(amount: number): string {
@@ -137,9 +191,21 @@ export function formatUSD(amount: number): string {
   }).format(amount);
 }
 
-export function formatProPrice(region: BillingRegion): string {
-  const pricing = getProPricing(region);
-  return `${pricing.display}${pricing.period}`;
+export function getRegionPricingLabel(
+  region: BillingRegion,
+  cycle: BillingCycle = "monthly"
+): string {
+  const pricing = getProPricing(region, cycle);
+  if (region === "IN") {
+    if (cycle === "yearly") {
+      return `India pricing: ${pricing.display}/year (${pricing.yearlyMonthlyEquivalentDisplay}/mo · save ${YEARLY_DISCOUNT_PERCENT}%) · Detected region: IN`;
+    }
+    return `India pricing: ${pricing.monthlyDisplay}/month for entire app · Yearly ${pricing.yearlyTotalDisplay} (save ${YEARLY_DISCOUNT_PERCENT}%) · Detected region: IN`;
+  }
+  if (cycle === "yearly") {
+    return `International pricing: ${pricing.display}/year (${pricing.yearlyMonthlyEquivalentDisplay}/mo · save ${YEARLY_DISCOUNT_PERCENT}%) · Detected region: Global`;
+  }
+  return `International pricing: ${pricing.monthlyDisplay}/month for entire app · Yearly ${pricing.yearlyTotalDisplay} (save ${YEARLY_DISCOUNT_PERCENT}%) · Detected region: Global`;
 }
 
 export function getTrialEndDate(workspaceCreatedAt?: string | Date): Date {
@@ -160,9 +226,7 @@ export function getPlanDisplayName(tier: WorkspacePlanTier): string {
   return "ANSH Visitor Free";
 }
 
-export function getRegionPricingLabel(region: BillingRegion): string {
-  if (region === "IN") {
-    return `India pricing: ₹${PRO_PRICE_INR}/month for entire app · Detected region: IN`;
-  }
-  return `International pricing: $${PRO_PRICE_USD}/month for entire app · Detected region: Global`;
+
+export function getSubscriptionPeriodDays(cycle: BillingCycle): number {
+  return cycle === "yearly" ? 365 : 30;
 }

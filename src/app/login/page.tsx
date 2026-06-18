@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
-import { ButtonLoadingSkeleton } from "@/components/ui/page-skeletons";
+import { ButtonLoadingSkeleton, ProcessingOverlaySkeleton } from "@/components/ui/page-skeletons";
 import { AuthMarketingPanel } from "@/components/auth/auth-marketing-panel";
 import { GoogleAuthButton, AuthDivider } from "@/components/auth/google-auth-button";
 import { createSupabaseClient } from "@/lib/supabase";
@@ -17,6 +18,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,8 +52,9 @@ export default function LoginPage() {
       }
 
       if (data.session) {
-        toast.success("Welcome back!", "Redirecting to your workspace...");
-        router.push("/dashboard");
+        const profileRes = await fetch(`/api/profiles/${data.session.user.id}`);
+        const destination = profileRes.ok ? "/dashboard" : "/onboarding";
+        router.push(destination);
         router.refresh();
       }
     } catch {
@@ -79,6 +86,8 @@ export default function LoginPage() {
           <GoogleAuthButton
             label="Sign in with Google"
             disabled={loading}
+            onAuthStart={() => setLoading(true)}
+            onAuthEnd={() => setLoading(false)}
           />
 
           <AuthDivider />
@@ -162,6 +171,16 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {loading &&
+        mounted &&
+        createPortal(
+          <ProcessingOverlaySkeleton
+            title="Logging In"
+            description="Signing you into your account..."
+          />,
+          document.body
+        )}
     </div>
   );
 }
