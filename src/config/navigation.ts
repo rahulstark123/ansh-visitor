@@ -11,6 +11,7 @@ import {
   Users,
   CreditCard,
   Link2,
+  UserX,
 } from "lucide-react";
 
 export type NavSectionId =
@@ -77,6 +78,7 @@ export const mainNav: MainNavItem[] = [
       { id: "company", label: "Company Settings", href: "/settings/company", icon: Building },
       { id: "billing", label: "Billing", href: "/settings/billing", icon: CreditCard },
       { id: "workspace", label: "Workspace Settings", href: "/settings/workspace", icon: Settings },
+      { id: "delete-account", label: "Delete Account", href: "/settings/delete-account", icon: UserX },
     ],
   },
 ];
