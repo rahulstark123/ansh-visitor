@@ -25,13 +25,21 @@ import {
   Search,
   HelpCircle,
   X,
+  Send,
+  MessageSquare,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const MAX_ATTACHMENTS = 3;
 
 export function SupportTicketDesk() {
   const { currentUser } = useVisitorStore();
-  const { tickets, addTicket } = useSupportStore();
+  const { tickets, addTicket, addReply } = useSupportStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [subject, setSubject] = useState("");
@@ -43,6 +51,25 @@ export function SupportTicketDesk() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<TicketStatus | "All">("All");
+
+  const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
+  const [replyMessage, setReplyMessage] = useState("");
+
+  const selectedTicket = useMemo(() => {
+    return tickets.find((t) => t.id === selectedTicketId) || null;
+  }, [tickets, selectedTicketId]);
+
+  const handleSendReply = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedTicketId || !replyMessage.trim()) return;
+    addReply(selectedTicketId, {
+      sender: "User",
+      senderName: currentUser.name || "User",
+      message: replyMessage.trim(),
+    });
+    setReplyMessage("");
+    toast.success("Follow-up reply added successfully");
+  };
 
   const wid = currentUser.wid ?? 1;
 
@@ -311,7 +338,8 @@ export function SupportTicketDesk() {
                 {filteredTickets.map((ticket) => (
                   <div
                     key={ticket.id}
-                    className="rounded-2xl border border-border/50 p-4 hover:border-sky-300/40 transition-colors"
+                    onClick={() => setSelectedTicketId(ticket.id)}
+                    className="rounded-2xl border border-border/50 p-4 hover:border-sky-300/40 transition-colors cursor-pointer hover:bg-slate-50/50 dark:hover:bg-slate-900/35"
                   >
                     <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                       <div className="min-w-0">
@@ -379,6 +407,147 @@ export function SupportTicketDesk() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Ticket Details & Chat Modal */}
+      <Dialog
+        open={selectedTicketId !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelectedTicketId(null);
+        }}
+      >
+        <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col p-6 bg-white dark:bg-slate-950">
+          <DialogHeader className="pr-12">
+            <DialogTitle className="flex items-center gap-2 text-sm font-black uppercase tracking-wider text-slate-800 dark:text-slate-100">
+              <span>Ticket Details</span>
+              <span className="text-primary">{selectedTicket?.id}</span>
+            </DialogTitle>
+          </DialogHeader>
+
+          {selectedTicket && (
+            <div className="flex-1 flex flex-col min-h-0 space-y-4 overflow-y-auto pr-1 mt-4">
+              {/* Ticket Meta Info */}
+              <div className="bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-4 border border-border/40 shrink-0">
+                <h3 className="font-extrabold text-slate-900 dark:text-white text-base">
+                  {selectedTicket.subject}
+                </h3>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <Badge className={cn("border-0 text-[10px] font-bold px-2 py-0.5", statusColor(selectedTicket.status))}>
+                    {selectedTicket.status}
+                  </Badge>
+                  <Badge className={cn("border-0 text-[10px] font-bold px-2 py-0.5", priorityColor(selectedTicket.priority))}>
+                    {selectedTicket.priority}
+                  </Badge>
+                  <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg">
+                    {selectedTicket.category}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-3 whitespace-pre-wrap leading-relaxed">
+                  {selectedTicket.description}
+                </p>
+                {selectedTicket.attachmentNames && selectedTicket.attachmentNames.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-border/40">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 block mb-1">
+                      Attachments
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedTicket.attachmentNames.map((name) => (
+                        <span
+                          key={name}
+                          className="inline-flex items-center gap-1.5 text-[10px] font-semibold bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-lg border border-border/40 text-slate-600 dark:text-slate-300"
+                        >
+                          <Paperclip className="h-3.5 w-3.5" />
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Chat Thread */}
+              <div className="flex-1 space-y-4 min-h-[160px] p-4 bg-slate-50/30 dark:bg-slate-950/20 rounded-2xl border border-border/20 overflow-y-auto max-h-[250px]">
+                <p className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2">
+                  Conversation Thread
+                </p>                {/* User query */}
+                <div className="flex items-start gap-2.5 max-w-[85%] ml-auto flex-row-reverse">
+                  <div className="h-7 w-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0">
+                    {selectedTicket.createdByName[0]?.toUpperCase() || "U"}
+                  </div>
+                  <div className="bg-primary border border-primary text-white rounded-xl rounded-tr-none p-3 shadow-xs">
+                    <p className="text-[10px] font-bold text-white/70 mb-1">{selectedTicket.createdByName} (You)</p>
+                    <p className="text-xs text-white leading-relaxed">{selectedTicket.description}</p>
+                    <span className="block text-[8px] font-semibold text-white/60 mt-1">
+                      {format(new Date(selectedTicket.createdAt), "d MMM yyyy, h:mm a")}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Replies stream */}
+                {selectedTicket.replies && selectedTicket.replies.map((reply) => {
+                  const isAdmin = reply.sender === "Admin";
+                  return (
+                    <div
+                      key={reply.id}
+                      className={cn("flex items-start gap-2.5 max-w-[85%]", !isAdmin ? "ml-auto flex-row-reverse" : "")}
+                    >
+                      <div
+                        className={cn(
+                          "h-7 w-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0",
+                          isAdmin ? "bg-sky-500/10 text-sky-600" : "bg-primary/10 text-primary"
+                        )}
+                      >
+                        {isAdmin ? "AS" : reply.senderName[0]?.toUpperCase() || "U"}
+                      </div>
+                      <div
+                        className={cn(
+                          "border rounded-xl p-3 shadow-xs",
+                          !isAdmin
+                            ? "bg-primary border-primary text-white rounded-tr-none"
+                            : "bg-white dark:bg-slate-900 border-border/50 rounded-tl-none"
+                        )}
+                      >
+                        <p className={cn("text-[9px] font-bold mb-1", !isAdmin ? "text-white/70" : "text-slate-400")}>
+                          {reply.senderName} ({isAdmin ? "Support Agent" : "You"})
+                        </p>
+                        <p className={cn("text-xs leading-relaxed", !isAdmin ? "text-white" : "text-slate-700 dark:text-slate-300")}>
+                          {reply.message}
+                        </p>
+                        <span className={cn("block text-[8px] font-semibold text-right mt-1", !isAdmin ? "text-white/60" : "text-slate-400")}>
+                          {format(new Date(reply.createdAt), "d MMM, h:mm a")}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Reply composition panel */}
+              {selectedTicket.status !== "Closed" ? (
+                <form onSubmit={handleSendReply} className="flex gap-2 pt-2 border-t border-border/30 shrink-0">
+                  <Input
+                    value={replyMessage}
+                    onChange={(e) => setReplyMessage(e.target.value)}
+                    placeholder="Type your response to support agent..."
+                    required
+                    className="flex-1 h-10 rounded-xl text-xs"
+                  />
+                  <Button
+                    type="submit"
+                    className="btn-primary h-10 px-4 rounded-xl gap-1.5 text-[10px] font-bold uppercase tracking-wider shrink-0"
+                  >
+                    <Send className="h-3.5 w-3.5" />
+                    Reply
+                  </Button>
+                </form>
+              ) : (
+                <p className="text-[10px] text-center text-muted-foreground bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-dashed border-border/40 font-bold shrink-0">
+                  This ticket has been Closed. Reopen it or raise a new ticket if you need further help.
+                </p>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
