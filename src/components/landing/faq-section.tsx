@@ -3,37 +3,9 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LANDING_FAQS } from "@/lib/landing-seo";
 
-const FAQS = [
-  {
-    q: "Is Ansh Visitor free to use?",
-    a: "Yes! The Free plan is available forever with no credit card required. It covers everything you need to get started — unlimited visitors, QR passes, and basic check-in tools. You can upgrade to Pro anytime for advanced features.",
-  },
-  {
-    q: "Can visitors register without creating an account?",
-    a: "Absolutely. With the My Links feature, you share a unique workspace URL with your visitor. They simply open the link, fill in their details, and receive a QR pass and 6-digit passcode — zero registration or login required on their end.",
-  },
-  {
-    q: "How does the QR pass system work?",
-    a: "When a visitor is pre-registered (by a host or via My Links), a unique QR code and 6-digit passcode are generated client-side in real time. At check-in, the front-desk operator scans the QR or enters the passcode using the quick scanner modal — the system looks up the booking and checks them in instantly.",
-  },
-  {
-    q: "What government IDs are supported for verification?",
-    a: "Ansh Visitor supports Aadhaar Card, PAN Card, and Passport for on-arrival ID verification. When verified, the document details are embedded into the printed visit pass for compliance and audit purposes.",
-  },
-  {
-    q: "Can I customize the public registration page (My Links)?",
-    a: "Yes. The public registration card can be themed to match your company branding — choose from light, dark, glass, or minimal card styles. Your workspace name and logo are displayed to give visitors a professional first impression.",
-  },
-  {
-    q: "Is visitor data secure?",
-    a: "All data is stored securely in your workspace. Session authentication is handled via Supabase, payments are secured by Razorpay, and all connections are SSL encrypted. Workspace configurations are also persisted locally for fast access without extra server load.",
-  },
-  {
-    q: "How many teammates can I add on the Free plan?",
-    a: "The Free plan supports a limited number of teammates. If you need to add an unlimited number of operators and managers, upgrading to the Pro plan gives you full team access for a single flat monthly price — no per-seat fees.",
-  },
-];
+const FAQS = LANDING_FAQS.map((faq) => ({ q: faq.question, a: faq.answer }));
 
 function FaqItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
   return (
@@ -88,7 +60,7 @@ export function FaqSection() {
             Frequently Asked Questions
           </h2>
           <p className="text-sm text-slate-400 font-medium">
-            Got questions about Ansh Visitor? Find quick answers below.
+            Got questions about ANSH Visitor? Find quick answers below.
           </p>
         </div>
 

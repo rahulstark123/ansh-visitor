@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import { StoreBadgeButtons } from "@/components/landing/store-badge-buttons";
 
 const OUR_APPS = [
   {
@@ -48,6 +49,21 @@ export default function OurAppsPage() {
         <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
           Explore the ANSH app suite for visitors, HR, tasks, and operations.
         </p>
+      </div>
+
+      <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5 sm:p-6">
+        <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div className="space-y-1">
+            <p className="text-xs font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+              Now live on mobile
+            </p>
+            <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">ANSH Visitor on Android</h2>
+            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              Available on Google Play and Indus Appstore.
+            </p>
+          </div>
+          <StoreBadgeButtons className="shrink-0 justify-center sm:justify-end" />
+        </div>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">

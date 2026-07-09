@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Terms & Conditions | Ansh Visitor",
-  description: "Terms and conditions for using Ansh Visitor and related services.",
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "Terms & Conditions",
+  description: "Terms and conditions for using ANSH Visitor at visitor.anshapps.com.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter, usePathname } from "next/navigation";
-import { Search, ChevronDown, LogOut, User, UsersRound, Settings, BarChart3 } from "lucide-react";
+import { Search, ChevronDown, LogOut, User, UsersRound, Settings, BarChart3, Smartphone } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createSupabaseClient } from "@/lib/supabase";
 
@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 import { useVisitorStore } from "@/stores/visitor-store";
 import { ProcessingOverlaySkeleton } from "@/components/ui/page-skeletons";
+import { MobileAppLiveModal } from "@/components/layout/mobile-app-live-modal";
 
 export function AppHeader() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export function AppHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState<any>(null);
   const [mounted, setMounted] = useState(false);
+  const [mobileAppModalOpen, setMobileAppModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -89,6 +91,18 @@ export function AppHeader() {
 
       {/* Action Toolbar */}
       <div className="flex shrink-0 items-center gap-3">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={() => setMobileAppModalOpen(true)}
+          className="h-10 w-10 rounded-xl text-emerald-600 hover:text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-400 dark:hover:text-emerald-300 dark:hover:bg-emerald-950/40"
+          title="ANSH Visitor mobile app"
+          aria-label="Open mobile app download"
+        >
+          <Smartphone className="h-5 w-5" />
+        </Button>
+
         {/* Plan Badge */}
         <Link
           href="/settings/billing"
@@ -199,6 +213,8 @@ export function AppHeader() {
           <LogOut className="h-5 w-5" />
         </Button>
       </div>
+
+      <MobileAppLiveModal open={mobileAppModalOpen} onOpenChange={setMobileAppModalOpen} />
 
       {/* Premium logout transition overlay */}
       {isLoggingOut && mounted && createPortal(

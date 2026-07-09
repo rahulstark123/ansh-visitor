@@ -18,22 +18,21 @@ import {
   Area,
 } from "recharts";
 import {
-  Lock,
-  Mail,
   LayoutDashboard,
   MessageSquare,
   LogOut,
   Search,
-  Filter,
   Paperclip,
   CheckCircle2,
   Clock,
   AlertCircle,
-  ChevronRight,
   Send,
   RefreshCw,
   FolderDot,
+  CreditCard,
+  ShieldCheck,
 } from "lucide-react";
+import { AdminSubscriptionsPanel } from "@/components/admin/admin-subscriptions-panel";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,6 +41,7 @@ import { Badge } from "@/components/ui/badge";
 import { useSupportStore, type SupportTicket, type TicketReply } from "@/stores/support-store";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
+import "./admin-panel.css";
 
 // HSL theme colors for Recharts
 const COLORS = {
@@ -64,11 +64,14 @@ export default function AdminPanel() {
   // Authentication State
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passcode, setPasscode] = useState("");
+  const [pin, setPin] = useState("");
+  const [adminToken, setAdminToken] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Tab State
-  const [activeTab, setActiveTab] = useState<"dashboard" | "messages">("dashboard");
+  const [activeTab, setActiveTab] = useState<"dashboard" | "messages" | "subscriptions">("dashboard");
 
   // Selection & Form State in Messages Tab
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
@@ -88,34 +91,49 @@ export default function AdminPanel() {
     // Check session storage for existing auth
     if (typeof window !== "undefined") {
       const auth = sessionStorage.getItem("admin_auth");
-      if (auth === "true") {
+      const token = sessionStorage.getItem("admin_token");
+      if (auth === "true" && token) {
         setIsAuthenticated(true);
+        setAdminToken(token);
       }
     }
   }, []);
 
   // Handle Login submission
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === "visitor@anshapps.com" && password === "Rahul@123") {
-      setIsAuthenticated(true);
-      setAuthError("");
-      toast.success("Welcome back, Rahul!");
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("admin_auth", "true");
+    setIsLoggingIn(true);
+    setAuthError("");
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, passcode, pin }),
+      });
+      if (!res.ok) {
+        setAuthError("Invalid email, password, passcode, or PIN");
+        toast.error("Authentication failed. Please verify credentials.");
+        return;
       }
-    } else {
-      setAuthError("Invalid email or password");
-      toast.error("Authentication failed. Please verify credentials.");
+      const data = (await res.json()) as { token: string };
+      setIsAuthenticated(true);
+      setAdminToken(data.token);
+      sessionStorage.setItem("admin_auth", "true");
+      sessionStorage.setItem("admin_token", data.token);
+      toast.success("Welcome back, Admin!");
+    } catch {
+      setAuthError("Unable to sign in right now. Please try again.");
+      toast.error("Authentication failed. Please try again.");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
-  // Handle Logout
   const handleLogout = () => {
     setIsAuthenticated(false);
-    if (typeof window !== "undefined") {
-      sessionStorage.removeItem("admin_auth");
-    }
+    setAdminToken("");
+    sessionStorage.removeItem("admin_auth");
+    sessionStorage.removeItem("admin_token");
     toast.success("Successfully logged out");
   };
 
@@ -262,76 +280,53 @@ export default function AdminPanel() {
     }
   };
 
-  // Login Page View
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900/60 p-4 font-sans select-none relative overflow-hidden transition-colors duration-300">
-        {/* Glow backgrounds */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-500">
-          <div className="flex flex-col items-center mb-8">
-            <div className="h-14 w-14 rounded-2xl bg-gradient-to-tr from-primary to-sky-400 flex items-center justify-center text-white shadow-xl shadow-primary/20 mb-3">
-              <Lock className="h-6 w-6" />
+      <div className="dark admin-shell min-h-screen flex items-center justify-center bg-[#0b0e14] p-4 font-sans select-none">
+        <div className="w-full max-w-md relative z-10">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-12 w-12 rounded-xl bg-violet-600 flex items-center justify-center text-white">
+              <ShieldCheck className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-slate-800 dark:text-white">
-              Ansh Support Admin
-            </h1>
-            <p className="text-xs text-muted-foreground mt-1">
-              Enter your administrative credentials to manage tickets
-            </p>
+            <div>
+              <h1 className="text-2xl font-black tracking-tight text-white">ANSH Admin</h1>
+              <p className="text-[10px] font-bold tracking-[0.25em] text-violet-300 uppercase">Support Desk</p>
+            </div>
           </div>
-
-          <Card className="border-0 shadow-2xl bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl rounded-3xl overflow-hidden">
+          <Card className="admin-panel-light border border-slate-800 rounded-3xl overflow-hidden">
             <CardContent className="p-8">
               <form onSubmit={handleLogin} className="space-y-5">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-400" />
+                {(
+                  [
+                    { label: "Admin Email", id: "email", type: "email", placeholder: "visitor@anshapps.com", value: email, onChange: setEmail },
+                    { label: "Password", id: "password", type: "password", placeholder: "Enter password", value: password, onChange: setPassword },
+                    { label: "Passcode", id: "passcode", type: "password", placeholder: "Enter admin passcode", value: passcode, onChange: setPasscode },
+                    { label: "PIN", id: "pin", type: "password", placeholder: "Enter admin PIN", value: pin, onChange: setPin },
+                  ] as const
+                ).map((field) => (
+                  <div key={field.id}>
+                    <label htmlFor={field.id} className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">
+                      {field.label} {field.id !== "email" && <span className="text-rose-400">*</span>}
+                    </label>
                     <Input
-                      type="email"
+                      id={field.id}
+                      type={field.type}
                       required
-                      placeholder="visitor@anshapps.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="pl-11 h-12 rounded-xl border-border/80 focus-visible:ring-primary/20 focus-visible:border-primary text-sm"
+                      placeholder={field.placeholder}
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      className="h-12 rounded-xl"
                     />
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-400" />
-                    <Input
-                      type="password"
-                      required
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="pl-11 h-12 rounded-xl border-border/80 focus-visible:ring-primary/20 focus-visible:border-primary text-sm"
-                    />
-                  </div>
-                </div>
-
+                ))}
                 {authError && (
-                  <p className="text-xs font-semibold text-rose-500 bg-rose-500/10 p-3 rounded-xl flex items-center gap-2 animate-pulse">
+                  <p className="text-xs font-semibold text-rose-400 bg-rose-500/10 p-3 rounded-xl flex items-center gap-2">
                     <AlertCircle className="h-4 w-4 shrink-0" />
                     {authError}
                   </p>
                 )}
-
-                <Button
-                  type="submit"
-                  className="w-full h-12 rounded-xl bg-gradient-to-r from-primary to-sky-500 text-white font-bold hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.01] active:scale-[0.99] transition-all border-0 text-xs tracking-wider uppercase"
-                >
-                  Verify Admin Access
+                <Button type="submit" disabled={isLoggingIn} className="w-full h-12 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold border-0">
+                  {isLoggingIn ? "Signing in…" : "Sign in to admin panel →"}
                 </Button>
               </form>
             </CardContent>
@@ -341,76 +336,41 @@ export default function AdminPanel() {
     );
   }
 
-  // Admin Dashboard/Messages Main Panel
   return (
-    <div className="min-h-screen flex bg-slate-50/50 dark:bg-slate-900/40 font-sans text-slate-800 dark:text-slate-100 transition-colors duration-300">
-      <title>Admin Support Dashboard | Ansh Visitor</title>
+    <div className="dark admin-shell min-h-screen flex bg-[#0b0e14] font-sans text-slate-100">
+      <title>Admin Support Dashboard | ANSH Visitor</title>
 
       {/* Sidebar Navigation */}
-      <aside className="w-64 border-r border-border/60 bg-white dark:bg-slate-950/70 backdrop-blur-xl flex flex-col shrink-0">
-        {/* Brand Header */}
-        <div className="h-16 px-6 border-b border-border/50 flex items-center justify-between">
+      <aside className="w-64 border-r border-slate-800 bg-[#0f141d] flex flex-col shrink-0">
+        <div className="h-16 px-6 border-b border-slate-800 flex items-center">
           <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-primary to-sky-400 flex items-center justify-center text-white shadow font-bold text-sm">
-              A
+            <div className="h-8 w-8 rounded-lg bg-violet-600 flex items-center justify-center text-white">
+              <ShieldCheck className="h-4 w-4" />
             </div>
             <div>
-              <p className="font-extrabold text-sm tracking-tight text-slate-800 dark:text-white leading-none">
-                Ansh Apps
-              </p>
-              <span className="text-[10px] font-bold text-primary tracking-widest uppercase">
-                Support Admin
-              </span>
+              <p className="font-extrabold text-sm tracking-tight text-white leading-none">ANSH Admin</p>
+              <span className="text-[10px] font-bold text-violet-300 tracking-widest uppercase">Support Desk</span>
             </div>
           </div>
         </div>
-
-        {/* Navigation Tabs */}
         <nav className="flex-1 px-4 py-6 space-y-1.5">
-          <button
-            onClick={() => setActiveTab("dashboard")}
-            className={cn(
-              "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer",
-              activeTab === "dashboard"
-                ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 hover:text-slate-800 dark:hover:text-white"
-            )}
-          >
-            <LayoutDashboard className="h-4.5 w-4.5" />
-            Dashboard
+          <button onClick={() => setActiveTab("messages")} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer relative", activeTab === "messages" ? "bg-violet-600 text-white" : "text-slate-400 hover:bg-slate-900 hover:text-white")}>
+            <MessageSquare className="h-4.5 w-4.5" /><span>Support Tickets</span>
+            {stats.open > 0 && <span className="absolute right-4 px-1.5 py-0.5 rounded-full bg-rose-500 text-[9px] font-black text-white">{stats.open}</span>}
           </button>
-          <button
-            onClick={() => setActiveTab("messages")}
-            className={cn(
-              "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer relative",
-              activeTab === "messages"
-                ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 hover:text-slate-800 dark:hover:text-white"
-            )}
-          >
-            <MessageSquare className="h-4.5 w-4.5" />
-            <span>Messages</span>
-            {stats.open > 0 && (
-              <span className="absolute right-4 px-1.5 py-0.5 rounded-full bg-rose-500 text-[9px] font-black text-white leading-none">
-                {stats.open}
-              </span>
-            )}
+          <button onClick={() => setActiveTab("dashboard")} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer", activeTab === "dashboard" ? "bg-violet-600 text-white" : "text-slate-400 hover:bg-slate-900 hover:text-white")}>
+            <LayoutDashboard className="h-4.5 w-4.5" />Dashboard
+          </button>
+          <button onClick={() => setActiveTab("subscriptions")} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer", activeTab === "subscriptions" ? "bg-violet-600 text-white" : "text-slate-400 hover:bg-slate-900 hover:text-white")}>
+            <CreditCard className="h-4.5 w-4.5" />Subscriptions
           </button>
         </nav>
-
-        {/* Footer Admin Info & Logout */}
-        <div className="p-4 border-t border-border/50">
-          <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl mb-3">
-            <div className="h-9 w-9 rounded-lg bg-sky-500/10 text-sky-600 flex items-center justify-center font-black text-xs">
-              R
-            </div>
+        <div className="p-4 border-t border-slate-800">
+          <div className="flex items-center gap-3 bg-slate-900 p-3 rounded-xl mb-3">
+            <div className="h-9 w-9 rounded-lg bg-violet-500/15 text-violet-300 flex items-center justify-center font-black text-xs">R</div>
             <div className="min-w-0">
-              <p className="text-xs font-bold text-slate-800 dark:text-white truncate">
-                Rahul Stark
-              </p>
-              <p className="text-[10px] text-muted-foreground truncate">
-                visitor@anshapps.com
-              </p>
+              <p className="text-xs font-bold text-white truncate">Rahul Stark</p>
+              <p className="text-[10px] text-slate-500 truncate">visitor@anshapps.com</p>
             </div>
           </div>
           <button
@@ -426,19 +386,17 @@ export default function AdminPanel() {
       {/* Main Panel Viewport */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Navbar */}
-        <header className="h-16 border-b border-border/60 bg-white/70 dark:bg-slate-950/60 backdrop-blur-xl px-8 flex items-center justify-between shrink-0">
+        <header className="h-16 border-b border-slate-800 bg-[#0f141d] px-8 flex items-center justify-between shrink-0">
           <div>
-            <h2 className="text-sm font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-              {activeTab === "dashboard" ? "Dashboard Analytics" : "Messages Workspace"}
+            <h2 className="text-sm font-black uppercase tracking-wider text-white">
+              {activeTab === "dashboard" ? "Dashboard Analytics" : activeTab === "subscriptions" ? "Subscriptions & Transactions" : "Messages Workspace"}
             </h2>
-            <p className="text-xs text-muted-foreground">
-              {activeTab === "dashboard"
-                ? "Overview of incoming issues & team resolution performance"
-                : `Manage and reply to customer inquiries (${filteredTickets.length} tickets matching filters)`}
+            <p className="text-xs text-slate-500">
+              {activeTab === "dashboard" ? "Overview of incoming issues & team resolution performance" : activeTab === "subscriptions" ? "All workspace billing activity" : `Manage and reply to customer inquiries (${filteredTickets.length} tickets matching filters)`}
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
               Live Sync
             </span>
@@ -447,7 +405,9 @@ export default function AdminPanel() {
 
         {/* Tab Workspace */}
         <div className="flex-1 overflow-y-auto p-8">
-          {activeTab === "dashboard" ? (
+          {activeTab === "subscriptions" ? (
+            <AdminSubscriptionsPanel token={adminToken} />
+          ) : activeTab === "dashboard" ? (
             /* ==================== DASHBOARD TAB ==================== */
             <div className="space-y-8 animate-in fade-in duration-300">
               {/* Stats KPI Cards */}
@@ -690,9 +650,8 @@ export default function AdminPanel() {
             /* ==================== MESSAGES TAB ==================== */
             <div className="h-[calc(100vh-12rem)] flex gap-6 animate-in fade-in duration-300">
               {/* Left Column: Filterable Ticket List */}
-              <div className="w-80 flex flex-col border border-border/50 bg-white dark:bg-slate-950/40 rounded-2xl overflow-hidden shrink-0">
-                {/* Search & Filter Header */}
-                <div className="p-4 border-b border-border/40 space-y-2.5 bg-slate-50/20 dark:bg-slate-950/10">
+              <div className="w-80 flex flex-col admin-panel-light border rounded-2xl overflow-hidden shrink-0">
+                <div className="p-4 border-b border-slate-800 space-y-2.5 admin-panel-muted">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
                     <Input
@@ -787,11 +746,11 @@ export default function AdminPanel() {
               </div>
 
               {/* Right Column: Ticket Detail Workspace */}
-              <div className="flex-1 flex flex-col border border-border/50 bg-white dark:bg-slate-950/40 rounded-2xl overflow-hidden">
+              <div className="flex-1 flex flex-col admin-panel-light border rounded-2xl overflow-hidden">
                 {selectedTicket ? (
                   <div className="flex-1 flex flex-col min-h-0">
                     {/* Header Detail */}
-                    <div className="p-5 border-b border-border/40 bg-slate-50/20 dark:bg-slate-950/10 flex flex-wrap items-center justify-between gap-4">
+                    <div className="p-5 border-b border-slate-800 admin-panel-muted flex flex-wrap items-center justify-between gap-4">
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-black text-primary">
@@ -834,17 +793,17 @@ export default function AdminPanel() {
                     </div>
 
                     {/* Replies & Conversations Stream */}
-                    <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/20 dark:bg-slate-900/10">
+                    <div className="flex-1 overflow-y-auto p-6 space-y-4 admin-panel-muted">
                       {/* Ticket Initial Message / Description */}
                       <div className="flex items-start gap-3.5 max-w-[85%]">
                         <div className="h-8 w-8 rounded-lg bg-sky-500/10 text-sky-600 flex items-center justify-center font-black text-xs shrink-0">
                           {selectedTicket.createdByName[0]?.toUpperCase() || "U"}
                         </div>
-                        <div className="bg-white dark:bg-slate-900 border border-border/50 rounded-2xl rounded-tl-none p-4 shadow-sm">
+                        <div className="admin-bubble-user border rounded-2xl rounded-tl-none p-4 shadow-sm">
                           <p className="text-xs font-bold text-slate-400 mb-1.5">
                             {selectedTicket.createdByName} (User Inquiry)
                           </p>
-                          <p className="text-sm text-slate-700 dark:text-slate-200 whitespace-pre-wrap leading-relaxed">
+                          <p className="text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">
                             {selectedTicket.description}
                           </p>
 
@@ -897,7 +856,7 @@ export default function AdminPanel() {
                                   "border rounded-2xl p-4 shadow-sm",
                                   isAdmin
                                     ? "bg-primary border-primary text-white rounded-tr-none"
-                                    : "bg-white dark:bg-slate-900 border-border/50 rounded-tl-none"
+                                    : "admin-bubble-user border rounded-2xl rounded-tl-none"
                                 )}
                               >
                                 <p
@@ -938,7 +897,7 @@ export default function AdminPanel() {
                     </div>
 
                     {/* Compose Reply Form */}
-                    <div className="p-4 border-t border-border/40 bg-white dark:bg-slate-950/60 backdrop-blur-xl">
+                    <div className="p-4 border-t border-slate-800 admin-panel-light">
                       <form onSubmit={handleSendReply} className="flex gap-3">
                         <textarea
                           value={replyMessage}
@@ -947,9 +906,8 @@ export default function AdminPanel() {
                           rows={2}
                           required
                           className={cn(
-                            "flex-1 min-w-0 rounded-xl border border-border bg-slate-50 dark:bg-slate-900/40 px-3.5 py-2.5 text-sm transition-colors outline-none",
-                            "placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20",
-                            "dark:border-border/50 resize-none h-16"
+                            "flex-1 min-w-0 rounded-xl border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-sm text-slate-100 transition-colors outline-none",
+                            "placeholder:text-slate-500 focus-visible:border-violet-500 focus-visible:ring-2 focus-visible:ring-violet-500/20 resize-none h-16"
                           )}
                         />
                         <div className="flex flex-col gap-2 shrink-0">

@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { Mail } from "lucide-react";
+import { StoreBadgeButtons } from "@/components/landing/store-badge-buttons";
 
 const PRODUCT_LINKS = [
   { label: "Features", href: "#features" },
+  { label: "Mobile App", href: "#download" },
   { label: "Pricing", href: "#pricing" },
   { label: "My Links", href: "#mylinks" },
   { label: "Live Sandbox", href: "#demo" },
@@ -42,6 +44,9 @@ export function LandingFooter() {
             >
               Ansh Apps
             </h2>
+            <p className="text-shimmer mt-3 font-bold tracking-wide leading-snug text-[clamp(1.125rem,5vw,3.75rem)]">
+              Built for Bharat, Ready for the World
+            </p>
           </div>
         </div>
 
@@ -51,11 +56,15 @@ export function LandingFooter() {
           <div className="space-y-5 sm:space-y-6">
             <div className="flex items-center gap-2.5">
               <img src="/logoAnshapps.png" alt="Ansh Visitor" className="h-7 w-auto" />
-              <span className="text-sm font-black tracking-wide uppercase">Ansh Visitor</span>
+              <span className="text-sm font-black tracking-wide uppercase">ANSH Visitor</span>
             </div>
             <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-sm">
               A premium visitor management system for modern offices — QR passes, ID verification, and guest logs in one sleek dashboard.
             </p>
+            <div className="space-y-3 pt-1">
+              <p className="text-xs font-black tracking-[0.2em] text-white uppercase">Mobile App</p>
+              <StoreBadgeButtons />
+            </div>
           </div>
 
           {/* Product */}

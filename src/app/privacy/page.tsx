@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | Ansh Visitor",
-  description: "Privacy policy for Ansh Visitor and related services.",
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "Privacy Policy",
+  description: "Privacy policy for ANSH Visitor at visitor.anshapps.com.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (
