@@ -57,26 +57,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const allowMobileBilling = isMobileBillingRoute(pathname);
-    if (isMobileSize && allowMobileBilling) {
-      return;
-    }
-
-    const html = document.documentElement;
-    const body = document.body;
-    const prevHtmlOverflow = html.style.overflow;
-    const prevBodyOverflow = body.style.overflow;
-
-    html.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-
-    return () => {
-      html.style.overflow = prevHtmlOverflow;
-      body.style.overflow = prevBodyOverflow;
-    };
-  }, [isMobileSize, pathname]);
-
-  useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 767px)");
 
     const handleMobileChange = (e: MediaQueryListEvent | MediaQueryList) => {
@@ -89,9 +69,42 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   const mobileBillingPage = isMobileBillingRoute(pathname);
+  const allowPageScroll = isMobileSize && mobileBillingPage;
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    const prevHtmlHeight = html.style.height;
+    const prevBodyHeight = body.style.height;
+
+    if (allowPageScroll) {
+      // Document scroll — nested overflow containers fail on many mobile browsers
+      html.style.overflow = "auto";
+      body.style.overflow = "auto";
+      html.style.height = "auto";
+      body.style.height = "auto";
+      html.classList.add("billing-mobile-scroll");
+    } else {
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+      html.style.height = "";
+      body.style.height = "";
+      html.classList.remove("billing-mobile-scroll");
+    }
+
+    return () => {
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+      html.style.height = prevHtmlHeight;
+      body.style.height = prevBodyHeight;
+      html.classList.remove("billing-mobile-scroll");
+    };
+  }, [allowPageScroll]);
 
   if (!appReady) {
-    if (isMobileSize && mobileBillingPage) {
+    if (allowPageScroll) {
       return <AppContentSkeleton />;
     }
 
@@ -104,13 +117,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (isMobileSize && mobileBillingPage) {
+  if (allowPageScroll) {
     return (
       <div className="flex min-h-dvh flex-col bg-background">
-        <ProTrialBanner />
-        <AppHeader />
-        <main className="mesh-gradient min-h-0 flex-1 overflow-y-auto overscroll-contain">
-          <div className="mx-auto w-full max-w-7xl p-4 sm:p-6">
+        <div className="sticky top-0 z-30 shrink-0">
+          <ProTrialBanner />
+          <AppHeader />
+        </div>
+        <main className="mesh-gradient flex-1">
+          <div className="mx-auto w-full max-w-7xl p-4 sm:p-6 pb-10">
             {children}
           </div>
         </main>

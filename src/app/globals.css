@@ -141,6 +141,14 @@
   }
 }
 
+/* Mobile billing: unlock document scroll (html has h-full from root layout) */
+html.billing-mobile-scroll,
+html.billing-mobile-scroll body {
+  height: auto !important;
+  overflow: auto !important;
+  overscroll-behavior-y: auto;
+}
+
 .crm-card {
   border-radius: var(--radius);
   background: var(--card);
